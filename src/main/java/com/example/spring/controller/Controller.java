@@ -26,13 +26,13 @@ public class Controller {
 	
 	@RequestMapping("/reg")
 	public String reg() {
-		return "/reg";
+		return "/regdo";
 	}
 	
-	@RequestMapping("/reg.do")
-	public String regdo(Model model, Board board) {
-		
-		boardservice.reg(board);
+	@RequestMapping("/regdo")
+	public String regdo(Board board) {
+		System.out.println("reg");
+//		boardservice.reg(board);
 //		List<Board> list = boardservice.selectBoardList();
 //		model.addAttribute("list", list);
 		
