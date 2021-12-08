@@ -18,14 +18,14 @@
 <div>
 <fieldset>
 <form action="reg.do" method="post">
-	<p> 제목 <input type="text" name="title"></p>
-	<p> 작성자 <input type="text" name="writer"></p>
+	<p> 제목 <input type="text" name="bTitle"></p>
+	<p> 작성자 <input type="text" name="bWriter"></p>
 	<p>
 <!-- 	<input type="file" name="file"/>
 	<input type="file" name="file"/></p> -->
 	내용
 	<br>
-	<textarea rows="20" cols="50" name="content"></textarea>
+	<textarea rows="20" cols="50" name="bContent"></textarea>
 	<br>
 	<span> <input type="submit" value="등록"> </span>
 	<button type="button" onclick="location.href='/'">돌아가기</button>

@@ -7,5 +7,6 @@ import com.example.spring.domain.Board;
 public interface BoardService {
 	public List<Board> selectBoardList();
 
-	public void reg(String title, String content);
+	public void reg(Board board);
+
 }

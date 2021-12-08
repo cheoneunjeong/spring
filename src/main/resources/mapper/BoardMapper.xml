@@ -8,25 +8,16 @@
 						b_writer as bWriter
 		FROM		lc_board
 	</select>
-	
-	<insert id="reg" parameterType="User">
-		INSERT INTO	lc_user1 (
-			u_id,
-         u_password,
-         u_name,
-         u_isAccountNonExpired,
-         u_isAccountNonLocked,
-         u_isCredentialNonExpired,
-         u_isEnabled
+
+	<insert id="reg" parameterType="Board">  
+        INSERT INTO	lc_board (
+			b_title,
+			b_content,
+			b_writer
       ) VALUES (
-         #{username},
-         #{password},
-         #{uName},
-         #{isAccountNonExpired},
-         #{isAccountNonLocked},
-         #{isCredentialsNonExpired},
-         #{isEnabled}
-      )
-	</insert>
-	
+         #{bTitle},
+         #{bContent},
+         #{bWriter}
+         )
+	</insert>	
 </mapper>

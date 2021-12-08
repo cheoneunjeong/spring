@@ -1,5 +1,6 @@
 package com.example.spring.controller;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,12 @@ public class Controller {
 	}
 	
 	@RequestMapping("/reg.do")
-	public String regdo(Model model, String title, String content) {
+	public String regdo(Model model, Board board) {
 		
+		boardservice.reg(board);
+//		List<Board> list = boardservice.selectBoardList();
+//		model.addAttribute("list", list);
 		
-//		boardservice.reg();
-		List<Board> list = boardservice.selectBoardList();
-		model.addAttribute("list", list);
-		
-		return "/index";
+		return "/result";
 	}
 }

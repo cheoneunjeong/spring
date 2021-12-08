@@ -1,11 +1,16 @@
 package com.example.spring.domain;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 public class Board {
 	private int bId;
 	private String bTitle;
 	private String bContent;
 	private String bWriter;
 	private String bDateTime;
+	private Timestamp bDate_timestamp;
+	
 	public int getbId() {
 		return bId;
 	}
@@ -36,5 +41,15 @@ public class Board {
 	public void setbDateTime(String bDateTime) {
 		this.bDateTime = bDateTime;
 	}
+	
+	public Timestamp getBDate_timestamp() {
+		return bDate_timestamp;
+	}
 
+	public void setBDate_timestamp(Timestamp bDate_timestamp) {
+		this.bDate_timestamp = bDate_timestamp;
+		
+		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd \n hh:mm:ss");
+		this.bDateTime = fm.format(bDate_timestamp); 
+	}
 }

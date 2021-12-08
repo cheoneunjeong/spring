@@ -10,6 +10,6 @@ import com.example.spring.domain.Board;
 public interface BoardMapper {
 	public List<Board> selectBoardList();
 
-	public void reg(String title, String content);
+	public void reg(Board board);
 
 }

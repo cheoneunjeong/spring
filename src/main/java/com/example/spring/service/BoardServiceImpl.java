@@ -16,10 +16,9 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> selectBoardList() {
 		return boardmapper.selectBoardList();
 	}
-	
 	@Override
-	public void reg(String title, String content) {
-		boardmapper.reg(title, content);
+	public void reg(Board board) {
+		boardmapper.reg(board);
 		
 	}
 	
