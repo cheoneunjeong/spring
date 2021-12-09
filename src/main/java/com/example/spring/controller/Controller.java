@@ -1,7 +1,6 @@
 package com.example.spring.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,31 +13,31 @@ import com.example.spring.service.BoardService;
 public class Controller {
 	
 	@Autowired BoardService boardservice;
-	int page = 1;
+	@Autowired Pagination pagination;
+	
+	int page = 0;
 	int reqPage = 0;
 	
 	@RequestMapping("/")
 	public String home(Model model, String reqPage_) {
 		
 		if(reqPage_ == null) {
-			reqPage_ = "0";
+			reqPage_ = "1";
 			reqPage = Integer.parseInt(reqPage_);
 			}
 		else {
 			reqPage = Integer.parseInt(reqPage_);
-			reqPage = (reqPage-1)*3;
+			page = (reqPage-1)*3;
 		}
-		
-		List<Board> list = boardservice.selectBoardList_p(reqPage);
-		Pagination pagination = new Pagination(page);
-		
+
+		List<Board> list = boardservice.selectBoardList_p(page);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pagination", pagination);
 	
 		return "/index";
 	}
-	
+
 	@RequestMapping("/reg")
 	public String reg() {
 		return "/regdo";

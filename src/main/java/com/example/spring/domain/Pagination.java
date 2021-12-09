@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import com.example.spring.service.BoardService;
 
 @Component
-@Configurable
 public class Pagination {
 
 	@Autowired BoardService boardservice;
