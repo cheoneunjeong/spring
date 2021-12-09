@@ -8,6 +8,15 @@
 						b_writer as bWriter
 		FROM		lc_board
 	</select>
+	
+	<select id="selectBoardList_p" parameterType="Integer" resultType="Board">
+		SELECT			b_id as bId,
+						b_title as bTitle,
+						b_content as bContent,
+						b_writer as bWriter
+		FROM		lc_board
+		LIMIT		#{reqPage},3
+	</select>
 
 	<insert id="reg" parameterType="Board">  
         INSERT INTO	lc_board (
@@ -20,4 +29,34 @@
          #{bWriter}
          )
 	</insert>	
+	
+	<select id="selectviewDetail" parameterType="Integer" resultType="Board">
+		SELECT			b_id as bId,
+						b_title as bTitle,
+						b_content as bContent,
+						b_writer as bWriter,
+						b_datetime as bDateTime
+		FROM		lc_board
+		WHERE		b_id = #{bid}
+	</select>
+	
+	<delete id="deletePost" parameterType="Integer">
+ 		DELETE
+  		FROM			lc_board
+   		WHERE			b_id = #{delid}
+	</delete>
+	
+	<update id="fixdo" parameterType="Board">
+  	 	UPDATE 			lc_board
+   		SET
+      				  b_title = #{bTitle},
+      				  b_content = #{bContent}
+
+   		WHERE			 b_id =  #{bId}
+	</update>
+	
+	<select id="getPostCount" resultType="Integer">
+		SELECT COUNT(*) count FROM lc_board
+	</select>
+	
 </mapper>

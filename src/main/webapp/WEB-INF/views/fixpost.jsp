@@ -14,19 +14,17 @@
 	}
 </style>
 <body>
-<h2 align="center">글작성</h2>
+<h2 align="center">수정</h2>
 <div>
 <fieldset>
-<form action="/regdo" method="post">
-	<input type="hidden" name="${csrf.parameterName}" value="${_csrf.token}"/>
-	<p> 제목 <input type="text" name="bTitle"></p>
-	<p> 작성자 <input type="text" name="bWriter"></p>
-	<p>
-	내용
-	<br>
+<form action="/fixdo" method="post">
+	<p> 제목 <input type="text" name="bTitle" > </p>
+	<p> 게시글 번호 : ${bid} <input type="hidden" name="bId" value = "${bid}"> </p>
+	<p> 작성자 : ${bwriter} <input type="hidden" name="bwriter" value = "${bwriter}"> </p>
+	내용<br>
 	<textarea rows="20" cols="50" name="bContent"></textarea>
 	<br>
-	<button type="submit">등록</button>
+	<span> <input type="submit" value="수정하기"> </span>
 	<button type="button" onclick="location.href='/'">돌아가기</button>
 </form>
 </fieldset>

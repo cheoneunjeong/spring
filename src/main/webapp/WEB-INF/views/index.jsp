@@ -64,7 +64,7 @@ li {
 	</div>
 	<br>
 	<div>
-		<form action="" method="post">
+		<form action="/deletePost" method="post">
 			<table>
 				<tr>
 					<th align="center" width="5%">No.</th>
@@ -79,13 +79,13 @@ li {
 
 					<tr>
 						<td>${item.bId}</td>
-						<td><a href="board-view.do?b_idx=${item.bId}">
+						<td><a href="/viewdetail?bid=${item.bId}">
 							
 								${item.bTitle}</a></td>
 						<td>${item.bWriter}</td>
 						<td>${item.bDateTime}</td>
 						<td>조회수</td>
-						<td><input type="checkbox" name="del-id"
+						<td><input type="checkbox" name="delId"
 							value="${item.bId}"></td>
 					</tr>
 				</c:forEach>
@@ -99,20 +99,20 @@ li {
 		</form>
 	</div>
 
-	<%-- <div>
+	<div>
 		<ul>
-			<c:forEach var="i" begin="${Bpagination.startPage }"
-				end="${Bpagination.endPage }" step="1">
+			<c:forEach var="i" begin="${pagination.startPage }"
+				end="${pagination.endPage }" step="1">
 				<c:choose>
-					<c:when test="${i==Bpagination.page}">
+					<c:when test="${i==pagination.page}">
 						<span style="font-weight: bold;">${i}</span>
 					</c:when>
-					<c:when test="${i!=Bpagination.page }">
-						<span><a href="board-list.do?page=${i}">${i}</a></span>
+					<c:when test="${i!=pagination.page }">
+						<span><a href="/list?reqPage=${i}">${i}</a></span>
 					</c:when>
 				</c:choose>
 			</c:forEach>
 		</ul>
-	</div> --%>
+	</div>
 </body>
 </html>
