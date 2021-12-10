@@ -36,7 +36,7 @@ public class Pagination {
 	
 	public void init(int postCount, int page) {
 		setPostCount(postCount);
-		
+		setPage(page);
 		setStartPage(((page-1)/pageUnit)*pageUnit+1);
 		setLastPage((int)Math.ceil(postCount/(float)perPage));
 		setEndPage(startPage+pageUnit-1);

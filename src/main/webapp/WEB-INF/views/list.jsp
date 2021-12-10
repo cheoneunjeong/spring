@@ -92,7 +92,7 @@ li {
 
 			</table>
 
-			<p align="right">0/0</p>
+			<p align="right">${pagination.page}/${pagination.lastPage}</p>
 
 			<button type="button" onclick="location.href='/reg'">글쓰기</button>
 			<span><input type="submit" value="삭제"></span>
