@@ -2,24 +2,71 @@ package com.example.spring.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
+import com.example.spring.domain.User;
 import com.example.spring.service.BoardService;
+import com.example.spring.service.UserService;
 
 @org.springframework.stereotype.Controller
 public class Controller {
 	
 	@Autowired BoardService boardservice;
-	@Autowired Pagination pagination;
+	@Autowired UserService userservice;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 	
 	int page = 0;
 	int reqPage = 0;
 	
+	
 	@RequestMapping("/")
-	public String home(Model model, String reqPage_) {
+	public String home() {
+		return "/index";
+	}
+	
+	@RequestMapping("/beforeSignUp")
+	public String beforeSignUp() {
+		return "/signup";
+	}
+	
+	@RequestMapping("/signup")
+	public String signup(User user) {
+		
+		String password = passwordEncoder.encode(user.getPassword());
+		
+		user.setPassword(password);
+		user.setAccountNonExpired(true);
+		user.setEnabled(true);
+		user.setAccountNonLocked(true);
+		user.setCredentialsNonExpired(true);
+		user.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
+		
+		userservice.createUser(user);
+		
+		userservice.createAuthorities(user);
+		
+		return "/login";
+	}
+	
+	@RequestMapping(value="/login")
+	public String beforeLogin(Model model) {
+		return "/login";
+	}
+	
+	@RequestMapping(value="/denied")
+	public String denied(Model model) {
+		return "/denied";
+	}
+	
+	@RequestMapping("/boardlist")
+	public String boardlist(Model model, String reqPage_) {
 		
 		if(reqPage_ == null) {
 			reqPage_ = "1";
@@ -32,10 +79,14 @@ public class Controller {
 
 		List<Board> list = boardservice.selectBoardList_p(page);
 		
+		int postCount = boardservice.getPostCount();
+		Pagination pagination = new Pagination();
+		pagination.init(postCount, reqPage);
+		
 		model.addAttribute("list", list);
 		model.addAttribute("pagination", pagination);
 	
-		return "/index";
+		return "/list";
 	}
 
 	@RequestMapping("/reg")
@@ -44,13 +95,29 @@ public class Controller {
 	}
 	
 	@RequestMapping("/regdo")
-	public String regdo(Model model, Board board) {
+	public String regdo(Model model, Board board, String reqPage_) {
 
 		boardservice.reg(board);
-		List<Board> list = boardservice.selectBoardList();
-		model.addAttribute("list", list);
 		
-		return "/index";
+		if(reqPage_ == null) {
+			reqPage_ = "1";
+			reqPage = Integer.parseInt(reqPage_);
+			}
+		else {
+			reqPage = Integer.parseInt(reqPage_);
+			page = (reqPage-1)*3;
+		}
+
+		List<Board> list = boardservice.selectBoardList_p(page);
+		
+		int postCount = boardservice.getPostCount();
+		Pagination pagination = new Pagination();
+		pagination.init(postCount, reqPage);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pagination", pagination);
+	
+		return "/list";
 	}
 	
 	@RequestMapping("/viewdetail")

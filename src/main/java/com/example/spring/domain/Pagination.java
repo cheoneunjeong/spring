@@ -6,10 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.example.spring.service.BoardService;
 
-@Component
 public class Pagination {
 
-	@Autowired BoardService boardservice;
 	int postCount;
 	int page;
 	int pageNum;
@@ -27,13 +25,24 @@ public class Pagination {
 	
 	public Pagination(int page) {
 		this.page = page;
-		postCount = boardservice.getPostCount();
+		
 		startPage = ((page-1)/pageUnit)*pageUnit+1;
 		lastPage = (int)Math.ceil(postCount/(float)perPage);
 		endPage = startPage+pageUnit-1;
 		endPage = endPage < lastPage ? endPage : lastPage;
 		prevPage = (endPage-pageUnit);
 		nextPage = (startPage+pageUnit);
+	}
+	
+	public void init(int postCount, int page) {
+		setPostCount(postCount);
+		
+		setStartPage(((page-1)/pageUnit)*pageUnit+1);
+		setLastPage((int)Math.ceil(postCount/(float)perPage));
+		setEndPage(startPage+pageUnit-1);
+		setEndPage(endPage < lastPage ? endPage : lastPage);
+		setPrevPage((endPage-pageUnit));
+		setNextPage((startPage+pageUnit));
 	}
 	
 	public int getPostCount() {
