@@ -20,7 +20,7 @@
 <form action="/fixdo" method="post">
 	<p> 제목 <input type="text" name="bTitle" > </p>
 	<p> 게시글 번호 : ${bid} <input type="hidden" name="bId" value = "${bid}"> </p>
-	<p> 작성자 : ${bwriter} <input type="hidden" name="bwriter" value = "${bwriter}"> </p>
+	<input type="hidden" name="bwriter" value = "${bwriter}">
 	내용<br>
 	<textarea rows="20" cols="50" name="bContent"></textarea>
 	<br>

@@ -1,8 +1,13 @@
 package com.example.spring.controller;
 
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
@@ -21,6 +26,8 @@ public class Controller {
 	@Autowired UserService userservice;
 	@Autowired
     private PasswordEncoder passwordEncoder;
+	private HttpSession session;
+	
 	
 	int page = 0;
 	int reqPage = 0;
@@ -95,8 +102,11 @@ public class Controller {
 	}
 	
 	@RequestMapping("/regdo")
-	public String regdo(Model model, Board board, String reqPage_) {
+	public String regdo(Model model, Board board, String reqPage_, @AuthenticationPrincipal User user) {
 
+		String writer = user.getUsername();
+
+		board.setbWriter(writer);
 		boardservice.reg(board);
 		
 		if(reqPage_ == null) {

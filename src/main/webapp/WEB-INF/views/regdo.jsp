@@ -20,7 +20,6 @@
 <form action="/regdo" method="post">
 	<input type="hidden" name="${csrf.parameterName}" value="${_csrf.token}"/>
 	<p> 제목 <input type="text" name="bTitle"></p>
-	<p> 작성자 <input type="text" name="bWriter"></p>
 	<p>
 	내용
 	<br>
