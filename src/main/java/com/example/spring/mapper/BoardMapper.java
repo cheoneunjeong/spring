@@ -22,4 +22,6 @@ public interface BoardMapper {
 
 	public int getPostCount();
 
+	public void addhit(int bid);
+
 }

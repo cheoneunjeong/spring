@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring.mapper.BoardMapper">
+	
 	<select id="selectBoardList" resultType="Board">
 		SELECT			b_id as bId,
 						b_title as bTitle,
 						b_content as bContent,
-						b_writer as bWriter
+						b_writer as bWriter,
+						b_hit as bHit
 		FROM		lc_board
 	</select>
 	
@@ -13,7 +15,8 @@
 		SELECT			b_id as bId,
 						b_title as bTitle,
 						b_content as bContent,
-						b_writer as bWriter
+						b_writer as bWriter,
+						b_hit as bHit
 		FROM		lc_board
 		LIMIT		#{reqPage},3
 	</select>
@@ -35,10 +38,19 @@
 						b_title as bTitle,
 						b_content as bContent,
 						b_writer as bWriter,
-						b_datetime as bDateTime
+						b_datetime as bDateTime,
+						b_hit as bHit
 		FROM		lc_board
 		WHERE		b_id = #{bid}
 	</select>
+	
+	<update id="addhit" parameterType="Integer">
+  	 	UPDATE 			lc_board
+   		SET
+      				  b_hit = b_hit+1
+
+   		WHERE			 b_id =   #{bId}
+	</update>
 	
 	<delete id="deletePost" parameterType="Integer">
  		DELETE

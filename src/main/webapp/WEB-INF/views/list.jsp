@@ -84,7 +84,7 @@ li {
 								${item.bTitle}</a></td>
 						<td>${item.bWriter}</td>
 						<td>${item.bDateTime}</td>
-						<td>조회수</td>
+						<td>${item.bHit }</td>
 						<td><input type="checkbox" name="delId"
 							value="${item.bId}"></td>
 					</tr>

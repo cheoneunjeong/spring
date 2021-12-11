@@ -10,6 +10,8 @@ public class Board {
 	private String bWriter;
 	private String bDateTime;
 	private Timestamp bDate_timestamp;
+	private int bHit;
+	
 	
 	public int getbId() {
 		return bId;
@@ -52,4 +54,12 @@ public class Board {
 		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd \n hh:mm:ss");
 		this.bDateTime = fm.format(bDate_timestamp); 
 	}
+	
+	public int getbHit() {
+		return bHit;
+	}
+	public void setbHit(int bHit) {
+		this.bHit = bHit;
+	}
+	
 }

@@ -29,6 +29,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 	@Override
 	public Board viewDetail(int bid) {
+		boardmapper.addhit(bid);
 		return boardmapper.selectviewDetail(bid);
 	}
 	@Override

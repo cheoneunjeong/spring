@@ -25,12 +25,15 @@ div {
 </style>
 <body>
 	<div>
+		<p>
+			<button type="button" onclick="location.href='/boardlist'">돌아가기</button>
+		</p>
 		<table class="a">
 			<tr>
 				<th height="30"class="a" align="center">${board.bTitle }</th>
 			</tr>
 			<tr>
-				<td class="a" align="right">작성자 : ${board.bWriter} / 조회수: </td>
+				<td class="a" align="right">작성자 : ${board.bWriter} / 조회수: ${board.bHit }</td>
 			</tr>
 			<tr>
 				<td class="a" align="right">${board.bDateTime}</td>
