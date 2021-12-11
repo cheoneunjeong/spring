@@ -19,4 +19,6 @@ public interface BoardService {
 
 	public int getPostCount();
 
+	public void regComment(Board board);
+
 }

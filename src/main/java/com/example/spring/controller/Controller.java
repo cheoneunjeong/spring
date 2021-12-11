@@ -1,11 +1,9 @@
 package com.example.spring.controller;
 
-import java.util.Collection;
+
 import java.util.List;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -198,6 +196,46 @@ public class Controller {
 		model.addAttribute("list", list);
 		
 		return "/index";
+	}
+	
+	@RequestMapping("/regComment")
+	public String regComment(Model model, int bid, int groups, int orders, int depth) {
+
+		model.addAttribute("bid", bid);
+		model.addAttribute("groups", groups);
+		model.addAttribute("orders", orders);
+		model.addAttribute("depth", depth);
+		
+		return "/regComment";
+	}
+	
+	@RequestMapping("/regCommentdo")
+	public String regComment(Model model, Board board, String reqPage_,
+								@AuthenticationPrincipal User user) 
+	{
+
+		board.setbWriter(user.getUsername());
+		boardservice.regComment(board);
+		
+		if(reqPage_ == null) {
+			reqPage_ = "1";
+			reqPage = Integer.parseInt(reqPage_);
+			}
+		else {
+			reqPage = Integer.parseInt(reqPage_);
+			page = (reqPage-1)*3;
+		}
+
+		List<Board> list = boardservice.selectBoardList_p(page);
+		
+		int postCount = boardservice.getPostCount();
+		Pagination pagination = new Pagination();
+		pagination.init(postCount, reqPage);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pagination", pagination);
+	
+		return "/list";
 	}
 	
 }

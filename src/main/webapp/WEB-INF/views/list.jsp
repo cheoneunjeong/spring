@@ -81,7 +81,7 @@ li {
 						<td>${item.bId}</td>
 						<td><a href="/viewdetail?bid=${item.bId}">
 							
-								${item.bTitle}</a></td>
+								${item.con}</a></td>
 						<td>${item.bWriter}</td>
 						<td>${item.bDateTime}</td>
 						<td>${item.bHit }</td>

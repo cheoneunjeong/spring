@@ -24,7 +24,8 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public void reg(Board board) {
-		boardmapper.reg(board);
+		boardmapper.reg1(board);
+		boardmapper.reg2(board);
 		
 	}
 	@Override
@@ -45,6 +46,13 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int getPostCount() {
 		return boardmapper.getPostCount();
+	}
+
+	@Override
+	public void regComment(Board board) {
+		boardmapper.regComment(board);
+		boardmapper.regComment2(board);
+		
 	}
 
 	

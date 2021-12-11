@@ -12,7 +12,9 @@ public interface BoardMapper {
 	
 	public List<Board> selectBoardList_p(int reqPage);
 
-	public void reg(Board board);
+	public void reg1(Board board);
+	
+	public void reg2(Board board);
 
 	public Board selectviewDetail(int bid);
 
@@ -24,4 +26,8 @@ public interface BoardMapper {
 
 	public void addhit(int bid);
 
+	public void regComment(Board board);
+	
+	public void regComment2(Board board);
+	
 }

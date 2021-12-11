@@ -12,16 +12,27 @@
 	</select>
 	
 	<select id="selectBoardList_p" parameterType="Integer" resultType="Board">
-		SELECT			b_id as bId,
+		SELECT * FROM
+						(select @rownum := @rownum-1 as rownum, (concat(repeat('-', depth), b_title))as con, 
+						b_id as bId,
 						b_title as bTitle,
 						b_content as bContent,
 						b_writer as bWriter,
-						b_hit as bHit
-		FROM		lc_board
-		LIMIT		#{reqPage},3
+						b_datetime as bDateTime,
+						b_hit as bHit,
+						groups,
+						orders,
+						depth
+		FROM 				
+						lc_board ta, 
+					 (select @rownum := (select COUNT(*)-#{reqPage}+1 from lc_board ta)) tb 
+		ORDER BY 
+						groups desc, orders asc
+
+		LIMIT  			#{reqPage},3)a
 	</select>
 
-	<insert id="reg" parameterType="Board">  
+	<insert id="reg1" parameterType="Board">  
         INSERT INTO	lc_board (
 			b_title,
 			b_content,
@@ -31,7 +42,16 @@
          #{bContent},
          #{bWriter}
          )
-	</insert>	
+	</insert>
+	
+	<update id="reg2" parameterType="Board">
+  	 	UPDATE 			lc_board
+   		SET
+      				 groups = LAST_INSERT_ID(),
+      				 orders = '1'
+
+   		WHERE		 b_id = last_insert_id()
+	</update>	
 	
 	<select id="selectviewDetail" parameterType="Integer" resultType="Board">
 		SELECT			b_id as bId,
@@ -39,7 +59,10 @@
 						b_content as bContent,
 						b_writer as bWriter,
 						b_datetime as bDateTime,
-						b_hit as bHit
+						b_hit as bHit,
+						groups,
+						orders,
+						depth
 		FROM		lc_board
 		WHERE		b_id = #{bid}
 	</select>
@@ -70,5 +93,32 @@
 	<select id="getPostCount" resultType="Integer">
 		SELECT COUNT(*) count FROM lc_board
 	</select>
+	
+	<insert id="regComment" parameterType="Board">  
+        INSERT INTO lc_board (
+        		b_title,
+        		b_content,
+        		b_writer,
+        		groups,
+        		orders,
+        		depth
+      ) VALUES (
+         #{bTitle},
+         #{bContent},
+         #{bWriter},
+         #{groups},
+         #{orders}+1,
+         #{depth}+1
+         )
+	</insert>
+	
+	<update id="regComment2" parameterType="Board">
+  	 	UPDATE 				lc_board 
+  	 	SET 				orders = orders+1 
+		WHERE 
+				 (not b_id =  LAST_INSERT_ID() )
+					&amp;&amp; (not orders &lt; #{orders}+1) 
+					&amp;&amp; (groups = #{groups})
+	</update>	
 	
 </mapper>

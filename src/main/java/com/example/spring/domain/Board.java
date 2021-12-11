@@ -1,17 +1,17 @@
 package com.example.spring.domain;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-
 public class Board {
 	private int bId;
 	private String bTitle;
 	private String bContent;
 	private String bWriter;
 	private String bDateTime;
-	private Timestamp bDate_timestamp;
 	private int bHit;
-	
+	private int groups;
+	private int orders;
+	private int depth;
+	private int rownum;
+	private String con;
 	
 	public int getbId() {
 		return bId;
@@ -43,23 +43,41 @@ public class Board {
 	public void setbDateTime(String bDateTime) {
 		this.bDateTime = bDateTime;
 	}
-	
-	public Timestamp getBDate_timestamp() {
-		return bDate_timestamp;
-	}
-
-	public void setBDate_timestamp(Timestamp bDate_timestamp) {
-		this.bDate_timestamp = bDate_timestamp;
-		
-		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd \n hh:mm:ss");
-		this.bDateTime = fm.format(bDate_timestamp); 
-	}
-	
 	public int getbHit() {
 		return bHit;
 	}
 	public void setbHit(int bHit) {
 		this.bHit = bHit;
+	}
+	public int getGroups() {
+		return groups;
+	}
+	public void setGroups(int groups) {
+		this.groups = groups;
+	}
+	public int getOrders() {
+		return orders;
+	}
+	public void setOrders(int orders) {
+		this.orders = orders;
+	}
+	public int getDepth() {
+		return depth;
+	}
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+	public String getCon() {
+		return con;
+	}
+	public void setCon(String con) {
+		this.con = con;
 	}
 	
 }
