@@ -55,7 +55,7 @@ div {
 		<button type="button"
 			onclick="location.href='/fixPost?bid=${board.bId}&&bwriter=${board.bWriter}'">수정</button>
 		<button type="button"
-			onclick="location.href='/viewDelete?bid=${board.bId}'">삭제</button>
+			onclick="location.href='/viewDelete?bid=${board.bId}&&bwriter=${board.bWriter}'">삭제</button>
 		<button type="button"
 			onclick="location.href='reg-Comment.do?b_idx=${Post.b_idx}&&groups=${Post.groups}&&orders=${Post.orders}&&depth=${Post.depth}'">답글
 			작성</button>

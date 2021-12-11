@@ -1,15 +1,15 @@
 package com.example.spring.controller;
 
+import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -26,9 +26,7 @@ public class Controller {
 	@Autowired UserService userservice;
 	@Autowired
     private PasswordEncoder passwordEncoder;
-	private HttpSession session;
-	
-	
+
 	int page = 0;
 	int reqPage = 0;
 	
@@ -141,36 +139,54 @@ public class Controller {
 	}
 	
 	@RequestMapping("/deletePost")
-	public String deletePost(Model model, int[] delId) {
+	public String deletePost(Model model, int[] delId, SecurityContextHolderAwareRequestWrapper request) {
 
-		for(int delid : delId) {
-			boardservice.deletePost(delid);
-		}
+		if (request.isUserInRole("ROLE_ADMIN")) {
+
+			for(int delid : delId) {
+				boardservice.deletePost(delid);
+			}
+			
+			List<Board> list = boardservice.selectBoardList();
+			model.addAttribute("list", list);
+			
+			return "/index";
+		} 
 		
-		List<Board> list = boardservice.selectBoardList();
-		model.addAttribute("list", list);
+		else return "/denied";
 		
-		return "/index";
 	}
 	
 	@RequestMapping("/viewDelete")
-	public String deleteView(Model model, int bid) {
+	public String deleteView(Model model, int bid, String bwriter, @AuthenticationPrincipal User user,
+								SecurityContextHolderAwareRequestWrapper request)
+	{
+		if (request.isUserInRole("ROLE_ADMIN") || user.getUsername().equals(bwriter)) {
 
-		boardservice.deletePost(bid);
+			boardservice.deletePost(bid);
+			
+			List<Board> list = boardservice.selectBoardList();
+			model.addAttribute("list", list);
+			
+			return "/index";
+		} 
 		
-		List<Board> list = boardservice.selectBoardList();
-		model.addAttribute("list", list);
-		
-		return "/index";
+		else return "/denied";
 	}
 	
 	@RequestMapping("/fixPost")
-	public String fixPost(Model model, int bid, String bwriter) {
-
+	public String fixPost(Model model, int bid, String bwriter, @AuthenticationPrincipal User user) {
+		
+		if(user.getUsername().equals(bwriter)) {
+		
 		model.addAttribute("bid", bid);
 		model.addAttribute("bwriter", bwriter);
 		
 		return "/fixpost";
+		}
+		else {
+			return "/denied";
+		}
 	}
 	
 	@RequestMapping("/fixdo")
