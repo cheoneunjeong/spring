@@ -55,5 +55,24 @@ public class BoardServiceImpl implements BoardService {
 		
 	}
 
-	
+	@Override
+	public List<Board> search_bid(String s, int page) {
+		return boardmapper.search_bid(s, page);
+	}
+
+	@Override
+	public List<Board> search_btitle(String s, int page) {
+		return boardmapper.search_btitle(s, page);
+	}
+
+	@Override
+	public int SearchPostCount_bid(String s) {
+		return boardmapper.SearchPostCount_bid(s);
+	}
+
+	@Override
+	public int SearchPostCount_btitle(String s) {
+		return boardmapper.SearchPostCount_btitle(s);
+	}
+
 }

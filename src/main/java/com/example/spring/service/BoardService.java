@@ -21,4 +21,12 @@ public interface BoardService {
 
 	public void regComment(Board board);
 
+	public List<Board> search_bid(String s, int page);
+	
+	public List<Board> search_btitle(String s, int page);
+
+	public int SearchPostCount_bid(String s);
+
+	public int SearchPostCount_btitle(String s);
+
 }

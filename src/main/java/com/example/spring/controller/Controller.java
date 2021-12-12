@@ -238,4 +238,40 @@ public class Controller {
 		return "/list";
 	}
 	
+	@RequestMapping("/search")
+	public String search(Model model, String f, String search, String reqPage_) {
+
+		List<Board> list = null;
+		int postCount = 0;
+		
+		if(reqPage_ == null) {
+			reqPage_ = "1";
+			reqPage = Integer.parseInt(reqPage_);
+			}
+		else {
+			reqPage = Integer.parseInt(reqPage_);
+			page = (reqPage-1)*3;
+		}
+		
+		String s = "%"+search+"%";
+		
+		if(f.equals("b_id")) {
+			list = boardservice.search_bid(s, page);
+			postCount = boardservice.SearchPostCount_bid(s);
+		} else {
+			list = boardservice.search_btitle(s, page);
+			postCount = boardservice.SearchPostCount_btitle(s);
+		}
+
+		Pagination pagination = new Pagination();
+		pagination.init(postCount, reqPage);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("f", f);
+		model.addAttribute("search", search);
+		
+		return "/s_list";
+	}
+	
 }

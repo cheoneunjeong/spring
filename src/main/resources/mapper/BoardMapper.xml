@@ -121,4 +121,56 @@
 					&amp;&amp; (groups = #{groups})
 	</update>	
 	
+	<select id="search_bid" parameterType="map" resultType="Board">
+		select * FROM
+						(SELECT     @ROWNUM := @ROWNUM -1 AS ROWNUM,
+						(concat(repeat('-', depth), b_title))AS con,
+          				b_id as bId,
+						b_title as bTitle,
+						b_content as bContent,
+						b_writer as bWriter,
+						b_datetime as bDateTime,
+						b_hit as bHit,
+						groups,
+						orders,
+						depth
+		FROM       
+						(SELECT * FROM lc_board WHERE b_id LIKE #{s} ) ta, 
+        				(SELECT @ROWNUM := (SELECT COUNT(*)-#{page}+1 
+        				FROM (SELECT * FROM lc_board WHERE b_id LIKE #{s} ) ta)) tb
+		order by 
+						groups desc, orders asc
+		LIMIT #{page},3)a
+	</select>
+	
+	<select id="search_btitle" parameterType="map" resultType="Board">
+		select * FROM
+						(SELECT     @ROWNUM := @ROWNUM -1 AS ROWNUM,
+						(concat(repeat('-', depth), b_title))AS con,
+          				b_id as bId,
+						b_title as bTitle,
+						b_content as bContent,
+						b_writer as bWriter,
+						b_datetime as bDateTime,
+						b_hit as bHit,
+						groups,
+						orders,
+						depth
+		FROM       
+						(SELECT * FROM lc_board WHERE b_title LIKE #{s} ) ta, 
+        				(SELECT @ROWNUM := (SELECT COUNT(*)-#{page}+1 
+        				FROM (SELECT * FROM lc_board WHERE b_title LIKE #{s} ) ta)) tb
+		order by 
+						groups desc, orders asc
+		LIMIT #{page},3)a
+	</select>
+	
+	<select id="SearchPostCount_bid"  parameterType="String" resultType="Integer">
+		SELECT COUNT(*) count FROM lc_board WHERE b_id LIKE #{s}
+	</select>
+	
+	<select id="SearchPostCount_btitle"  parameterType="String" resultType="Integer">
+		SELECT COUNT(*) count FROM lc_board WHERE b_title LIKE #{s}
+	</select>
+	
 </mapper>

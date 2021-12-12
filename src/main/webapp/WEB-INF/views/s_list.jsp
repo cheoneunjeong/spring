@@ -108,7 +108,7 @@ li {
 						<span style="font-weight: bold;">${i}</span>
 					</c:when>
 					<c:when test="${i!=pagination.page }">
-						<span><a href="/boardlist?reqPage_=${i}">${i}</a></span>
+						<span><a href="/search?reqPage_=${i}&&f=${f}&&search=${search}">${i}</a></span>
 					</c:when>
 				</c:choose>
 			</c:forEach>
