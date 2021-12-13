@@ -38,7 +38,7 @@ div {
 			<tr>
 				<td class="a" align="right">${board.bDateTime}</td>
 			</tr>
-<%-- 			<tr>
+<%--  			<tr>
 				<td class="a" align="left"> 첨부파일 : 
 				<c:forEach items="${fileName}" var="fileName" varStatus="status">
 				<a download href= "./upload/${fileName}">${fileName}</a>
@@ -47,8 +47,7 @@ div {
 			</tr> --%>
 			<tr>
 				<td height="300" class="a" align="center">
-<%-- 					<img src="./upload/${Post.b_content}"/> --%>
-					${board.bContent}
+					<img src="/images/img.jpg" style="width: 500px; height: 500px;"/>
 				</td>
 			</tr>
 		</table>

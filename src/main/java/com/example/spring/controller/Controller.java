@@ -1,8 +1,17 @@
 package com.example.spring.controller;
 
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -11,6 +20,8 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.spring.domain.Board;
@@ -101,42 +112,47 @@ public class Controller {
 	
 	@RequestMapping(value="/regdo", method=RequestMethod.POST)
 	public String regdo(Model model, Board board, String reqPage_, 
-		@AuthenticationPrincipal User user, MultipartHttpServletRequest mRequest)
+		@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile multipartFile)
 	{
-//		if(boardservice.fileUpload(mRequest)) {
-//
-//			model.addAttribute("result", "SUCCESS");
-//
-//		} else {
-//
-//			model.addAttribute("result", "FAIL");
-//
-//		}
+		String path = "/src/main/reasources/static/images/";
+		String thumbPath = path+"thumb/";
+		String filename = multipartFile.getOriginalFilename();
+		String ext = filename.substring(filename.lastIndexOf(".")+1);
+		
+		File file = new File(path+filename);
+		File thumbFile = new File(thumbPath+filename);
+		try {
+			InputStream input = multipartFile.getInputStream();
+			FileUtils.copyInputStreamToFile(input, file);
+			
+			BufferedImage imageBuf = ImageIO.read(file);
+			int fixWidth = 500;
+			double ratio = imageBuf.getWidth() / (double)fixWidth;
+			int thumbWidth = fixWidth;
+			int thumbHeight = (int)(imageBuf.getHeight() / ratio);
+			BufferedImage thumbImageBf = new BufferedImage(thumbWidth, thumbHeight, BufferedImage.TYPE_3BYTE_BGR);
+			Graphics2D g = thumbImageBf.createGraphics(); 
+			Image thumbImage = imageBuf.getScaledInstance(thumbWidth, thumbHeight, Image.SCALE_SMOOTH);
+			g.drawImage(thumbImage, 0, 0, thumbWidth, thumbHeight, null);
+			g.dispose();
+			ImageIO.write(thumbImageBf, ext, thumbFile);
+		
+		} catch(IOException e) {
+			FileUtils.deleteQuietly(file);
+			e.printStackTrace();
+		} 
 		
 		String writer = user.getUsername();
 
 		board.setbWriter(writer);
 		boardservice.reg(board);
 		
-		if(reqPage_ == null) {
-			reqPage_ = "1";
-			reqPage = Integer.parseInt(reqPage_);
-			}
-		else {
-			reqPage = Integer.parseInt(reqPage_);
-			page = (reqPage-1)*3;
-		}
-
-		List<Board> list = boardservice.selectBoardList_p(page);
+		int bid = boardservice.getbid();
+		board = boardservice.viewDetail(bid);
 		
-		int postCount = boardservice.getPostCount();
-		Pagination pagination = new Pagination();
-		pagination.init(postCount, reqPage);
-		
-		model.addAttribute("list", list);
-		model.addAttribute("pagination", pagination);
+		model.addAttribute("board", board);
 	
-		return "/list";
+		return "/viewDetail";
 	}
 	
 	@RequestMapping("/viewdetail")

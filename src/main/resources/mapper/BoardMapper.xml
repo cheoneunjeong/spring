@@ -173,4 +173,7 @@
 		SELECT COUNT(*) count FROM lc_board WHERE b_title LIKE #{s}
 	</select>
 	
+	<select id="getbid" resultType="Integer">
+		SELECT * from lc_board WHERE b_id = LAST_INSERT_ID()
+	</select>
 </mapper>

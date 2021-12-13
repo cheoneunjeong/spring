@@ -31,6 +31,8 @@ public interface BoardService {
 
 	public int SearchPostCount_btitle(String s);
 
-	public boolean fileUpload(MultipartHttpServletRequest mRequest);
+//	public boolean fileUpload(MultipartHttpServletRequest mRequest);
+
+	public int getbid();
 
 }

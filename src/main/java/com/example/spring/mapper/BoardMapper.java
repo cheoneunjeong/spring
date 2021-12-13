@@ -39,6 +39,8 @@ public interface BoardMapper {
 
 	public int SearchPostCount_btitle(String s);
 
+	public int getbid();
+
 	
 	
 }
