@@ -51,3 +51,8 @@ server:
 mybatis:
   type-aliases-package: com.example.spring.domain
   mapper-locations: mapper/**/*.xml
+  
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 20MB

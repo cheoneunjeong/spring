@@ -2,6 +2,8 @@ package com.example.spring.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.example.spring.domain.Board;
 
 public interface BoardService {
@@ -28,5 +30,7 @@ public interface BoardService {
 	public int SearchPostCount_bid(String s);
 
 	public int SearchPostCount_btitle(String s);
+
+	public boolean fileUpload(MultipartHttpServletRequest mRequest);
 
 }

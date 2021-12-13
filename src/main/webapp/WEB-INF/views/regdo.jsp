@@ -17,9 +17,10 @@
 <h2 align="center">글작성</h2>
 <div>
 <fieldset>
-<form action="/regdo" method="post">
+<form action="/regdo" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="${csrf.parameterName}" value="${_csrf.token}"/>
 	<p> 제목 <input type="text" name="bTitle"></p>
+	<p><input type="file" name="file"/></p>
 	<p>
 	내용
 	<br>

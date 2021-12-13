@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "mybatis.servlet.multipart.max-file-size",
+    "type": "java.lang.String",
+    "description": "A description for 'mybatis.servlet.multipart.max-file-size'"
+  },
+  {
+    "name": "mybatis.servlet.multipart.maxRequestSize",
+    "type": "java.lang.String",
+    "description": "A description for 'mybatis.servlet.multipart.maxRequestSize'"
+  },
+  {
+    "name": "server.tomcat.file-encoding",
+    "type": "java.lang.String",
+    "description": "A description for 'server.tomcat.file-encoding'"
+  }
+]}

@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
@@ -97,9 +99,20 @@ public class Controller {
 		return "/regdo";
 	}
 	
-	@RequestMapping("/regdo")
-	public String regdo(Model model, Board board, String reqPage_, @AuthenticationPrincipal User user) {
-
+	@RequestMapping(value="/regdo", method=RequestMethod.POST)
+	public String regdo(Model model, Board board, String reqPage_, 
+		@AuthenticationPrincipal User user, MultipartHttpServletRequest mRequest)
+	{
+//		if(boardservice.fileUpload(mRequest)) {
+//
+//			model.addAttribute("result", "SUCCESS");
+//
+//		} else {
+//
+//			model.addAttribute("result", "FAIL");
+//
+//		}
+		
 		String writer = user.getUsername();
 
 		board.setbWriter(writer);
