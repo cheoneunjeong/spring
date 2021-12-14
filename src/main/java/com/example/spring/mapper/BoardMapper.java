@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.spring.domain.Board;
+import com.example.spring.domain.Reply;
 
 @Mapper
 public interface BoardMapper {
@@ -42,7 +43,17 @@ public interface BoardMapper {
 	public int getbid();
 	
 	public String getfilename(int bid);
+	
+	public void regReply(Reply reply);
 
+	public void regReply2(Reply reply);
 	
+	public void reReply(Reply reply);
 	
+	public void reReply2(Reply reply);
+	
+	public int getreplycount();
+	
+	public List<Reply> getReplys();
+
 }

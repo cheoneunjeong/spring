@@ -2,9 +2,8 @@ package com.example.spring.service;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
 import com.example.spring.domain.Board;
+import com.example.spring.domain.Reply;
 
 public interface BoardService {
 	public List<Board> selectBoardList();
@@ -34,5 +33,13 @@ public interface BoardService {
 	public int getbid();
 
 	public String getfilename(int bid);
+	
+	public void regReply(Reply reply);
+
+	public void reReply(Reply reply);
+	
+	public int getreplycount();
+	
+	public List<Reply> getReplys(); 
 
 }

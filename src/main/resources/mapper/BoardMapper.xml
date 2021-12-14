@@ -188,4 +188,61 @@
 	<select id="getfilename" parameterType="Integer" resultType="String">
 		SELECT fileName from lc_board WHERE b_id = #{bid}
 	</select>
+	
+	<insert id="regReply" parameterType="Reply">  
+        INSERT INTO	lc_reply (
+			bId,
+			content,
+			writer
+      ) VALUES (
+         #{bId},
+         #{content},
+         #{writer}
+         )
+	</insert>
+	
+	<update id="regReply2" parameterType="Reply">
+  	 	UPDATE 			lc_reply
+   		SET
+      				 groups = LAST_INSERT_ID(),
+      				 orders = '1'
+
+   		WHERE		 r_num = last_insert_id()
+	</update>
+	
+	<insert id="reReply" parameterType="Reply">  
+        INSERT INTO lc_reply (
+        		content,
+        		writer,
+        		groups,
+        		orders,
+        		depth
+      ) VALUES (
+         #{content},
+         #{writer},
+         #{groups},
+         #{orders}+1,
+         #{depth}+1
+         )
+	</insert>
+	
+	<update id="reReply2" parameterType="Reply">
+  	 	UPDATE 				lc_reply
+  	 	SET 				orders = orders+1 
+		WHERE 
+				 (not r_num =  LAST_INSERT_ID() )
+					&amp;&amp; (not orders &lt; #{orders}+1) 
+					&amp;&amp; (groups = #{groups})
+	</update>	
+	
+	<select id="getreplycount" resultType="Integer">
+		SELECT COUNT(*) count FROM lc_reply
+	</select>
+	
+	<select id="getReplys" resultType="Reply">
+		SELECT 		(select concat(repeat('-', depth), content))as con,
+						ta.*
+		FROM 			lc_reply ta
+		ORDER BY 		groups desc, orders asc
+	</select>
 </mapper>

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.spring.domain.Board;
+import com.example.spring.domain.Reply;
 import com.example.spring.mapper.BoardMapper;
 
 @Service("BoardServiceImpl")
@@ -88,6 +89,28 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public String getfilename(int bid) {
 		return boardmapper.getfilename(bid);
+	}
+	
+	@Override
+	public void regReply(Reply reply) {
+		boardmapper.regReply(reply);
+		boardmapper.regReply2(reply);
+	}
+	
+	@Override
+	public void reReply(Reply reply) {
+		boardmapper.reReply(reply);
+		boardmapper.reReply2(reply);
+	}
+	
+	@Override
+	public int getreplycount() {
+		return boardmapper.getreplycount();
+	}
+	
+	@Override
+	public List<Reply> getReplys() {
+		return boardmapper.getReplys();
 	}
 
 }

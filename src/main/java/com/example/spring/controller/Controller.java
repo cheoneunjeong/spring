@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
+import com.example.spring.domain.Reply;
 import com.example.spring.domain.User;
 import com.example.spring.service.BoardService;
 import com.example.spring.service.UserService;
@@ -114,6 +115,7 @@ public class Controller {
 		StringBuilder builder = new StringBuilder();
 		
 		List<MultipartFile> list = board.getFile();
+		
 		for(MultipartFile file : list) {
 			if(!file.isEmpty()) {
 				String filename = file.getOriginalFilename();			
@@ -130,10 +132,12 @@ public class Controller {
 				}
 			}
 		}
-		int p = builder.toString().lastIndexOf(",");
-		builder.deleteCharAt(p);
-		
-		board.setFileName(builder.toString());
+		if(builder.toString().contains(",")) {
+			int p = builder.toString().lastIndexOf(",");
+			builder.deleteCharAt(p);
+			
+			board.setFileName(builder.toString());
+		}
 	
 		String writer = user.getUsername();
 		board.setbWriter(writer);
@@ -153,16 +157,15 @@ public class Controller {
 
 		Board board = boardservice.viewDetail(bid);
 		String filenames = boardservice.getfilename(bid);
-		
-		if(filenames == null)
-			board.setFileName("");
-		
 		ArrayList<String> filename = new ArrayList<>();
 		
-		if(filenames.contains(",")) {
-			String[] files = filenames.split(",");
-			for(String fileName : files)
-				filename.add(fileName);
+		if(filenames != null) {
+			if(filenames.contains(",")) {
+				String[] files = filenames.split(",");
+				for(String fileName : files)
+					filename.add(fileName);
+			} else
+				filename = null;
 		}
 		
 		
@@ -308,6 +311,25 @@ public class Controller {
 		model.addAttribute("search", search);
 		
 		return "/s_list";
+	}
+	
+	@RequestMapping("/regReply")
+	public String regReply(Model model, Reply reply, @AuthenticationPrincipal User user) {
+		
+		reply.setWriter(user.getUsername());
+		
+		if(reply.getGroups() == 0)
+			boardservice.regReply(reply);
+		else 
+			boardservice.reReply(reply);
+		
+		int count = boardservice.getreplycount();
+		List<Reply> replys = boardservice.getReplys();
+		
+		model.addAttribute(count);
+		model.addAttribute(replys);
+
+		return "/reply";
 	}
 	
 }

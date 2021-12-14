@@ -40,9 +40,11 @@ div {
 			</tr>
   			<tr>
 				<td class="a" align="left"> 첨부파일 : 
-				<c:forEach items="${filename}" var="fileName" varStatus="status">
-				<a download href= "/images/${fileName}">${fileName}</a>
-				</c:forEach>
+				<c:if test="${filename != null}">
+					<c:forEach items="${filename}" var="fileName" varStatus="status">
+						<a download href= "/images/${fileName}">${fileName}</a>
+					</c:forEach>
+				</c:if>
 				</td>		
 			</tr> 
 			<tr>
@@ -68,7 +70,7 @@ div {
 			작성</button>
 	</div>
 	<br>
-<%-- 	<div id="commentList">
+ 	<div id="commentList">
 			<p>${count}개의 댓글</p>
 			<p>
 				<textarea rows="5" cols="50" ></textarea> 
@@ -81,15 +83,15 @@ div {
 					<td>${replys.con}</td>
 				</tr>
 				<tr>
-					<td>${replys.c_date}</td>
+					<td>${replys.datetime}</td>
 				</tr>
 				<tr>
-					<td>작성자 : ${replys.u_idx}</td>
+					<td>작성자 : ${replys.writer}</td>
 				</tr>
 				<tr> 
 					<td>
 				 		<button type="button" class="btnReply">답글작성</button>
-						<button type="button" onclick="location.href='delete-reply.do?c_num=${replys.c_num}&&b_idx=${replys.b_idx}&&u_idx=${replys.u_idx}'">삭제</button>
+						<button type="button" onclick="location.href='?r_num=${replys.r_num}&&bId=${replys.bId}&&writer=${replys.writer}'">삭제</button>
 					</td> 
 				</tr>
 				<tr style="display:none;"> 
@@ -102,23 +104,23 @@ div {
 			</table>
 		</c:forEach>
 		<hr>
-	</div> --%>
-<!-- <script>
+	</div>
+ <script>
 $(document).on('click', '.btnReply', function () {
 	$(this).parent().parent().next().show();
 });
 
 $(document).on('click', '.btnReplyReg', function () {
-	let bId = '${Post.b_idx }';
-	let content = $(this).prev().val();
+	let r_bId = '${board.bId}';
+	let r_content = $(this).prev().val();
 	let group = $(this).attr("groups");
 	let order = $(this).attr("order");
-	let depth = $(this).attr("depth");
+	let depths = $(this).attr("depth");
 	
 	$.ajax({
 		  method: "POST",
-		  url: "/lcomputerstudy/reg-reply.do",
-		  data: { bidx: bId, c_content: content, groups: group, orders: order, depths: depth}
+		  url: "/regReply",
+		  data: { bId: r_bId, content: r_content, groups: group, orders: order, depth: depths}
 		})
 	  .done(function( html ) {
 		  $('#commentList').html(html);
@@ -129,25 +131,25 @@ $(document).on('click', '.btnReplyReg', function () {
 });
 
 $(document).on('click', '.ReplyReg', function () {
-	let bId = '${Post.b_idx }';
-	let content = $(this).prev().val();
+	let r_bId = '${board.bId}';
+	let r_content = $(this).prev().val();
 	
 	$.ajax({
 		  method: "POST",
-		  url: "/lcomputerstudy/reg-reply.do",
-		  data: { bidx: bId, c_content: content}
+		  url: "/regReply",
+		  data: { bId: r_bId, content: r_content, groups: 0}
 		})
 	  .done(function( html ) {
 	    $('#commentList').html(html);
 	  })
-		.fail(function( html){
+		/* .fail(function( html){
 		location.href = "http://localhost:8080/lcomputerstudy/user-login.do";
-	})
+	}) */
 });
 
 $(document).on('click', '.cancel', function () {
 	$(this).parent().parent().hide();
 });
-</script>	 -->
+</script>	 
 </body>
 </html>
