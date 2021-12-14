@@ -22,7 +22,8 @@
 						b_hit as bHit,
 						groups,
 						orders,
-						depth
+						depth,
+						file
 		FROM 				
 						lc_board ta, 
 					 (select @rownum := (select COUNT(*)-#{reqPage}+1 from lc_board ta)) tb 
@@ -36,11 +37,13 @@
         INSERT INTO	lc_board (
 			b_title,
 			b_content,
-			b_writer
+			b_writer,
+			file
       ) VALUES (
          #{bTitle},
          #{bContent},
-         #{bWriter}
+         #{bWriter},
+         #{file}
          )
 	</insert>
 	
@@ -62,7 +65,8 @@
 						b_hit as bHit,
 						groups,
 						orders,
-						depth
+						depth,
+						file
 		FROM		lc_board
 		WHERE		b_id = #{bid}
 	</select>
@@ -101,14 +105,16 @@
         		b_writer,
         		groups,
         		orders,
-        		depth
+        		depth,
+        		file
       ) VALUES (
          #{bTitle},
          #{bContent},
          #{bWriter},
          #{groups},
          #{orders}+1,
-         #{depth}+1
+         #{depth}+1,
+         #{file}
          )
 	</insert>
 	
@@ -133,7 +139,8 @@
 						b_hit as bHit,
 						groups,
 						orders,
-						depth
+						depth,
+						file
 		FROM       
 						(SELECT * FROM lc_board WHERE b_id LIKE #{s} ) ta, 
         				(SELECT @ROWNUM := (SELECT COUNT(*)-#{page}+1 
@@ -155,7 +162,8 @@
 						b_hit as bHit,
 						groups,
 						orders,
-						depth
+						depth,
+						file
 		FROM       
 						(SELECT * FROM lc_board WHERE b_title LIKE #{s} ) ta, 
         				(SELECT @ROWNUM := (SELECT COUNT(*)-#{page}+1 

@@ -7,12 +7,15 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.http.HttpRequest;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -109,12 +112,13 @@ public class Controller {
 	public String reg() {
 		return "/regdo";
 	}
-	
+
 	@RequestMapping(value="/regdo", method=RequestMethod.POST)
 	public String regdo(Model model, Board board, String reqPage_, 
-		@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile multipartFile)
+		@AuthenticationPrincipal User user, @RequestParam("file1") MultipartFile multipartFile) throws IOException
 	{
-		String path = "/src/main/reasources/static/images/";
+
+		String path = "/Users/l4-morning/Documents/work10/spring/src/main/resources/static/images/";
 		String thumbPath = path+"thumb/";
 		String filename = multipartFile.getOriginalFilename();
 		String ext = filename.substring(filename.lastIndexOf(".")+1);
@@ -143,7 +147,7 @@ public class Controller {
 		} 
 		
 		String writer = user.getUsername();
-
+		board.setFile(filename);
 		board.setbWriter(writer);
 		boardservice.reg(board);
 		

@@ -38,16 +38,19 @@ div {
 			<tr>
 				<td class="a" align="right">${board.bDateTime}</td>
 			</tr>
-<%--  			<tr>
+  			<tr>
 				<td class="a" align="left"> 첨부파일 : 
-				<c:forEach items="${fileName}" var="fileName" varStatus="status">
-				<a download href= "./upload/${fileName}">${fileName}</a>
+				<c:forEach items="${board.file }" var="fileName" varStatus="status">
+				<a download href= "/images/${fileName}">${fileName}</a>
 				</c:forEach>
 				</td>		
-			</tr> --%>
+			</tr> 
 			<tr>
 				<td height="300" class="a" align="center">
-					<img src="/images/img.jpg" style="width: 500px; height: 500px;"/>
+					<c:if test="${board.file != null}">
+						<img src="/images/thumb/${board.file}" style="width: 500px; height: 500px;"/>
+					</c:if>
+					${board.bContent}
 				</td>
 			</tr>
 		</table>

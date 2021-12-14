@@ -20,7 +20,7 @@
 <form action="/regdo" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="${csrf.parameterName}" value="${_csrf.token}"/>
 	<p> 제목 <input type="text" name="bTitle"></p>
-	<p><input type="file" name="file"/></p>
+	<p><input type="file" name="file1"/></p>
 	<p>
 	내용
 	<br>

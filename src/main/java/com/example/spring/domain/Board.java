@@ -12,6 +12,7 @@ public class Board {
 	private int depth;
 	private int rownum;
 	private String con;
+	private String file;
 	
 	public int getbId() {
 		return bId;
@@ -78,6 +79,12 @@ public class Board {
 	}
 	public void setCon(String con) {
 		this.con = con;
+	}
+	public String getFile() {
+		return file;
+	}
+	public void setFile(String file) {
+		this.file = file;
 	}
 	
 }
