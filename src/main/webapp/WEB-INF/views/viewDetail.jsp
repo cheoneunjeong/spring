@@ -40,15 +40,17 @@ div {
 			</tr>
   			<tr>
 				<td class="a" align="left"> 첨부파일 : 
-				<c:forEach items="${board.file }" var="fileName" varStatus="status">
+				<c:forEach items="${filename}" var="fileName" varStatus="status">
 				<a download href= "/images/${fileName}">${fileName}</a>
 				</c:forEach>
 				</td>		
 			</tr> 
 			<tr>
 				<td height="300" class="a" align="center">
-					<c:if test="${board.file != null}">
-						<img src="/images/thumb/${board.file}" style="width: 500px; height: 500px;"/>
+					<c:if test="${board.fileName != null}">
+						<c:forEach items="${filename}" var="fileName" varStatus="status">
+							<img src="/images/${fileName}" style="width: 500px; height: 500px;"/>
+						</c:forEach>
 					</c:if>
 					${board.bContent}
 				</td>

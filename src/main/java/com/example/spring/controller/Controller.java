@@ -1,21 +1,14 @@
 package com.example.spring.controller;
 
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.http.HttpRequest;
 import java.util.List;
-
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,9 +16,7 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
@@ -115,40 +106,38 @@ public class Controller {
 
 	@RequestMapping(value="/regdo", method=RequestMethod.POST)
 	public String regdo(Model model, Board board, String reqPage_, 
-		@AuthenticationPrincipal User user, @RequestParam("file1") MultipartFile multipartFile) throws IOException
+		@AuthenticationPrincipal User user) throws IOException
 	{
-
-		String path = "/Users/l4-morning/Documents/work10/spring/src/main/resources/static/images/";
-		String thumbPath = path+"thumb/";
-		String filename = multipartFile.getOriginalFilename();
-		String ext = filename.substring(filename.lastIndexOf(".")+1);
+//		String path = "/Users/l4-morning/Documents/work10/spring/src/main/resources/static/images/";
+		String path = "/Users/jeong/eclipse-workspace/spring/src/main/resources/static/images/";
+//		String thumbPath = path+"thumb/";
+		StringBuilder builder = new StringBuilder();
 		
-		File file = new File(path+filename);
-		File thumbFile = new File(thumbPath+filename);
-		try {
-			InputStream input = multipartFile.getInputStream();
-			FileUtils.copyInputStreamToFile(input, file);
-			
-			BufferedImage imageBuf = ImageIO.read(file);
-			int fixWidth = 500;
-			double ratio = imageBuf.getWidth() / (double)fixWidth;
-			int thumbWidth = fixWidth;
-			int thumbHeight = (int)(imageBuf.getHeight() / ratio);
-			BufferedImage thumbImageBf = new BufferedImage(thumbWidth, thumbHeight, BufferedImage.TYPE_3BYTE_BGR);
-			Graphics2D g = thumbImageBf.createGraphics(); 
-			Image thumbImage = imageBuf.getScaledInstance(thumbWidth, thumbHeight, Image.SCALE_SMOOTH);
-			g.drawImage(thumbImage, 0, 0, thumbWidth, thumbHeight, null);
-			g.dispose();
-			ImageIO.write(thumbImageBf, ext, thumbFile);
+		List<MultipartFile> list = board.getFile();
+		for(MultipartFile file : list) {
+			if(!file.isEmpty()) {
+				String filename = file.getOriginalFilename();			
+				builder.append(filename);
+				builder.append(",");
+				
+				File f = new File(path+filename);
+				
+				try {
+					InputStream input = file.getInputStream();
+					FileUtils.copyInputStreamToFile(input, f);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		int p = builder.toString().lastIndexOf(",");
+		builder.deleteCharAt(p);
 		
-		} catch(IOException e) {
-			FileUtils.deleteQuietly(file);
-			e.printStackTrace();
-		} 
-		
+		board.setFileName(builder.toString());
+	
 		String writer = user.getUsername();
-		board.setFile(filename);
 		board.setbWriter(writer);
+		
 		boardservice.reg(board);
 		
 		int bid = boardservice.getbid();
@@ -163,8 +152,22 @@ public class Controller {
 	public String viewDetail(Model model, int bid) {
 
 		Board board = boardservice.viewDetail(bid);
+		String filenames = boardservice.getfilename(bid);
+		
+		if(filenames == null)
+			board.setFileName("");
+		
+		ArrayList<String> filename = new ArrayList<>();
+		
+		if(filenames.contains(",")) {
+			String[] files = filenames.split(",");
+			for(String fileName : files)
+				filename.add(fileName);
+		}
+		
 		
 		model.addAttribute("board", board);
+		model.addAttribute("filename", filename);
 		
 		return "/viewDetail";
 	}

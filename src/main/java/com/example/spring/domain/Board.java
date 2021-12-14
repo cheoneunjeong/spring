@@ -1,5 +1,9 @@
 package com.example.spring.domain;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class Board {
 	private int bId;
 	private String bTitle;
@@ -12,7 +16,8 @@ public class Board {
 	private int depth;
 	private int rownum;
 	private String con;
-	private String file;
+	private List<MultipartFile> file;
+	private String fileName;
 	
 	public int getbId() {
 		return bId;
@@ -80,11 +85,17 @@ public class Board {
 	public void setCon(String con) {
 		this.con = con;
 	}
-	public String getFile() {
+	public List<MultipartFile> getFile() {
 		return file;
 	}
-	public void setFile(String file) {
+	public void setFile(List<MultipartFile> file) {
 		this.file = file;
 	}
-	
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 }
