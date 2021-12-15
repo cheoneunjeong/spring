@@ -142,9 +142,9 @@
 						depth,
 						fileName
 		FROM       
-						(SELECT * FROM lc_board WHERE b_id LIKE #{s} ) ta, 
+						(SELECT * FROM lc_board WHERE b_writer LIKE #{s} ) ta, 
         				(SELECT @ROWNUM := (SELECT COUNT(*)-#{page}+1 
-        				FROM (SELECT * FROM lc_board WHERE b_id LIKE #{s} ) ta)) tb
+        				FROM (SELECT * FROM lc_board WHERE b_writer LIKE #{s} ) ta)) tb
 		order by 
 						groups desc, orders asc
 		LIMIT #{page},3)a
@@ -174,7 +174,7 @@
 	</select>
 	
 	<select id="SearchPostCount_bid"  parameterType="String" resultType="Integer">
-		SELECT COUNT(*) count FROM lc_board WHERE b_id LIKE #{s}
+		SELECT COUNT(*) count FROM lc_board WHERE b_writer LIKE #{s}
 	</select>
 	
 	<select id="SearchPostCount_btitle"  parameterType="String" resultType="Integer">
@@ -212,12 +212,14 @@
 	
 	<insert id="reReply" parameterType="Reply">  
         INSERT INTO lc_reply (
+        		bId,
         		content,
         		writer,
         		groups,
         		orders,
         		depth
       ) VALUES (
+      	 #{bId},
          #{content},
          #{writer},
          #{groups},
@@ -239,10 +241,17 @@
 		SELECT COUNT(*) count FROM lc_reply
 	</select>
 	
-	<select id="getReplys" resultType="Reply">
+	<select id="getReplys" parameterType="Integer" resultType="Reply">
 		SELECT 		(select concat(repeat('-', depth), content))as con,
 						ta.*
 		FROM 			lc_reply ta
+		WHERE			bId = #{bId}
 		ORDER BY 		groups desc, orders asc
 	</select>
+	
+	<delete id="deleteReply" parameterType="Integer">
+ 		DELETE
+  		FROM			lc_reply
+   		WHERE			r_num = #{r_num}
+	</delete>
 </mapper>

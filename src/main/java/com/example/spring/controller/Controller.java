@@ -168,9 +168,13 @@ public class Controller {
 				filename = null;
 		}
 		
+		int count = boardservice.getreplycount();
+		List<Reply> replys = boardservice.getReplys(bid);
 		
 		model.addAttribute("board", board);
 		model.addAttribute("filename", filename);
+		model.addAttribute("count", count);
+		model.addAttribute("replys", replys);
 		
 		return "/viewDetail";
 	}
@@ -294,6 +298,8 @@ public class Controller {
 		
 		String s = "%"+search+"%";
 		
+		System.out.println(f);
+		
 		if(f.equals("b_id")) {
 			list = boardservice.search_bid(s, page);
 			postCount = boardservice.SearchPostCount_bid(s);
@@ -317,6 +323,7 @@ public class Controller {
 	public String regReply(Model model, Reply reply, @AuthenticationPrincipal User user) {
 		
 		reply.setWriter(user.getUsername());
+		int bId = reply.getbId();
 		
 		if(reply.getGroups() == 0)
 			boardservice.regReply(reply);
@@ -324,12 +331,47 @@ public class Controller {
 			boardservice.reReply(reply);
 		
 		int count = boardservice.getreplycount();
-		List<Reply> replys = boardservice.getReplys();
+		List<Reply> replys = boardservice.getReplys(bId);
 		
-		model.addAttribute(count);
-		model.addAttribute(replys);
+		model.addAttribute("count", count);
+		model.addAttribute("replys", replys);
 
 		return "/reply";
+	}
+	
+	@RequestMapping("/deleteReply")
+	public String viewDetail(Model model, int r_num, int bId, String writer, 
+								@AuthenticationPrincipal User user) {
+
+		if(user.getUsername().equals(writer)) {
+			
+			boardservice.deleteReply(r_num);
+			
+			Board board = boardservice.viewDetail(bId);
+			String filenames = boardservice.getfilename(bId);
+			ArrayList<String> filename = new ArrayList<>();
+			
+			if(filenames != null) {
+				if(filenames.contains(",")) {
+					String[] files = filenames.split(",");
+					for(String fileName : files)
+						filename.add(fileName);
+				} else
+					filename = null;
+			}
+			
+			int count = boardservice.getreplycount();
+			List<Reply> replys = boardservice.getReplys(bId);
+			
+			model.addAttribute("board", board);
+			model.addAttribute("filename", filename);
+			model.addAttribute("count", count);
+			model.addAttribute("replys", replys);
+			
+			return "/viewDetail";
+		}
+		else return "/denied";
+		
 	}
 	
 }

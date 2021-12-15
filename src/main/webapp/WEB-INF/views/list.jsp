@@ -54,11 +54,11 @@ li {
 	</div>
 	<div>
 		<form action="/search" method="post" >
-			<select name="f">
-				<option ${(f=="b_title")?"selected" : "" } value="b_title">제목</option>
-				<option ${(f=="b_id")?"selected" : "" } value="b_id">작성자</option>
-			</select> 
-			<input type="text" name="search">
+			<select id="f"name="f">
+				<option <c:if test ="${f eq b_title}">selected="selected"</c:if> value="b_title">제목</option>
+				<option <c:if test ="${f eq b_id}">selected="selected"</c:if> value="b_id">작성자</option>
+			</select>  
+			<input type="text" name="search" value="${search}">
 			<input type ="submit" value="검색">
 		</form>
 	</div>

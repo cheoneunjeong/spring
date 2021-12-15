@@ -109,8 +109,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<Reply> getReplys() {
-		return boardmapper.getReplys();
+	public List<Reply> getReplys(int bId) {
+		return boardmapper.getReplys(bId);
+	}
+
+	@Override
+	public void deleteReply(int r_num) {
+		boardmapper.deleteReply(r_num);
+		
 	}
 
 }

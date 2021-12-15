@@ -91,7 +91,7 @@ div {
 				<tr> 
 					<td>
 				 		<button type="button" class="btnReply">답글작성</button>
-						<button type="button" onclick="location.href='?r_num=${replys.r_num}&&bId=${replys.bId}&&writer=${replys.writer}'">삭제</button>
+						<button type="button" onclick="location.href='/deleteReply?r_num=${replys.r_num}&&bId=${replys.bId}&&writer=${replys.writer}'">삭제</button>
 					</td> 
 				</tr>
 				<tr style="display:none;"> 
@@ -125,9 +125,9 @@ $(document).on('click', '.btnReplyReg', function () {
 	  .done(function( html ) {
 		  $('#commentList').html(html);
 	  })
-		.fail(function( html){
+		/* .fail(function( html){
 			location.href = "http://localhost:8080/lcomputerstudy/user-login.do";
-		})
+		}) */
 });
 
 $(document).on('click', '.ReplyReg', function () {

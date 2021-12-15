@@ -40,6 +40,8 @@ public interface BoardService {
 	
 	public int getreplycount();
 	
-	public List<Reply> getReplys(); 
+	public List<Reply> getReplys(int bId);
+
+	public void deleteReply(int r_num); 
 
 }
