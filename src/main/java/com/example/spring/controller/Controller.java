@@ -4,11 +4,20 @@ package com.example.spring.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +25,7 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.support.ServletContextResourceLoader;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.spring.domain.Board;
@@ -32,6 +42,7 @@ public class Controller {
 	@Autowired UserService userservice;
 	@Autowired
     private PasswordEncoder passwordEncoder;
+	@Autowired ServletContext context;
 
 	int page = 0;
 	int reqPage = 0;
@@ -100,6 +111,7 @@ public class Controller {
 		return "/list";
 	}
 
+
 	@RequestMapping("/reg")
 	public String reg() {
 		return "/regdo";
@@ -109,8 +121,12 @@ public class Controller {
 	public String regdo(Model model, Board board, String reqPage_, 
 		@AuthenticationPrincipal User user) throws IOException
 	{
+		
+//		String path = context.getRealPath("") + "../resources/static/images/";
+		String path = context.getRealPath("") + "..\\resources\\static\\images\\";
+		
 //		String path = "/Users/l4-morning/Documents/work10/spring/src/main/resources/static/images/";
-		String path = "/Users/jeong/eclipse-workspace/spring/src/main/resources/static/images/";
+//		String path = "/Users/jeong/eclipse-workspace/spring/src/main/resources/static/images/";
 //		String thumbPath = path+"thumb/";
 		StringBuilder builder = new StringBuilder();
 		
@@ -146,8 +162,26 @@ public class Controller {
 		
 		int bid = boardservice.getbid();
 		board = boardservice.viewDetail(bid);
+		String filenames = boardservice.getfilename(bid);
+		System.out.println(filenames);
+		ArrayList<String> filename = new ArrayList<>();
+		
+		if(filenames != null) {
+			if(filenames.contains(",")) {
+				String[] files = filenames.split(",");
+				for(String fileName : files)
+					filename.add(fileName);
+			} else filename.add(filenames);
+		} else
+			filename = null;
+		
+		int count = boardservice.getreplycount(bid);
+		List<Reply> replys = boardservice.getReplys(bid);
 		
 		model.addAttribute("board", board);
+		model.addAttribute("filename", filename);
+		model.addAttribute("count", count);
+		model.addAttribute("replys", replys);
 	
 		return "/viewDetail";
 	}
@@ -157,6 +191,7 @@ public class Controller {
 
 		Board board = boardservice.viewDetail(bid);
 		String filenames = boardservice.getfilename(bid);
+		System.out.println(filenames);
 		ArrayList<String> filename = new ArrayList<>();
 		
 		if(filenames != null) {
@@ -164,11 +199,11 @@ public class Controller {
 				String[] files = filenames.split(",");
 				for(String fileName : files)
 					filename.add(fileName);
-			} else
-				filename = null;
-		}
+			} else filename.add(filenames);
+		} else
+			filename = null;
 		
-		int count = boardservice.getreplycount();
+		int count = boardservice.getreplycount(bid);
 		List<Reply> replys = boardservice.getReplys(bid);
 		
 		model.addAttribute("board", board);
@@ -330,7 +365,7 @@ public class Controller {
 		else 
 			boardservice.reReply(reply);
 		
-		int count = boardservice.getreplycount();
+		int count = boardservice.getreplycount(bId);
 		List<Reply> replys = boardservice.getReplys(bId);
 		
 		model.addAttribute("count", count);
@@ -360,7 +395,7 @@ public class Controller {
 					filename = null;
 			}
 			
-			int count = boardservice.getreplycount();
+			int count = boardservice.getreplycount(bId);
 			List<Reply> replys = boardservice.getReplys(bId);
 			
 			model.addAttribute("board", board);

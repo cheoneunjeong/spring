@@ -104,8 +104,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public int getreplycount() {
-		return boardmapper.getreplycount();
+	public int getreplycount(int bid) {
+		return boardmapper.getreplycount(bid);
 	}
 	
 	@Override

@@ -237,8 +237,8 @@
 					&amp;&amp; (groups = #{groups})
 	</update>	
 	
-	<select id="getreplycount" resultType="Integer">
-		SELECT COUNT(*) count FROM lc_reply
+	<select id="getreplycount" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(*) count FROM lc_reply WHERE bId = #{bid}
 	</select>
 	
 	<select id="getReplys" parameterType="Integer" resultType="Reply">

@@ -52,7 +52,7 @@ public interface BoardMapper {
 	
 	public void reReply2(Reply reply);
 	
-	public int getreplycount();
+	public int getreplycount(int bid);
 	
 	public List<Reply> getReplys(int bId);
 

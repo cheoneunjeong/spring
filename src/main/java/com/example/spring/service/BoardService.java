@@ -38,7 +38,7 @@ public interface BoardService {
 
 	public void reReply(Reply reply);
 	
-	public int getreplycount();
+	public int getreplycount(int bid);
 	
 	public List<Reply> getReplys(int bId);
 
