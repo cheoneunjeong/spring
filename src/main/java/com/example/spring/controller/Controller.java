@@ -1,6 +1,5 @@
 package com.example.spring.controller;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,14 +11,20 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.ui.Model;
@@ -37,109 +42,165 @@ import com.example.spring.service.UserService;
 
 @org.springframework.stereotype.Controller
 public class Controller {
-	
-	@Autowired BoardService boardservice;
-	@Autowired UserService userservice;
+
 	@Autowired
-    private PasswordEncoder passwordEncoder;
-	@Autowired ServletContext context;
+	BoardService boardservice;
+	@Autowired
+	UserService userservice;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	ServletContext context;
 
 	int page = 0;
 	int reqPage = 0;
-	
-	
+
 	@RequestMapping("/")
 	public String home() {
 		return "/index";
 	}
-	
+
 	@RequestMapping("/beforeSignUp")
 	public String beforeSignUp() {
 		return "/signup";
 	}
-	
+
 	@RequestMapping("/signup")
 	public String signup(User user) {
-		
+
 		String password = passwordEncoder.encode(user.getPassword());
-		
+
 		user.setPassword(password);
 		user.setAccountNonExpired(true);
 		user.setEnabled(true);
 		user.setAccountNonLocked(true);
 		user.setCredentialsNonExpired(true);
 		user.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
-		
+
+
 		userservice.createUser(user);
-		
+
 		userservice.createAuthorities(user);
-		
+
 		return "/login";
 	}
-	
-	@RequestMapping(value="/login")
+
+	@RequestMapping(value = "/login")
 	public String beforeLogin(Model model) {
 		return "/login";
 	}
-	
-	@RequestMapping(value="/denied")
+
+	@RequestMapping(value = "/denied")
 	public String denied(Model model) {
 		return "/denied";
 	}
-	
-	@RequestMapping("/boardlist")
-	public String boardlist(Model model, String reqPage_) {
-		
-		if(reqPage_ == null) {
-			reqPage_ = "1";
-			reqPage = Integer.parseInt(reqPage_);
-			}
-		else {
-			reqPage = Integer.parseInt(reqPage_);
-			page = (reqPage-1)*3;
-		}
 
-		List<Board> list = boardservice.selectBoardList_p(page);
+	@RequestMapping("/boardlist")
+	public String boardlist(Model model, String reqPage_, String f, String search
+							, String[] mids , String ids ) {
 		
-		int postCount = boardservice.getPostCount();
-		Pagination pagination = new Pagination();
-		pagination.init(postCount, reqPage);
+		String[] allId = ids.trim().split(" ");
 		
-		model.addAttribute("list", list);
-		model.addAttribute("pagination", pagination);
-	
+//		if(mids.length == 0) 
+//			userservice.setZeromaneger(allId);
+//		else {
+//			List<String> Mids= Arrays.asList(mids);
+//			List<String> cids_ = new ArrayList<>(Arrays.asList(allId));
+//			cids_.removeAll(Mids);
+//			
+//			
+//		}
+//		
+		
+		
+		
+		if (f == null && search == null) {
+			if (reqPage_ == null) {
+				reqPage_ = "1";
+				reqPage = Integer.parseInt(reqPage_);
+			} else {
+				reqPage = Integer.parseInt(reqPage_);
+				page = (reqPage - 1) * 3;
+			}
+
+			List<Board> list = boardservice.selectBoardList_p(page);
+
+			int postCount = boardservice.getPostCount();
+			Pagination pagination = new Pagination();
+			pagination.init(postCount, reqPage);
+
+			model.addAttribute("list", list);
+			model.addAttribute("pagination", pagination);
+		} else {
+
+			List<Board> list = null;
+			int postCount = 0;
+
+			if (reqPage_ == null) {
+				reqPage_ = "1";
+				reqPage = Integer.parseInt(reqPage_);
+			} else {
+				reqPage = Integer.parseInt(reqPage_);
+				page = (reqPage - 1) * 3;
+			}
+
+			String s = "%" + search + "%";
+
+			if (f.equals("b_id")) {
+				list = boardservice.search_bid(s, page);
+				postCount = boardservice.SearchPostCount_bid(s);
+			} else {
+				list = boardservice.search_btitle(s, page);
+				postCount = boardservice.SearchPostCount_btitle(s);
+			}
+
+			Pagination pagination = new Pagination();
+			pagination.init(postCount, reqPage);
+
+			model.addAttribute("list", list);
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("f", f);
+			model.addAttribute("search", search);
+		}
 		return "/list";
 	}
 
-
 	@RequestMapping("/reg")
 	public String reg() {
+		
+//		get absolute path :
+//		ClassPathResource cp = new ClassPathResource("static" + File.separator + "images" + File.separator + "hh.jpg");
+//		try {
+//			System.out.println(cp.getFile().getAbsolutePath());
+//			System.out.println(cp.getFilename());
+//			System.out.println(cp.getFile().length());
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
 		return "/regdo";
 	}
 
-	@RequestMapping(value="/regdo", method=RequestMethod.POST)
-	public String regdo(Model model, Board board, String reqPage_, 
-		@AuthenticationPrincipal User user) throws IOException
-	{
-		
-//		String path = context.getRealPath("") + "../resources/static/images/";
+	@RequestMapping(value = "/regdo", method = RequestMethod.POST)
+	public String regdo(Model model, Board board, String reqPage_, @AuthenticationPrincipal User user)
+			throws IOException {
+
 		String path = context.getRealPath("") + "..\\resources\\static\\images\\";
-		
-//		String path = "/Users/l4-morning/Documents/work10/spring/src/main/resources/static/images/";
-//		String path = "/Users/jeong/eclipse-workspace/spring/src/main/resources/static/images/";
+
 //		String thumbPath = path+"thumb/";
 		StringBuilder builder = new StringBuilder();
-		
+
 		List<MultipartFile> list = board.getFile();
-		
-		for(MultipartFile file : list) {
-			if(!file.isEmpty()) {
-				String filename = file.getOriginalFilename();			
+
+		for (MultipartFile file : list) {
+			if (!file.isEmpty()) {
+				String filename = file.getOriginalFilename();
 				builder.append(filename);
 				builder.append(",");
-				
-				File f = new File(path+filename);
-				
+
+				File f = new File(path + filename);
+
 				try {
 					InputStream input = file.getInputStream();
 					FileUtils.copyInputStreamToFile(input, f);
@@ -148,44 +209,45 @@ public class Controller {
 				}
 			}
 		}
-		if(builder.toString().contains(",")) {
+		if (builder.toString().contains(",")) {
 			int p = builder.toString().lastIndexOf(",");
 			builder.deleteCharAt(p);
-			
+
 			board.setFileName(builder.toString());
 		}
-	
+
 		String writer = user.getUsername();
 		board.setbWriter(writer);
-		
+
 		boardservice.reg(board);
-		
+
 		int bid = boardservice.getbid();
 		board = boardservice.viewDetail(bid);
 		String filenames = boardservice.getfilename(bid);
 		System.out.println(filenames);
 		ArrayList<String> filename = new ArrayList<>();
-		
-		if(filenames != null) {
-			if(filenames.contains(",")) {
+
+		if (filenames != null) {
+			if (filenames.contains(",")) {
 				String[] files = filenames.split(",");
-				for(String fileName : files)
+				for (String fileName : files)
 					filename.add(fileName);
-			} else filename.add(filenames);
+			} else
+				filename.add(filenames);
 		} else
 			filename = null;
-		
+
 		int count = boardservice.getreplycount(bid);
 		List<Reply> replys = boardservice.getReplys(bid);
-		
+
 		model.addAttribute("board", board);
 		model.addAttribute("filename", filename);
 		model.addAttribute("count", count);
 		model.addAttribute("replys", replys);
-	
+
 		return "/viewDetail";
 	}
-	
+
 	@RequestMapping("/viewdetail")
 	public String viewDetail(Model model, int bid) {
 
@@ -193,89 +255,90 @@ public class Controller {
 		String filenames = boardservice.getfilename(bid);
 		System.out.println(filenames);
 		ArrayList<String> filename = new ArrayList<>();
-		
-		if(filenames != null) {
-			if(filenames.contains(",")) {
+
+		if (filenames != null) {
+			if (filenames.contains(",")) {
 				String[] files = filenames.split(",");
-				for(String fileName : files)
+				for (String fileName : files)
 					filename.add(fileName);
-			} else filename.add(filenames);
+			} else
+				filename.add(filenames);
 		} else
 			filename = null;
-		
+
 		int count = boardservice.getreplycount(bid);
 		List<Reply> replys = boardservice.getReplys(bid);
-		
+
 		model.addAttribute("board", board);
 		model.addAttribute("filename", filename);
 		model.addAttribute("count", count);
 		model.addAttribute("replys", replys);
-		
+
 		return "/viewDetail";
 	}
-	
+
 	@RequestMapping("/deletePost")
 	public String deletePost(Model model, int[] delId, SecurityContextHolderAwareRequestWrapper request) {
 
 		if (request.isUserInRole("ROLE_ADMIN")) {
 
-			for(int delid : delId) {
+			for (int delid : delId) {
 				boardservice.deletePost(delid);
 			}
-			
+
 			List<Board> list = boardservice.selectBoardList();
 			model.addAttribute("list", list);
-			
+
 			return "/index";
-		} 
-		
-		else return "/denied";
-		
+		}
+
+		else
+			return "/denied";
+
 	}
-	
+
 	@RequestMapping("/viewDelete")
 	public String deleteView(Model model, int bid, String bwriter, @AuthenticationPrincipal User user,
-								SecurityContextHolderAwareRequestWrapper request)
-	{
+			SecurityContextHolderAwareRequestWrapper request) {
 		if (request.isUserInRole("ROLE_ADMIN") || user.getUsername().equals(bwriter)) {
 
 			boardservice.deletePost(bid);
-			
+
 			List<Board> list = boardservice.selectBoardList();
 			model.addAttribute("list", list);
-			
+
 			return "/index";
-		} 
-		
-		else return "/denied";
+		}
+
+		else
+			return "/denied";
 	}
-	
+
 	@RequestMapping("/fixPost")
 	public String fixPost(Model model, int bid, String bwriter, @AuthenticationPrincipal User user) {
-		
-		if(user.getUsername().equals(bwriter)) {
-		
-		model.addAttribute("bid", bid);
-		model.addAttribute("bwriter", bwriter);
-		
-		return "/fixpost";
-		}
-		else {
+
+		if (user.getUsername().equals(bwriter)) {
+
+			model.addAttribute("bid", bid);
+			model.addAttribute("bwriter", bwriter);
+
+			return "/fixpost";
+		} else {
 			return "/denied";
 		}
 	}
-	
+
 	@RequestMapping("/fixdo")
 	public String fixdo(Model model, Board board) {
 
 		boardservice.fixdo(board);
-		
+
 		List<Board> list = boardservice.selectBoardList();
 		model.addAttribute("list", list);
-		
+
 		return "/index";
 	}
-	
+
 	@RequestMapping("/regComment")
 	public String regComment(Model model, int bid, int groups, int orders, int depth) {
 
@@ -283,130 +346,122 @@ public class Controller {
 		model.addAttribute("groups", groups);
 		model.addAttribute("orders", orders);
 		model.addAttribute("depth", depth);
-		
+
 		return "/regComment";
 	}
-	
+
 	@RequestMapping("/regCommentdo")
-	public String regComment(Model model, Board board, String reqPage_,
-								@AuthenticationPrincipal User user) 
-	{
+	public String regComment(Model model, Board board, String reqPage_, @AuthenticationPrincipal User user) {
 
 		board.setbWriter(user.getUsername());
 		boardservice.regComment(board);
-		
-		if(reqPage_ == null) {
+
+		if (reqPage_ == null) {
 			reqPage_ = "1";
 			reqPage = Integer.parseInt(reqPage_);
-			}
-		else {
+		} else {
 			reqPage = Integer.parseInt(reqPage_);
-			page = (reqPage-1)*3;
+			page = (reqPage - 1) * 3;
 		}
 
 		List<Board> list = boardservice.selectBoardList_p(page);
-		
+
 		int postCount = boardservice.getPostCount();
 		Pagination pagination = new Pagination();
 		pagination.init(postCount, reqPage);
-		
+
 		model.addAttribute("list", list);
 		model.addAttribute("pagination", pagination);
-	
+
 		return "/list";
 	}
-	
-	@RequestMapping("/search")
-	public String search(Model model, String f, String search, String reqPage_) {
 
-		List<Board> list = null;
-		int postCount = 0;
-		
-		if(reqPage_ == null) {
-			reqPage_ = "1";
-			reqPage = Integer.parseInt(reqPage_);
-			}
-		else {
-			reqPage = Integer.parseInt(reqPage_);
-			page = (reqPage-1)*3;
-		}
-		
-		String s = "%"+search+"%";
-		
-		System.out.println(f);
-		
-		if(f.equals("b_id")) {
-			list = boardservice.search_bid(s, page);
-			postCount = boardservice.SearchPostCount_bid(s);
-		} else {
-			list = boardservice.search_btitle(s, page);
-			postCount = boardservice.SearchPostCount_btitle(s);
-		}
-
-		Pagination pagination = new Pagination();
-		pagination.init(postCount, reqPage);
-		
-		model.addAttribute("list", list);
-		model.addAttribute("pagination", pagination);
-		model.addAttribute("f", f);
-		model.addAttribute("search", search);
-		
-		return "/s_list";
-	}
-	
 	@RequestMapping("/regReply")
 	public String regReply(Model model, Reply reply, @AuthenticationPrincipal User user) {
-		
+
 		reply.setWriter(user.getUsername());
 		int bId = reply.getbId();
-		
-		if(reply.getGroups() == 0)
+
+		if (reply.getGroups() == 0)
 			boardservice.regReply(reply);
-		else 
+		else
 			boardservice.reReply(reply);
-		
+
 		int count = boardservice.getreplycount(bId);
 		List<Reply> replys = boardservice.getReplys(bId);
-		
+
 		model.addAttribute("count", count);
 		model.addAttribute("replys", replys);
 
 		return "/reply";
 	}
-	
-	@RequestMapping("/deleteReply")
-	public String viewDetail(Model model, int r_num, int bId, String writer, 
-								@AuthenticationPrincipal User user) {
 
-		if(user.getUsername().equals(writer)) {
-			
+	@RequestMapping("/deleteReply")
+	public String viewDetail(Model model, int r_num, int bId, String writer, @AuthenticationPrincipal User user) {
+
+		if (user.getUsername().equals(writer)) {
+
 			boardservice.deleteReply(r_num);
-			
+
 			Board board = boardservice.viewDetail(bId);
 			String filenames = boardservice.getfilename(bId);
 			ArrayList<String> filename = new ArrayList<>();
-			
-			if(filenames != null) {
-				if(filenames.contains(",")) {
+
+			if (filenames != null) {
+				if (filenames.contains(",")) {
 					String[] files = filenames.split(",");
-					for(String fileName : files)
+					for (String fileName : files)
 						filename.add(fileName);
 				} else
 					filename = null;
 			}
-			
+
 			int count = boardservice.getreplycount(bId);
 			List<Reply> replys = boardservice.getReplys(bId);
-			
+
 			model.addAttribute("board", board);
 			model.addAttribute("filename", filename);
 			model.addAttribute("count", count);
 			model.addAttribute("replys", replys);
-			
+
 			return "/viewDetail";
-		}
-		else return "/denied";
-		
+		} else
+			return "/denied";
 	}
-	
+
+	@RequestMapping("/userlist")
+	public String userlist(Model model, String page_, 
+			@AuthenticationPrincipal User user) {
+		int p = 0;
+		if(page_ == null) {
+			page_ = "1";
+			page = Integer.parseInt(page_);
+			}
+		else {
+			page = Integer.parseInt(page_);
+			p = (page-1)*3;
+		}
+		List<User> list = userservice.getuserlist(p);
+		
+		int userCount = userservice.getuserCount();
+		Pagination pagination = new Pagination();
+		pagination.init(userCount, page);
+
+		for(User u : list) {
+			String id = u.getUsername();
+			UserDetails details = userservice.loadUserByUsername(id);
+			if (details != null && details.getAuthorities().stream()
+			      .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+				u.setU_auth(true);
+			}
+		}
+		
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("userCount", userCount);
+
+		return "/userlist";
+
+	}
 }

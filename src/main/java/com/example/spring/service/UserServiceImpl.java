@@ -49,4 +49,14 @@ public class UserServiceImpl implements UserService {
 	    
 		return authorities;
 	}
+
+	@Override
+	public List<User> getuserlist(int page) {
+		return userMapper.getuserlist(page);
+	}
+
+	@Override
+	public int getuserCount() {
+		return userMapper.getuserCount();
+	}
 }

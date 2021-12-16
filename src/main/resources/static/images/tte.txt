@@ -1,0 +1,18 @@
+	<resultMap type="Comment" id="getComment">
+		<result column="c_idx" property="c_idx"/>
+		<result column="c_content" property="c_content"/>
+		<result column="c_group" property="c_group"/>
+		<result column="c_order" property="c_order"/>
+		<result column="b_no" property="b_no"/>
+		<result column="c_group" property="c_group"/>
+	</resultMap>
+	
+	<resultMap type="Board" id="selectBoardDetail">
+		<result column="b_no" property="bId"/>
+		<result column="b_title" property="bTitle"/>
+		<result column="b_content" property="bContent"/>
+		<result column="b_watch" property="bWatch"/>
+		<result column="b_dateTime" property="bDatetime"/>
+		<collection property="commentList" resultMap="Comment"/>
+	</resultMap>
+	

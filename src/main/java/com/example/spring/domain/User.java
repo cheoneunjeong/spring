@@ -13,6 +13,8 @@ public class User implements UserDetails {
 	private String password;
 	private String uName;
 	private String uDateTime;
+	private int ROWNUM;
+	private boolean u_auth;
 	
 	private Collection<? extends GrantedAuthority> authorities;
 	
@@ -99,6 +101,22 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return isEnabled;
+	}
+
+	public int getROWNUM() {
+		return ROWNUM;
+	}
+
+	public void setROWNUM(int ROWNUM) {
+		this.ROWNUM = ROWNUM;
+	}
+
+	public boolean isU_auth() {
+		return u_auth;
+	}
+
+	public void setU_auth(boolean u_auth) {
+		this.u_auth = u_auth;
 	}
 
 	@Override

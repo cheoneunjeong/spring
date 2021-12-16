@@ -28,6 +28,7 @@
                <a href="/boardlist">게시판</a>
                <a href="/user/info">내 정보</a>
                <a href="/admin">관리자</a>
+               <a href="/userlist">회원관리</a>
             </sec:authorize>
         </div>
 </body>

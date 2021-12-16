@@ -1,10 +1,5 @@
 package com.example.spring.domain;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.stereotype.Component;
-
-import com.example.spring.service.BoardService;
 
 public class Pagination {
 

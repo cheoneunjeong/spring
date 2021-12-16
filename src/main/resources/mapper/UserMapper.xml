@@ -56,4 +56,30 @@
       WHERE         1=1
       AND            u_id   =   #{username}
 	</select>
+	
+	<select id="getuserlist" parameterType="Integer" resultType="User">
+		SELECT     @ROWNUM := @ROWNUM -1 AS ROWNUM,
+        		 	 u_id                 						    as   username,
+			   		 u_password             					as password,
+	                 u_name                						as   uName,
+	                 u_isAccountNonExpired        as isAccountNonExpired,
+	                 u_isAccountNonLocked    	    as isAccountNonLocked,
+	                 u_isCredentialNonExpired    as isCredentialsNonExpired,
+	                 u_isEnabled          				    as isEnabled
+		FROM       lc_user1 ta, 
+           (SELECT @rownum := (SELECT COUNT(*)-#{page}+1 FROM lc_user1 ta)) tb
+		ORDER BY 	ROWNUM asc
+		LIMIT      #{page}, 3
+	</select>
+	
+	<select id="getuserCount" resultType="Integer">
+		SELECT COUNT(*) count FROM lc_user1
+	</select>
+	
+	<select id="getAuth" resultType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+		SELECT		u_auth
+		FROM		lc_auth
+		WHERE		1=1
+		AND			u_id = #{username}
+	</select>
 </mapper>

@@ -53,10 +53,10 @@ li {
 		<h3 align="center">게시판 목록</h3>
 	</div>
 	<div>
-		<form action="/search" method="post" >
+		<form action="/boardlist" method="post" >
 			<select id="f"name="f">
-				<option <c:if test ="${f eq b_title}">selected="selected"</c:if> value="b_title">제목</option>
-				<option <c:if test ="${f eq b_id}">selected="selected"</c:if> value="b_id">작성자</option>
+				<option ${(f=="b_title")?"selected" : "" } value="b_title">제목</option>
+				<option ${(f=="b_id")?"selected" : "" } value="b_id">작성자</option>
 			</select>  
 			<input type="text" name="search" value="${search}">
 			<input type ="submit" value="검색">
@@ -107,8 +107,11 @@ li {
 					<c:when test="${i==pagination.page}">
 						<span style="font-weight: bold;">${i}</span>
 					</c:when>
-					<c:when test="${i!=pagination.page }">
+					<c:when test="${i!=pagination.page && f==null}">
 						<span><a href="/boardlist?reqPage_=${i}">${i}</a></span>
+					</c:when>
+					<c:when test="${i!=pagination.page && f!=null}">
+						<span><a href="/boardlist?reqPage_=${i}&&f=${f}&&search=${search}">${i}</a></span>
 					</c:when>
 				</c:choose>
 			</c:forEach>

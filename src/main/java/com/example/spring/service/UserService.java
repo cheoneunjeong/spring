@@ -1,6 +1,7 @@
 package com.example.spring.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,5 +18,9 @@ public interface UserService extends UserDetailsService{
 	public void createAuthorities(User user);
 	
 	Collection<GrantedAuthority> getAuthorities(String username);
+
+	public List<User> getuserlist(int page);
+
+	public int getuserCount();
 
 }

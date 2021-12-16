@@ -18,4 +18,8 @@ public interface UserMapper {
 
 	public List<GrantedAuthority> readAuthorities(String username);
 
+	public List<User> getuserlist(int page);
+
+	public int getuserCount();
+
 }
