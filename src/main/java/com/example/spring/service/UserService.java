@@ -23,4 +23,10 @@ public interface UserService extends UserDetailsService{
 
 	public int getuserCount();
 
+	public void setAuth1(String[] mids);
+
+	public void setAuth0(String[] cids);
+
+	public User getUser(String id);
+
 }

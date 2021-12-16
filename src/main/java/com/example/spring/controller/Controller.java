@@ -3,34 +3,25 @@ package com.example.spring.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.nio.file.Paths;
-import java.util.List;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
 
+import javax.servlet.ServletContext;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.support.ServletContextResourceLoader;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.spring.domain.Board;
@@ -96,23 +87,7 @@ public class Controller {
 	}
 
 	@RequestMapping("/boardlist")
-	public String boardlist(Model model, String reqPage_, String f, String search
-							, String[] mids , String ids ) {
-		
-		String[] allId = ids.trim().split(" ");
-		
-//		if(mids.length == 0) 
-//			userservice.setZeromaneger(allId);
-//		else {
-//			List<String> Mids= Arrays.asList(mids);
-//			List<String> cids_ = new ArrayList<>(Arrays.asList(allId));
-//			cids_.removeAll(Mids);
-//			
-//			
-//		}
-//		
-		
-		
+	public String boardlist(Model model, String reqPage_, String f, String search ) {
 		
 		if (f == null && search == null) {
 			if (reqPage_ == null) {
@@ -430,8 +405,38 @@ public class Controller {
 	}
 
 	@RequestMapping("/userlist")
-	public String userlist(Model model, String page_, 
-			@AuthenticationPrincipal User user) {
+	public String userlist(Model model, String page_, String[] mids , String ids,
+			@AuthenticationPrincipal User user) {	
+		
+		if(mids != null) {
+		
+			String[] allId = ids.trim().split(" ");
+			
+			List<String> Mids= Arrays.asList(mids);
+			List<String> cids_ = new ArrayList<>(Arrays.asList(allId));
+			cids_.removeAll(Mids);
+			String[] cids = cids_.toArray(new String[0]); //³ë¾îµå¹Î , mids:¾îµå¹Î
+			
+			for(String id : mids) {
+				User u = userservice.getUser(id);
+				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN"));
+				userservice.createAuthorities(u);
+			}
+			for(String id : cids) {
+				User u = userservice.getUser(id);
+				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
+				userservice.createAuthorities(u);
+			}
+		} else if(ids != null){
+		
+			String[] allId = ids.trim().split(" ");
+			for(String id : allId) {
+				User u = userservice.getUser(id);
+				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
+				userservice.createAuthorities(u);
+			}
+		}
+		
 		int p = 0;
 		if(page_ == null) {
 			page_ = "1";
@@ -455,7 +460,6 @@ public class Controller {
 				u.setU_auth(true);
 			}
 		}
-		
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pagination", pagination);

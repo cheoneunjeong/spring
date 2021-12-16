@@ -59,4 +59,21 @@ public class UserServiceImpl implements UserService {
 	public int getuserCount() {
 		return userMapper.getuserCount();
 	}
+
+	@Override
+	public void setAuth1(String[] mids) {
+		userMapper.setAuth1(mids);
+		
+	}
+
+	@Override
+	public void setAuth0(String[] cids) {
+		userMapper.setAuth0(cids);
+		
+	}
+
+	@Override
+	public User getUser(String id) {
+		return userMapper.getUser(id);
+	}
 }

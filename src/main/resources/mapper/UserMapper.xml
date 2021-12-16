@@ -82,4 +82,18 @@
 		WHERE		1=1
 		AND			u_id = #{username}
 	</select>
+	
+	<select id="getUser" parameterType="String" resultType="User">
+		SELECT
+        		 	 u_id                 						    as   username,
+			   		 u_password             					as password,
+	                 u_name                						as   uName,
+	                 u_isAccountNonExpired        as isAccountNonExpired,
+	                 u_isAccountNonLocked    	    as isAccountNonLocked,
+	                 u_isCredentialNonExpired    as isCredentialsNonExpired,
+	                 u_isEnabled          				    as isEnabled
+		FROM       lc_user1
+		WHERE		u_id = #{id}
+	</select>
+		
 </mapper>

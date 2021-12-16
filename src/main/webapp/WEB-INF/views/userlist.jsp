@@ -47,7 +47,7 @@
 </style>
 <body>
 <h1>회원 목록</h1>
-<form action="/boardlist" method="post">
+<form action="/userlist" method="post">
 <table>
 	<tr>	
 		<td colspan="4"> 전체 회원 수 : ${userCount} </td>
@@ -72,7 +72,7 @@
 	<c:set var="ids" value="${ids} ${n.username}"></c:set>
 	</c:forEach>
 	<input type="hidden" name="ids" value="${ids}">
-	</form>
+</form>
 	<div>
 		<ul>
 			 <c:choose>
