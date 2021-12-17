@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- 호스트:                          127.0.0.1
--- 서버 버전:                        10.6.4-MariaDB - mariadb.org binary distribution
+-- 서버 버전:                        10.5.8-MariaDB - mariadb.org binary distribution
 -- 서버 OS:                        Win64
--- HeidiSQL 버전:                  11.3.0.6295
+-- HeidiSQL 버전:                  11.0.0.5919
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -10,7 +10,6 @@
 /*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
 -- jung 데이터베이스 구조 내보내기
@@ -28,10 +27,9 @@ CREATE TABLE IF NOT EXISTS `board` (
   PRIMARY KEY (`b_idx`),
   KEY `u_idx` (`u_idx`),
   CONSTRAINT `board_ibfk_1` FOREIGN KEY (`u_idx`) REFERENCES `user` (`u_idx`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.board:~0 rows (대략적) 내보내기
-DELETE FROM `board`;
 /*!40000 ALTER TABLE `board` DISABLE KEYS */;
 INSERT INTO `board` (`b_idx`, `b_title`, `b_content`, `b_date`, `b_writer`, `u_idx`) VALUES
 	(1, '제목', '내용입니다.', '2021-11-09', '작성자', 1);
@@ -42,18 +40,15 @@ CREATE TABLE IF NOT EXISTS `lc_auth` (
   `u_id` varchar(50) NOT NULL,
   `u_auth` varchar(50) NOT NULL,
   PRIMARY KEY (`u_id`,`u_auth`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.lc_auth:~7 rows (대략적) 내보내기
-DELETE FROM `lc_auth`;
 /*!40000 ALTER TABLE `lc_auth` DISABLE KEYS */;
 INSERT INTO `lc_auth` (`u_id`, `u_auth`) VALUES
 	('abc', 'ROLE_USER'),
-	('c', 'ROLE_ADMIN'),
 	('c', 'ROLE_USER'),
 	('test', 'ROLE_USER'),
 	('tt', 'ROLE_USER'),
-	('zaza', 'ROLE_ADMIN'),
 	('zaza', 'ROLE_USER');
 /*!40000 ALTER TABLE `lc_auth` ENABLE KEYS */;
 
@@ -72,21 +67,20 @@ CREATE TABLE IF NOT EXISTS `lc_board` (
   PRIMARY KEY (`b_id`),
   KEY `b_writer` (`b_writer`),
   CONSTRAINT `lc_board_ibfk_1` FOREIGN KEY (`b_writer`) REFERENCES `lc_user1` (`u_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.lc_board:~9 rows (대략적) 내보내기
-DELETE FROM `lc_board`;
 /*!40000 ALTER TABLE `lc_board` DISABLE KEYS */;
 INSERT INTO `lc_board` (`b_id`, `b_title`, `b_content`, `b_writer`, `b_datetime`, `b_hit`, `groups`, `orders`, `depth`, `fileName`) VALUES
 	(66, 'y', 'tu', 'c', '2021-12-14 09:54:37', 1, 66, 1, 0, NULL),
 	(67, 'ghgfj', 'yfju', 'c', '2021-12-14 12:05:11', 2, 67, 1, 0, NULL),
 	(68, 'pl', 'p', 'c', '2021-12-14 11:38:54', 2, 68, 1, 0, NULL),
-	(69, 'xx', 'i9o-', 'c', '2021-12-14 11:55:16', 6, 69, 1, 0, NULL),
-	(96, 'fgj', 'fgj', 'c', '2021-12-15 12:07:01', 6, 96, 1, 0, 'hh.jpg,hh.jpg'),
+	(69, 'xx', 'i9o-', 'c', '2021-12-17 09:26:18', 7, 69, 1, 0, NULL),
 	(97, 'test', 'test', 'c', '2021-12-15 11:21:55', 8, 97, 1, 0, NULL),
 	(98, '안녕', 'ㄹㄹㄹ', 'c', '2021-12-16 09:12:09', 18, 98, 1, 0, NULL),
-	(99, 'xx', 'aa', 'c', '2021-12-15 12:06:49', 2, 99, 1, 0, 'ssawe.jpg'),
-	(102, 'ㅇㅇㅇ', 'ㅇㅇㅇ', 'c', '2021-12-16 09:43:30', 4, 102, 1, 0, 'tte.txt');
+	(102, 'ㅇㅇㅇ', 'ㅇㅇㅇ', 'c', '2021-12-17 09:26:34', 5, 102, 1, 0, 'tte.txt'),
+	(103, 'ddd', 'ddd', 'zaza', '2021-12-17 09:26:54', 2, 103, 1, 0, NULL),
+	(104, 'aa', 'aa', 'zaza', '2021-12-17 09:28:14', 1, 104, 1, 0, NULL);
 /*!40000 ALTER TABLE `lc_board` ENABLE KEYS */;
 
 -- 테이블 jung.lc_reply 구조 내보내기
@@ -104,10 +98,9 @@ CREATE TABLE IF NOT EXISTS `lc_reply` (
   KEY `bId` (`bId`),
   CONSTRAINT `lc_reply_ibfk_1` FOREIGN KEY (`bId`) REFERENCES `lc_board` (`b_id`),
   CONSTRAINT `lc_reply_ibfk_2` FOREIGN KEY (`writer`) REFERENCES `lc_user1` (`u_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.lc_reply:~7 rows (대략적) 내보내기
-DELETE FROM `lc_reply`;
 /*!40000 ALTER TABLE `lc_reply` DISABLE KEYS */;
 INSERT INTO `lc_reply` (`bId`, `content`, `writer`, `datetime`, `groups`, `orders`, `depth`, `r_num`) VALUES
 	(97, '1', 'c', '2021-12-14 22:53:06', 1, 1, 0, 1),
@@ -115,7 +108,6 @@ INSERT INTO `lc_reply` (`bId`, `content`, `writer`, `datetime`, `groups`, `order
 	(97, '1', 'c', '2021-12-14 23:08:43', 3, 1, 0, 3),
 	(98, 'ㅁㄴㄷㄱㄹ', 'c', '2021-12-15 10:27:37', 4, 1, 0, 4),
 	(98, 'ㄴㄷㅇㄹ', 'c', '2021-12-15 10:33:24', 5, 1, 0, 5),
-	(96, '11', 'c', '2021-12-15 10:33:34', 6, 1, 0, 6),
 	(98, 'rr', 'c', '2021-12-15 12:07:10', 7, 1, 0, 7);
 /*!40000 ALTER TABLE `lc_reply` ENABLE KEYS */;
 
@@ -126,10 +118,9 @@ CREATE TABLE IF NOT EXISTS `lc_user` (
   `u_name` varchar(50) DEFAULT NULL,
   `u_age` int(11) DEFAULT NULL,
   `u_datetime` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.lc_user:~3 rows (대략적) 내보내기
-DELETE FROM `lc_user`;
 /*!40000 ALTER TABLE `lc_user` DISABLE KEYS */;
 INSERT INTO `lc_user` (`u_id`, `u_password`, `u_name`, `u_age`, `u_datetime`) VALUES
 	('aaa', 'aaa', 'aa', 10, '2021-12-01 00:00:00'),
@@ -149,10 +140,9 @@ CREATE TABLE IF NOT EXISTS `lc_user1` (
   `u_isEnabled` tinyint(10) DEFAULT NULL,
   `u_auth` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`u_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.lc_user1:~6 rows (대략적) 내보내기
-DELETE FROM `lc_user1`;
 /*!40000 ALTER TABLE `lc_user1` DISABLE KEYS */;
 INSERT INTO `lc_user1` (`u_id`, `u_password`, `u_name`, `u_datetime`, `u_isAccountNonExpired`, `u_isAccountNonLocked`, `u_isCredentialNonExpired`, `u_isEnabled`, `u_auth`) VALUES
 	('abc', '$2a$10$08XR0uPaiUX.YWh9pxGu8.suYdnnp/m2XsxPj0dxi7mbCRi8ej1Vq', 'abc', '2021-12-06 09:28:58', 1, 1, 1, 1, 0),
@@ -176,13 +166,13 @@ CREATE TABLE IF NOT EXISTS `spring_session` (
   UNIQUE KEY `SPRING_SESSION_IX1` (`SESSION_ID`),
   KEY `SPRING_SESSION_IX2` (`EXPIRY_TIME`),
   KEY `SPRING_SESSION_IX3` (`PRINCIPAL_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 테이블 데이터 jung.spring_session:~1 rows (대략적) 내보내기
-DELETE FROM `spring_session`;
+-- 테이블 데이터 jung.spring_session:~0 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `spring_session` DISABLE KEYS */;
 INSERT INTO `spring_session` (`PRIMARY_ID`, `SESSION_ID`, `CREATION_TIME`, `LAST_ACCESS_TIME`, `MAX_INACTIVE_INTERVAL`, `EXPIRY_TIME`, `PRINCIPAL_NAME`) VALUES
-	('91ceaa12-499a-4bd2-be06-9f0b0268f9c1', 'ae67be5e-0e4f-433f-888c-9f67df6d9e29', 1639657712997, 1639657723563, 7200, 1639664923563, 'zaza');
+	('27427c22-8be7-47ef-9cb6-a22e76de235c', '32b5940c-98d2-4973-baa0-6bd06592f1d2', 1639699736493, 1639699736494, 7200, 1639706936494, NULL),
+	('62a8d66e-a854-4505-a0ee-c20dffed4a3b', 'd6fa7182-5af8-466d-bb79-1548fba18fb2', 1639700929738, 1639700929738, 7200, 1639708129738, NULL);
 /*!40000 ALTER TABLE `spring_session` ENABLE KEYS */;
 
 -- 테이블 jung.spring_session_attributes 구조 내보내기
@@ -192,13 +182,10 @@ CREATE TABLE IF NOT EXISTS `spring_session_attributes` (
   `ATTRIBUTE_BYTES` blob NOT NULL,
   PRIMARY KEY (`SESSION_PRIMARY_ID`,`ATTRIBUTE_NAME`),
   CONSTRAINT `SPRING_SESSION_ATTRIBUTES_FK` FOREIGN KEY (`SESSION_PRIMARY_ID`) REFERENCES `spring_session` (`PRIMARY_ID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 테이블 데이터 jung.spring_session_attributes:~1 rows (대략적) 내보내기
-DELETE FROM `spring_session_attributes`;
+-- 테이블 데이터 jung.spring_session_attributes:~0 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `spring_session_attributes` DISABLE KEYS */;
-INSERT INTO `spring_session_attributes` (`SESSION_PRIMARY_ID`, `ATTRIBUTE_NAME`, `ATTRIBUTE_BYTES`) VALUES
-	('91ceaa12-499a-4bd2-be06-9f0b0268f9c1', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c00000000000002300200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b78707372004f6f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e557365726e616d6550617373776f726441757468656e7469636174696f6e546f6b656e00000000000002300200024c000b63726564656e7469616c737400124c6a6176612f6c616e672f4f626a6563743b4c00097072696e636970616c71007e0004787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c7371007e0004787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00067870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000002770400000002737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f7269747900000000000002300200014c0004726f6c657400124c6a6176612f6c616e672f537472696e673b787074000a524f4c455f41444d494e7371007e000e740009524f4c455f555345527871007e000d737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c7300000000000002300200024c000d72656d6f74654164647265737371007e000f4c000973657373696f6e496471007e000f787074000f303a303a303a303a303a303a303a3174002430366361373565372d366636662d343235382d623734322d643563363233383537303736707372001e636f6d2e6578616d706c652e737072696e672e646f6d61696e2e55736572000000000000000102000b490006524f574e554d5a001369734163636f756e744e6f6e457870697265645a001269734163636f756e744e6f6e4c6f636b65645a0017697343726564656e7469616c734e6f6e457870697265645a00096973456e61626c65645a0006755f617574684c000b617574686f72697469657371007e00064c000870617373776f726471007e000f4c0009754461746554696d6571007e000f4c0005754e616d6571007e000f4c0008757365726e616d6571007e000f78700000000001010101007371007e000c0000000277040000000271007e001071007e00127874003c24326124313024614b6f365343556b444d384f46766b41664232644b65676d7150674945333239622e466968545373726d4135534c5562765648774b707400047a617a617400047a617a61);
 /*!40000 ALTER TABLE `spring_session_attributes` ENABLE KEYS */;
 
 -- 테이블 jung.test 구조 내보내기
@@ -216,10 +203,9 @@ CREATE TABLE IF NOT EXISTS `test` (
   PRIMARY KEY (`b_idx`),
   KEY `u_idx` (`u_idx`),
   CONSTRAINT `test_ibfk_1` FOREIGN KEY (`u_idx`) REFERENCES `user` (`u_idx`)
-) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.test:~26 rows (대략적) 내보내기
-DELETE FROM `test`;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
 INSERT INTO `test` (`b_idx`, `b_title`, `b_content`, `b_date`, `u_idx`, `b_hit`, `groups`, `orders`, `depth`, `b_file`) VALUES
 	(99, '1', 'l', '2021-11-19 09:59:04', 11, 3, 99, 1, 0, NULL),
@@ -265,10 +251,9 @@ CREATE TABLE IF NOT EXISTS `test_reply` (
   KEY `b_idx` (`b_idx`),
   CONSTRAINT `test_reply_ibfk_1` FOREIGN KEY (`u_idx`) REFERENCES `user` (`u_idx`),
   CONSTRAINT `test_reply_ibfk_2` FOREIGN KEY (`b_idx`) REFERENCES `test` (`b_idx`)
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.test_reply:~0 rows (대략적) 내보내기
-DELETE FROM `test_reply`;
 /*!40000 ALTER TABLE `test_reply` DISABLE KEYS */;
 /*!40000 ALTER TABLE `test_reply` ENABLE KEYS */;
 
@@ -283,10 +268,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `manager` int(11) NOT NULL DEFAULT 0,
   `u_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`u_idx`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- 테이블 데이터 jung.user:~19 rows (대략적) 내보내기
-DELETE FROM `user`;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`u_idx`, `u_id`, `u_pw`, `u_name`, `u_tel`, `u_age`, `manager`, `u_datetime`) VALUES
 	(1, 'abc', '1234', 'NAME1', '010-0000-0000', '50', 1, '0000-00-00 00:00:00'),
@@ -311,6 +295,5 @@ INSERT INTO `user` (`u_idx`, `u_id`, `u_pw`, `u_name`, `u_tel`, `u_age`, `manage
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

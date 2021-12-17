@@ -28,4 +28,6 @@ public interface UserMapper {
 
 	public User getUser(String id);
 
+	public void deleteAuth(String id);
+
 }

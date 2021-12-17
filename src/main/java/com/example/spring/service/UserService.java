@@ -29,4 +29,6 @@ public interface UserService extends UserDetailsService{
 
 	public User getUser(String id);
 
+	public void deleteAuth(String id);
+
 }

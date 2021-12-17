@@ -415,7 +415,7 @@ public class Controller {
 			List<String> Mids= Arrays.asList(mids);
 			List<String> cids_ = new ArrayList<>(Arrays.asList(allId));
 			cids_.removeAll(Mids);
-			String[] cids = cids_.toArray(new String[0]); //³ë¾îµå¹Î , mids:¾îµå¹Î
+			String[] cids = cids_.toArray(new String[0]);
 			
 			for(String id : mids) {
 				User u = userservice.getUser(id);
@@ -425,15 +425,16 @@ public class Controller {
 			for(String id : cids) {
 				User u = userservice.getUser(id);
 				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
-				userservice.createAuthorities(u);
+				userservice.deleteAuth(id);
 			}
 		} else if(ids != null){
 		
 			String[] allId = ids.trim().split(" ");
 			for(String id : allId) {
 				User u = userservice.getUser(id);
+				u.setAuthorities(AuthorityUtils.NO_AUTHORITIES);
 				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
-				userservice.createAuthorities(u);
+				userservice.deleteAuth(id);
 			}
 		}
 		

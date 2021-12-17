@@ -95,5 +95,9 @@
 		FROM       lc_user1
 		WHERE		u_id = #{id}
 	</select>
-		
+	
+	<delete id="deleteAuth" parameterType="String">
+ 		DELETE FROM lc_auth WHERE u_auth = 'ROLE_ADMIN' &amp;&amp; u_id = #{id}
+	</delete>
+	
 </mapper>
