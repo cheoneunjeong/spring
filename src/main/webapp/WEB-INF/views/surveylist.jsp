@@ -50,7 +50,7 @@ li {
 </style>
 <body>
 	<div>
-		<h3 align="center">설문지 목록</h3>
+		<h3 align="center">설문 리스트</h3>
 	</div>
 	<div>
 		<form action="/surveylist" method="post" >
@@ -79,7 +79,7 @@ li {
 
 					<tr>
 						<td>${item.rownum}</td>
-						<td><a href="/?s_num=${item.s_num}">
+						<td><a href="/survey/?s_num=${item.s_num}">
 							
 								${item.title}</a></td>
 						<td>${item.writer}</td>
@@ -94,7 +94,7 @@ li {
 
 			<p align="right">${pagination.page}/${pagination.lastPage}</p>
 
-			<button type="button" onclick="location.href='/regSurvey'">글쓰기</button>
+			<button type="button" onclick="location.href='/regSurvey'">설문등록</button>
 			<span><input type="submit" value="삭제"></span>
 		</form>
 	</div>
