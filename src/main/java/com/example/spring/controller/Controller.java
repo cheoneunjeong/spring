@@ -27,8 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
 import com.example.spring.domain.Reply;
+import com.example.spring.domain.Survey;
 import com.example.spring.domain.User;
 import com.example.spring.service.BoardService;
+import com.example.spring.service.SurveyService;
 import com.example.spring.service.UserService;
 
 @org.springframework.stereotype.Controller
@@ -468,5 +470,60 @@ public class Controller {
 
 		return "/userlist";
 
+	}
+	
+	@Autowired SurveyService surveyservice;
+	@RequestMapping("/surveylist")
+	public String surveylist(Model model, String f, String search, String reqPage_) {
+
+		int reqPage = 1; 
+		int page = 0;
+		
+		if (f == null && search == null) {
+			if (reqPage_ != null) {
+				reqPage = Integer.parseInt(reqPage_);
+				page = (reqPage - 1) * 3;
+			}
+
+			List<Survey> list = surveyservice.getsurveylist(page);
+
+			int Count = surveyservice.getPostCount();
+			Pagination pagination = new Pagination();
+			pagination.init(Count, reqPage);
+
+			model.addAttribute("list", list);
+			model.addAttribute("pagination", pagination);
+		
+		} else {
+
+			List<Survey> list = null;
+			int Count = 0;
+			
+			if (reqPage_ != null) {
+				reqPage = Integer.parseInt(reqPage_);
+				page = (reqPage - 1) * 3;
+			}
+			
+			String s = "%" + search + "%";
+
+			if (f.equals("title")) {
+				list = surveyservice.search_t(s, page);
+				Count = surveyservice.SearchPostCount_t(s);
+			} else {
+				list = surveyservice.search_w(s, page);
+				Count = surveyservice.SearchPostCount_w(s);
+			}
+
+			Pagination pagination = new Pagination();
+			pagination.init(Count, reqPage);
+
+			model.addAttribute("list", list);
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("f", f);
+			model.addAttribute("search", search);
+		}
+		
+		
+		return "/surveylist";
 	}
 }

@@ -25,10 +25,15 @@
  	       <div>
  	       </div>    
  	        <sec:authorize access="isAuthenticated()">        
-               <a href="/boardlist">게시판</a>
+              <p> 
+              	<a href="/boardlist">게시판</a> 
+				<a href="/userlist">회원관리</a>              
+              </p>
+             <!--  <p>
                <a href="/user/info">내 정보</a>
                <a href="/admin">관리자</a>
-               <a href="/userlist">회원관리</a>
+              </p> -->
+               <a href="/surveylist">SURVEY</a>
             </sec:authorize>
         </div>
 </body>
