@@ -526,4 +526,14 @@ public class Controller {
 		
 		return "/surveylist";
 	}
+	
+	@RequestMapping("/regSurvey")
+	public String regSurvey() {
+		return "/regSurvey";
+	}
+	
+	@RequestMapping("/survey")
+	public String survey(Model model, String s_num) {
+		return "/survey";
+	}
 }
