@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<hr>
 <br>
 <div class="dropdown">
 	<button class="dropbtn">형식 선택</button>
@@ -11,14 +12,17 @@
 </div>
 <br>
 <br>
-<textarea class="text" name="question" placeholder="제목 없는 질문"></textarea>
+<textarea class="text" name="question_" placeholder="제목 없는 질문"></textarea>
 <p id="q"style="display: none;">
 	<input type="checkbox" name="q1" value="q1" />
-	<textarea class="text" name="answer" placeholder=" 옵션1"></textarea><button type="button" class="del">삭제</button>
+	<textarea class="text" name="answer_" placeholder=" 옵션1"></textarea><button type="button" class="del">삭제</button>
 </p>
 <p id="q">
 	<input type="checkbox" name="q1" value="q1" />
-	<textarea class="text" name="answer" placeholder=" 옵션1"></textarea><button type="button" class="del">삭제</button>
+	<textarea class="text" name="answer_" placeholder=" 옵션1"></textarea><button type="button" class="del">삭제</button>
 </p>
 <p id="next_q"></p>
 <button type="button" class="add">옵션추가</button>
+<p align="right"><input type="file" name="file"/></p>
+<p align="right"><input type="file" name="file"/></p>
+<p align="right"><button class="deleteQ">삭제</button></p>

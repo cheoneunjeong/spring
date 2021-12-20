@@ -43,5 +43,11 @@ public class SurveyServiceImpl implements SurveyService {
 		return surveymaper.SearchPostCount_w(s);
 	}
 
+	@Override
+	public void reg(Survey survey) {
+		surveymaper.reg(survey);
+		
+	}
+
 
 }

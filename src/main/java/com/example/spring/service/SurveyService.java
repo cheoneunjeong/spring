@@ -17,4 +17,6 @@ public interface SurveyService {
 	public int SearchPostCount_t(String s);
 
 	public int SearchPostCount_w(String s);
+
+	public void reg(Survey survey);
 }

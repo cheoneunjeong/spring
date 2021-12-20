@@ -49,4 +49,22 @@
 	<select id="SearchPostCount_w" resultType="String">
 		SELECT count(*) count FROM survey where writer = #{s}
 	</select>	
+	
+	<insert id="reg" parameterType="Survey">  
+        INSERT INTO	survey (
+        	title,
+        	disc,
+        	question,
+        	answer,
+        	writer,
+        	filename
+      ) VALUES (
+      		#{title},
+      		#{disc},
+      		#{question},
+      		#{answer},
+      		#{writer},
+      		#{filename}
+         )
+	</insert>
 </mapper>

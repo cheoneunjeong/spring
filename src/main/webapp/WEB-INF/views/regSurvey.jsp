@@ -86,7 +86,7 @@ html.open {
 }
 
 div {
-	width: 60%;
+	width: 100%;
 	margin: 0 auto;
 }
 
@@ -98,7 +98,6 @@ div {
 }
 
 .in {
-	display: inline-block;
 	width: 50%;
 	border: none;
 }
@@ -155,23 +154,41 @@ div {
 .select {
 	cursor: pointer;
 }
+.quick {
+	position:fixed;
+	top: 250px;
+	left: 250px;
+}
+.quickmenu {
+	list-style: none;
+}
 </style>
 <body>
 	<div class="btn"></div>
-		<div onclick="history.back();" class="page_cover"></div>
-		<div id="menu">
-			<div onclick="history.back();" class="close"></div>
-		</div>
+	<div onclick="history.back();" class="page_cover"></div>
+	<div id="menu">
+		<div onclick="history.back();" class="close"></div>
+	</div>
+	<div class="quick">
+		<ul class="quickmenu">
+			<li>
+				<button type="button" class="addquestion"><img alt="질문추가" width="20" hight="20"
+				src="https://previews.123rf.com/images/martialred/martialred1507/martialred150700754/42614040-%EC%95%B1-%EB%B0%8F-%EC%9B%B9-%EC%82%AC%EC%9D%B4%ED%8A%B8%EC%97%90-%EB%8C%80%ED%95%9C-%EC%B6%94%EA%B0%80-%EB%B0%8F-%EB%8D%94%ED%95%98%EA%B8%B0-%EB%9D%BC%EC%9D%B8-%EC%95%84%ED%8A%B8-%EC%95%84%EC%9D%B4%EC%BD%98.jpg">
+				</button>
+			</li>
+		</ul>
+	</div>
+	<form action="/regSurvey2" method="post" enctype="multipart/form-data">
 	<div class="out">
 		<h1 align="center">설문 등록</h1>
 		<br>
 		<div class="in">
 			<textarea class="title" name="title" placeholder="제목 없는 설문지"></textarea>
 			<textarea class="text" name="disc" placeholder="설문지 설명"></textarea>
-			<hr>
+			<br>
 		</div>
-		<br>
-		<div class="in" id="question">
+		<div class="in" id="question" style="display: none;">
+			<hr>
 			<br>
 			<div class="dropdown">
 				<button class="dropbtn">형식 선택</button>
@@ -181,16 +198,40 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text" name="question" placeholder="질문"></textarea>
+			<textarea class="text" name="question_" placeholder="질문"></textarea>
 			<br>
-			<textarea class="text" name="answer" placeholder="단답형 텍스트"></textarea>
+			<textarea class="text" name="answer_" placeholder="단답형 텍스트"></textarea>
+			<p align="right"><input type="file" name="file"/></p>
+			<p align="right"><input type="file" name="file"/></p>
+			<p align="right"><button class="deleteQ">삭제</button></p>
 		</div>
+		<div class="in" id="question">
+			<hr>
+			<br>
+			<div class="dropdown">
+				<button class="dropbtn">형식 선택</button>
+				<div class="dropdown-content">
+					<a class="select" num="1">단답형 </a> <a class="select" num="2">장문형</a> <a class="select"  num="3">객관식질문</a> 
+					<a class="select" num="4">체크박스</a> <a class="select" num="5">드롭다운</a>
+				</div>
+			</div>
+			<br> <br>
+			<textarea class="text" name="question_" placeholder="질문"></textarea>
+			<br>
+			<textarea class="text" name="answer_" placeholder="단답형 텍스트"></textarea>
+			<p align="right"><input type="file" name="file"/></p>
+			<p align="right"><input type="file" name="file"/></p>
+			<p align="right"><button class="deleteQ">삭제</button></p>
+			
+		</div>
+		<div id="next"></div>
 	</div>
 	<br><hr><br>
-	<div>
+	<div class="in">
 		<button type="button" onclick="location.href='/surveylist'">돌아가기</button>
-		<button type="button" onclick="location.href='/submit'">제출</button>
+		<button type="submit">등록</button>
 	</div>
+	</form>
 
 <script>
 	$(".btn").click(function() {
@@ -206,6 +247,7 @@ div {
 	
 	$(document).on('click', '.select', function () {
 		let number = $(this).attr("num");
+		let p = $(this).parent().parent().parent();
 		
 		$.ajax({
 			  method: "POST",
@@ -213,7 +255,7 @@ div {
 			  data: { num_: number}
 			})
 		  .done(function( html ) {
-			  $('#question').html(html);
+			  $($(p)).html(html);
 		  })
 			 .fail(function(){
 				alert("fail");
@@ -221,13 +263,28 @@ div {
 	});
 
 	$(document).on('click', '.add', function() {
-		$("#q").clone().prependTo("#next_q");
+		$("#q").clone().prependTo('#next_q');
 		$('#q').show();
 	});
 	
 	$(document).on('click', '.del', function() {
 		$(this).parent().remove('#q');
 	});
+	
+/* 	
+	$(document).on('click', '.addquestion', function() {
+		$("#question").clone().after().prependTo('#next');
+	});
+	 */
+	$(document).on('click', '.deleteQ', function() {
+		$(this).parent().parent().remove();
+	});
+	
+	$(document).on('click', '.addquestion', function() {
+		$("#question").clone().prependTo('#next');
+		$('#question').show();
+	});
+	
 </script>
 
 </body>

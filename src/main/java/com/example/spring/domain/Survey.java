@@ -1,15 +1,22 @@
 package com.example.spring.domain;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class Survey {
 
 	private String title;
 	private String disc;
 	private String question;
+	private String[] question_;
 	private String answer;
+	private String[] answer_;
 	private int s_num;
 	private String writer;
 	private String datetime;
 	private String filename;
+	private List<MultipartFile> file;
 	private int hit;
 	private int rownum;
 
@@ -74,5 +81,24 @@ public class Survey {
 	public void setRownum(int rownum) {
 		this.rownum = rownum;
 	}
+	public List<MultipartFile> getFile() {
+		return file;
+	}
+	public void setFile(List<MultipartFile> file) {
+		this.file = file;
+	}
+	public String[] getQuestion_() {
+		return question_;
+	}
+	public void setQuestion_(String[] question_) {
+		this.question_ = question_;
+	}
+	public String[] getAnswer_() {
+		return answer_;
+	}
+	public void setAnswer_(String[] answer_) {
+		this.answer_ = answer_;
+	}
+	
 	
 }

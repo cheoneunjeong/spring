@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <hr>
-<br>
+			<br>
 			<div class="dropdown">
 				<button class="dropbtn">형식 선택</button>
 				<div class="dropdown-content">
@@ -10,9 +10,7 @@
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text" name="question_" placeholder="질문"></textarea>
+			<textarea class="text" name="question" placeholder="질문"></textarea>
 			<br>
-			<textarea rows="5" cols="50" name="answer_" placeholder="장문형 텍스트"></textarea>
-			<p align="right"><input type="file" name="file"/></p>
-			<p align="right"><input type="file" name="file"/></p>
-			<p align="right"><button class="deleteQ">삭제</button></p>
+			<textarea class="text" name="answer" placeholder="단답형 텍스트"></textarea>
+			<p id="n"></p>
