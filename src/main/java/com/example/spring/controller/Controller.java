@@ -536,4 +536,29 @@ public class Controller {
 	public String survey(Model model, String s_num) {
 		return "/survey";
 	}
+	
+	@RequestMapping("/selectQuestion")
+	public String selectQuestion(Model model, String num_) {
+		int num = 0;
+		String q= null;
+		
+		if(num_ != null) 
+			num = Integer.parseInt(num_);
+		
+		switch(num) {
+		case 1: q = "/q1"; break;
+		case 2: q = "/q2";	break;
+		case 3: q = "/q3";	break;
+		case 4: q = "/q4";	break;
+		case 5: q = "/q5";	break;
+		case 6: q = "/q6";	break;
+		}
+		return q;
+	}
+	
+	@RequestMapping("/submit")
+	public String submit(Model model, String s_num) {
+		return "/survey";
+	}
 }
+
