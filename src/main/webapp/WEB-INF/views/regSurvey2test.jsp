@@ -10,88 +10,20 @@
 	crossorigin="anonymous"></script>
 </head>
 <style>
-html.open {
-	overflow: hidden;
-}
-
 div {
 	width: 100%;
 	margin: 0 auto;
 }
 
-.btn {
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	z-index: 1;
-	background-image:
-		url("https://s1.daumcdn.net/cfs.tistory/custom/blog/204/2048858/skin/images/menu.png");
-	background-size: 50%;
-	background-repeat: no-repeat;
-	background-position: center;
-	cursor: pointer;
-}
-
-.close {
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	background-image:
-		url("https://s1.daumcdn.net/cfs.tistory/custom/blog/204/2048858/skin/images/close.png");
-	background-size: 50%;
-	background-repeat: no-repeat;
-	background-position: center;
-	cursor: pointer;
-}
-
-#menu {
-	width: 150px;
-	height: 100%;
-	position: fixed;
-	top: 0px;
-	right: -152px;
-	z-index: 10;
-	border: 1px solid #c9c9c9;
-	background-color: white;
-	text-align: center;
-	transition: All 0.2s ease;
-	-webkit-transition: All 0.2s ease;
-	-moz-transition: All 0.2s ease;
-	-o-transition: All 0.2s ease;
-}
-
-#menu.open {
-	right: 0px;
-}
-
-.page_cover.open {
-	display: block;
-}
-
-.page_cover {
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	background-color: rgba(0, 0, 0, 0.4);
-	z-index: 4;
-	display: none;
-}
-
 .out {
-	width: 100%;
+	width: 50%;
 	text-align: center;
 	border: none;
 	margin: 15px;
 }
 
 .in {
-	width: 50%;
+	width: 100%;
 	border: none;
 }
 
@@ -168,24 +100,17 @@ div {
 </style>
 
 <body>
-	<div class="btn"></div>
-	<div onclick="history.back();" class="page_cover"></div>
-	<div id="menu">
-		<div onclick="history.back();" class="close"></div>
-	</div>
-	<div class="quick">
-		<ul class="quickmenu">
-			<li>
-				<button type="button" class="addquestion">+</button>
-			</li>
-		</ul>
-	</div>
+	<ul class="quickmenu">
+		<li>
+			<button type="button" class="addquestion">+</button>
+		</li>
+	</ul>
 	<div class="out">
 		<h1 align="center">설문 등록</h1>
 		<br>
 		<div class="in">
-			<textarea class="title t" name="title" placeholder="제목 없는 설문지"></textarea>
-			<textarea class="text d" name="disc" placeholder="설문지 설명"></textarea>
+			<textarea class="title t" placeholder="제목 없는 설문지"></textarea>
+			<textarea class="text d" placeholder="설문지 설명"></textarea>
 			<br>
 		</div>
 		<div class="in" id="question" style="display: none;">
@@ -215,6 +140,7 @@ div {
 				<button class="deleteQ">삭제</button>
 			</p>
 		</div>
+		
 		<div class="in" id="question">
 			<hr>
 			<br>
@@ -229,7 +155,7 @@ div {
 			<br> <br>
 			<textarea class="text q" placeholder="질문"></textarea>
 			<br>
-			<textarea class="text" placeholder="단답형 텍스트"></textarea>
+			<textarea class="text a" placeholder="단답형 텍스트"></textarea>
 			<button type="button" id="insertA">v</button>
 			<p align="right">
 				<input type="file" name="file" />
@@ -253,24 +179,6 @@ div {
 	</div>
 
 	<script>
-		let answer = [];
-		let question = [];
-
-		$(document).on('click', '#insertA', function() {
-			let a = $(this).prev().val();
-
-			answer.push(a);
-			console.log(answer);
-		}); //답변배열에저장
-
-		$(document).on('click', '#insertQ', function() {
-			let q = $(this).parents().children('.q').val();
-
-			question.push(q);
-			console.log(question);
-			console.log(answer);
-		}); //질문배열에저장
-
 		/*  	$(document).on('click', '#submit', function() {
 		 let answer = $('.a');
 		 let survey_ = {
@@ -297,17 +205,39 @@ div {
 		 })
 		 });
 		 */
+		 let answer = [];
+		 let question = [];
+		 
+		 $(document).on('click', '#insertA', function() {
+			 let a = $(this).prev().val();
 
-		$(".btn").click(function() {
-			$("#menu,.page_cover,html").addClass("open");
-			window.location.hash = "#open";
-		});
-
-		window.onhashchange = function() {
-			if (location.hash != "#open") {
-				$("#menu,.page_cover,html").removeClass("open");
-			}
-		}; //상단메뉴
+			 answer.push(a);
+			 
+			 console.log(answer); 
+		 }); //답변등록
+		 
+		 $(document).on('click', '#insertQ', function() {
+			 let q = $(this).parent().parent().children('.q').val();
+		 		
+			 question.push(q);
+			 
+			 console.log(question); 
+			
+			 $.ajax({
+					method : "POST",
+					url : "/fixedQuestion",
+					data : {
+						questions : question,
+						answers : answer
+					}
+				}).done(function(html) {
+					$(this).parents('#question').html(html);
+				}).fail(function() {
+					alert("fail");
+				})
+			});
+		 
+		 
 
 		$(document).on('click', '.select', function() {
 			let number = $(this).attr("num");

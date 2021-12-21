@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,7 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.spring.domain.Board;
@@ -637,11 +640,6 @@ public class Controller {
 //		
 //		return "/index";
 //	}
-	
-	@RequestMapping("/regsurvey2")
-	public String regsurvey2() {
-		return "/regSurvey";
-	}
-	
+
 }
 

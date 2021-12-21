@@ -12,8 +12,6 @@ public class Survey {
 	private int s_num;
 	private String writer;
 	private String datetime;
-	private String filename;
-	private List<MultipartFile> file;
 	private int hit;
 	private int rownum;
 
@@ -48,12 +46,6 @@ public class Survey {
 	public void setDatetime(String datetime) {
 		this.datetime = datetime;
 	}
-	public String getFilename() {
-		return filename;
-	}
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
 	public int getHit() {
 		return hit;
 	}
@@ -65,12 +57,6 @@ public class Survey {
 	}
 	public void setRownum(int rownum) {
 		this.rownum = rownum;
-	}
-	public List<MultipartFile> getFile() {
-		return file;
-	}
-	public void setFile(List<MultipartFile> file) {
-		this.file = file;
 	}
 	public List<Question> getQuestions() {
 		return questions;
