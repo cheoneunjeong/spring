@@ -8,10 +8,7 @@ public class Survey {
 
 	private String title;
 	private String disc;
-	private String question;
-	private String[] question_;
-	private String answer;
-	private String[] answer_;
+	private	List<Question> questions;
 	private int s_num;
 	private String writer;
 	private String datetime;
@@ -32,18 +29,6 @@ public class Survey {
 	}
 	public void setDisc(String disc) {
 		this.disc = disc;
-	}
-	public String getQuestion() {
-		return question;
-	}
-	public void setQuestion(String question) {
-		this.question = question;
-	}
-	public String getAnswer() {
-		return answer;
-	}
-	public void setAnswer(String answer) {
-		this.answer = answer;
 	}
 	public int getS_num() {
 		return s_num;
@@ -87,18 +72,11 @@ public class Survey {
 	public void setFile(List<MultipartFile> file) {
 		this.file = file;
 	}
-	public String[] getQuestion_() {
-		return question_;
+	public List<Question> getQuestions() {
+		return questions;
 	}
-	public void setQuestion_(String[] question_) {
-		this.question_ = question_;
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
-	public String[] getAnswer_() {
-		return answer_;
-	}
-	public void setAnswer_(String[] answer_) {
-		this.answer_ = answer_;
-	}
-	
-	
+
 }

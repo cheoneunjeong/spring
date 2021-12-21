@@ -36,21 +36,6 @@ table, td, th {
 </div>
 
 <script>
-$(document).ready(function() {
-	let num = '${s_num}';
-	$.ajax({
-		method: "GET",
-		url: "/getsurveyQ",
-		data: {s_num: num}
-	})
-	.done(function(html) {
-		$( ).html(html);
-	})
-	.fail(function() {
-		alert("fail");
-	})
-});
-
 	
 </script>
 </body>

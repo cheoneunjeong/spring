@@ -183,8 +183,8 @@ div {
 		<h1 align="center">설문 등록</h1>
 		<br>
 		<div class="in">
-			<textarea class="title" name="title" placeholder="제목 없는 설문지"></textarea>
-			<textarea class="text" name="disc" placeholder="설문지 설명"></textarea>
+			<textarea class="title t" name="title" placeholder="제목 없는 설문지"></textarea>
+			<textarea class="text d" name="disc" placeholder="설문지 설명"></textarea>
 			<br>
 		</div>
 		<div class="in" id="question" style="display: none;">
@@ -198,9 +198,9 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text" name="question_" placeholder="질문"></textarea>
+			<textarea class="text q" name="question_" placeholder="질문"></textarea>
 			<br>
-			<textarea class="text" name="answer_" placeholder="단답형 텍스트"></textarea>
+			<textarea class="text a" name="answer_" placeholder="단답형 텍스트"></textarea>
 			<p align="right"><input type="file" name="file"/></p>
 			<p align="right"><input type="file" name="file"/></p>
 			<p align="right"><button class="deleteQ">삭제</button></p>
@@ -216,9 +216,9 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text" name="question_" placeholder="질문"></textarea>
+			<textarea class="text q" name="question_" placeholder="질문"></textarea>
 			<br>
-			<textarea class="text" name="answer_" placeholder="단답형 텍스트"></textarea>
+			<textarea class="text a" name="answer_" placeholder="단답형 텍스트"></textarea>
 			<p align="right"><input type="file" name="file"/></p>
 			<p align="right"><input type="file" name="file"/></p>
 			<p align="right"><button class="deleteQ">삭제</button></p>
@@ -229,11 +229,41 @@ div {
 	<br><hr><br>
 	<div class="in">
 		<button type="button" onclick="location.href='/surveylist'">돌아가기</button>
-		<button type="submit">등록</button>
+		<button type="button" id="submit">등록</button>
 	</div>
 	</form>
 
 <script>
+
+/* 	$(document).on('click', '#submit', function() {
+		let answer = $('.a');
+		 let survey_ = {
+					title: $('.t'),
+					disc: $('.d'),
+					questions: [{
+						question: $('.q').val() , 
+						answers: [{ 
+							answer
+						}] 
+					}]	
+		 };
+
+		 let survey = JSON.stringify(survey_);
+		 
+		 $.ajax({
+				url: "/regsurvey2",
+				contentType: 'application/json',
+				method: 'POST',
+				jsonData: survey,
+				success: function(jsonData) {
+					console.log(jsonData);
+				}
+			})
+	});
+ */
+	
+	
+	
 	$(".btn").click(function() {
 		$("#menu,.page_cover,html").addClass("open");
 		window.location.hash = "#open";
@@ -271,11 +301,6 @@ div {
 		$(this).parent().remove('#q');
 	});
 	
-/* 	
-	$(document).on('click', '.addquestion', function() {
-		$("#question").clone().after().prependTo('#next');
-	});
-	 */
 	$(document).on('click', '.deleteQ', function() {
 		$(this).parent().parent().remove();
 	});

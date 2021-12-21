@@ -566,76 +566,82 @@ public class Controller {
 		return "/add";
 	}
 	
-	@RequestMapping("/regSurvey2")
-	public String regSurvey2(Model model, Survey survey, @AuthenticationPrincipal User user) {
-		
-		String path = context.getRealPath("")+"..\\resources\\static\\images\\";
-		
-		List<MultipartFile> list = survey.getFile();
-		
-		StringBuilder builder = new StringBuilder();
-		for(MultipartFile file : list) {
-			if(!file.isEmpty()) {
-				String filename = file.getOriginalFilename();
-				builder.append(filename);
-				builder.append(",");
-				
-				File f = new File(path+filename);
-				
-				try {
-					InputStream input = file.getInputStream();
-					FileUtils.copyInputStreamToFile(input, f);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		if(builder.toString().contains(",")) {
-			int p = builder.toString().lastIndexOf(",");
-			builder.deleteCharAt(p);
-			
-			survey.setFilename(builder.toString());
-		}
-		
-		String writer = user.getUsername();
-		survey.setWriter(writer);
-		
-		StringBuilder ques = new StringBuilder();
-		if(survey.getQuestion_().length != 0) {
-			for(String q : survey.getQuestion_()) {
-				if(q!=null&& !q.isEmpty()) {
-					ques.append(q);
-					ques.append(",");
-				}
-			}
-			
-			if(ques.toString().contains(",")) {
-				int p = ques.toString().lastIndexOf(",");
-				ques.deleteCharAt(p);
-			}
-				survey.setQuestion(ques.toString());
-			
-		}
-		
-		StringBuilder ans = new StringBuilder();
-		if(survey.getAnswer_().length != 0) {
-			for(String a : survey.getAnswer_()) {
-				if(a!=null && !a.isEmpty()) {
-					ans.append(a);
-					ans.append(",");
-				}
-			}
-			if(ans.toString().contains(",")) {
-				int p = ans.toString().lastIndexOf(",");
-				ans.deleteCharAt(p);
-			}
-				survey.setAnswer(ans.toString());
-		}
-		
-		surveyservice.reg(survey);
-		
-		return "/index";
+//	@RequestMapping("/regSurvey2")
+//	public String regSurvey2(Model model, Survey survey, @AuthenticationPrincipal User user) {
+//		
+//		String path = context.getRealPath("")+"..\\resources\\static\\images\\";
+//		
+//		List<MultipartFile> list = survey.getFile();
+//		
+//		StringBuilder builder = new StringBuilder();
+//		for(MultipartFile file : list) {
+//			if(!file.isEmpty()) {
+//				String filename = file.getOriginalFilename();
+//				builder.append(filename);
+//				builder.append(",");
+//				
+//				File f = new File(path+filename);
+//				
+//				try {
+//					InputStream input = file.getInputStream();
+//					FileUtils.copyInputStreamToFile(input, f);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		
+//		if(builder.toString().contains(",")) {
+//			int p = builder.toString().lastIndexOf(",");
+//			builder.deleteCharAt(p);
+//			
+//			survey.setFilename(builder.toString());
+//		}
+//		
+//		String writer = user.getUsername();
+//		survey.setWriter(writer);
+//		
+//		StringBuilder ques = new StringBuilder();
+//		if(survey.getQuestion_().length != 0) {
+//			for(String q : survey.getQuestion_()) {
+//				if(q!=null&& !q.isEmpty()) {
+//					ques.append(q);
+//					ques.append(",");
+//				}
+//			}
+//			
+//			if(ques.toString().contains(",")) {
+//				int p = ques.toString().lastIndexOf(",");
+//				ques.deleteCharAt(p);
+//			}
+//				survey.setQuestion(ques.toString());
+//			
+//		}
+//		
+//		StringBuilder ans = new StringBuilder();
+//		if(survey.getAnswer_().length != 0) {
+//			for(String a : survey.getAnswer_()) {
+//				if(a!=null && !a.isEmpty()) {
+//					ans.append(a);
+//					ans.append(",");
+//				}
+//			}
+//			if(ans.toString().contains(",")) {
+//				int p = ans.toString().lastIndexOf(",");
+//				ans.deleteCharAt(p);
+//			}
+//				survey.setAnswer(ans.toString());
+//		}
+//		
+//		surveyservice.reg(survey);
+//		
+//		return "/index";
+//	}
+	
+	@RequestMapping("/regsurvey2")
+	public String regsurvey2() {
+		return "/regSurvey";
 	}
+	
 }
 
