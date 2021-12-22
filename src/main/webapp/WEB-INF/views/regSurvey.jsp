@@ -200,10 +200,9 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text q" placeholder="질문"></textarea>
+			<textarea class="text q" type="1" placeholder="질문"></textarea>
 			<br>
 			<textarea class="text a" placeholder="단답형 텍스트"></textarea>
-			<button type="button" id="insertA">v</button>
 			<p align="right">
 				<input type="file" name="file" />
 			</p>
@@ -211,7 +210,6 @@ div {
 				<input type="file" name="file" />
 			</p>
 			<p align="right">
-				<button type="button" id="insertQ">질문등록</button>
 				<button class="deleteQ">삭제</button>
 			</p>
 		</div>
@@ -227,10 +225,9 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text q" placeholder="질문"></textarea>
+			<textarea class="text q" type="1" placeholder="질문"></textarea>
 			<br>
-			<textarea class="text" placeholder="단답형 텍스트"></textarea>
-			<button type="button" id="insertA">v</button>
+			<textarea class="text a" placeholder="단답형 텍스트"></textarea>
 			<p align="right">
 				<input type="file" name="file" />
 			</p>
@@ -238,7 +235,6 @@ div {
 				<input type="file" name="file" />
 			</p>
 			<p align="right">
-				<button type="button" id="insertQ">질문등록</button>
 				<button class="deleteQ">삭제</button>
 			</p>
 		</div>
@@ -253,50 +249,56 @@ div {
 	</div>
 
 	<script>
-		let answer = [];
-		let question = [];
-
-		$(document).on('click', '#insertA', function() {
-			let a = $(this).prev().val();
-
-			answer.push(a);
-			console.log(answer);
-		}); //답변배열에저장
-
-		$(document).on('click', '#insertQ', function() {
-			let q = $(this).parents().children('.q').val();
-
-			question.push(q);
-			console.log(question);
-			console.log(answer);
-		}); //질문배열에저장
-
-		/*  	$(document).on('click', '#submit', function() {
-		 let answer = $('.a');
-		 let survey_ = {
-		 title: $('.t'),
-		 disc: $('.d'),
-		 questions: [{
-		 question: $('.q').val() , 
-		 answers: [{ 
-		 answer
-		 }] 
-		 }]	
-		 };
-
-		 let survey = JSON.stringify(survey_);
+		let answers = [];
+		let questions = [];
 		
-		 $.ajax({
-		 url: "/regsurvey2",
-		 contentType: 'application/json',
-		 method: 'POST',
-		 jsonData: survey,
-		 success: function(jsonData) {
-		 console.log(jsonData);
-		 }
-		 })
-		 });
-		 */
+		$(document).on('blur', '.a', function(){
+			let a = $(this).val();
+			if(!!a) {
+				answers.push(a);
+				console.log(answers);
+			}
+		});
+		
+		$(document).on('blur', '.q', function(){
+			let q = $(this).val();
+			let t = $(this).attr("type");
+			if(!!q) {
+				questions.push({q, t, answers});
+				console.log(questions);
+			}
+		});
+		
+		$(document).on('click', '#submit', function () {
+			let survey = {
+					title: $('.t').val(),
+					disc: $('.d').val(),
+					question: questions
+			}
+			
+			console.log(survey);
+		});
+	
+		/*  $(document).on('click', '#submit', function() {
+		
+			 let survey = {
+				 title: $('.t').val(),
+				 disc: $('.d').val(),
+				 question: questions 
+			 };
+			 
+			 $.ajax({
+				 url: "/regSurvey2",
+				 data: survey,
+				 method: "POST",
+				 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				 dataType: "json" 
+			 })
+			 .done(function(data) {
+				 console.log(data);
+			 })
+		 }); */
+		 
 
 		$(".btn").click(function() {
 			$("#menu,.page_cover,html").addClass("open");

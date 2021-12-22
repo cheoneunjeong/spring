@@ -640,6 +640,11 @@ public class Controller {
 //		
 //		return "/index";
 //	}
+	
+	@RequestMapping("/regSurvey2")
+	public String regSurvey2() {
+		return "/regSurvey";
+	}
 
 }
 

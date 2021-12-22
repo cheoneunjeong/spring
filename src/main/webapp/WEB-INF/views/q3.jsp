@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
 <hr>
 <br>
 <div class="dropdown">
@@ -14,17 +13,15 @@
 </div>
 <br>
 <br>
-<textarea class="text q" placeholder="제목 없는 질문"></textarea>
+<textarea class="text q" type="3" placeholder="제목 없는 질문"></textarea>
 <p id="q" style="display: none;">
 	<input type="radio" value="q1" />
-	<textarea class="text" placeholder=" 옵션1"></textarea>
-	<button type="button" id="insertA">v</button>
+	<textarea class="text a" placeholder=" 옵션1"></textarea>
 	<button type="button" class="del">삭제</button>
 </p>
 <p id="q">
 	<input type="radio" value="q1" />
-	<textarea class="text" placeholder=" 옵션1"></textarea>
-	<button type="button" id="insertA">v</button>
+	<textarea class="text a" placeholder=" 옵션1"></textarea>
 	<button type="button" class="del">삭제</button>
 </p>
 <p id="next_q"></p>
@@ -36,7 +33,6 @@
 	<input type="file" name="file" />
 </p>
 <p align="right">
-	<button type="button" id="insertQ">질문등록</button>
 	<button class="deleteQ">삭제</button>
 </p>
 
