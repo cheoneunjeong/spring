@@ -7,19 +7,27 @@ import org.springframework.web.multipart.MultipartFile;
 public class Question {
 
 	private int s_num;
-	private String question;
+	private String q;
 	private List<Answer> answers;
 	private String type;
 	private List<MultipartFile> file;
 	private String filename;
 
-	
-	public String getQuestion() {
-		return question;
+
+	public int getS_num() {
+		return s_num;
 	}
 
-	public void setQuestion(String question) {
-		this.question = question;
+	public void setS_num(int s_num) {
+		this.s_num = s_num;
+	}
+
+	public String getQ() {
+		return q;
+	}
+
+	public void setQ(String q) {
+		this.q = q;
 	}
 
 	public List<Answer> getAnswers() {

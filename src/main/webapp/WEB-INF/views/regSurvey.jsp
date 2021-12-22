@@ -200,7 +200,7 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text q" type="1" placeholder="질문"></textarea>
+			<textarea class="text q" s_num="1" type="1" placeholder="질문"></textarea>
 			<br>
 			<textarea class="text a" placeholder="단답형 텍스트"></textarea>
 			<p align="right">
@@ -225,7 +225,7 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text q" type="1" placeholder="질문"></textarea>
+			<textarea class="text q" s_num="1" type="1" placeholder="질문"></textarea>
 			<br>
 			<textarea class="text a" placeholder="단답형 텍스트"></textarea>
 			<p align="right">
@@ -249,23 +249,52 @@ div {
 	</div>
 
 	<script>
+	
+		let question = [];
 		let answers = [];
-		let questions = [];
+		let q;
 		
 		$(document).on('blur', '.a', function(){
 			let a = $(this).val();
 			if(!!a) {
-				answers.push(a);
+				answers.push([a,q]);
 				console.log(answers);
 			}
 		});
 		
 		$(document).on('blur', '.q', function(){
-			let q = $(this).val();
-			let t = $(this).attr("type");
+			q = $(this).val();
+			let type = $(this).attr("type");
+			let s_num = $(this).attr("s_num");
 			if(!!q) {
-				questions.push({q, t, answers});
-				console.log(questions);
+				question.push([q, type, s_num, answers]);
+				console.log(question);
+			}
+		});
+		
+		$('.a').on('focus', function() {
+			let prev = $(this).val();
+			if(!!prev) {
+				$('.a').on('change', function() {
+					const index = answers.indexOf(prev);
+					if (index > -1) {
+						answers.splice(index, 1);
+						}
+				})
+			}
+		});
+		
+		$('.q').on('focus', function() {
+			let prev = $(this).val();
+			if(!!prev) {
+				$('.q').on('change', function() {
+					for (let i = 0; i < question.length; i++) {
+						if(question[i][0] === prev) {
+							
+							question.splice(i, 1);
+						}
+					}
+				})
 			}
 		});
 		
@@ -273,11 +302,24 @@ div {
 			let survey = {
 					title: $('.t').val(),
 					disc: $('.d').val(),
-					question: questions
+					questions: question
+					
 			}
 			
+			
 			console.log(survey);
+		
+			 $.ajax({
+				 type:'post'
+					　　, contentType:'application/json'
+					　　, data: JSON.stringify(survey)
+					　　, url: '/regSurvey2'
+			 })
+			 .done(function() {
+				 console.log('success');
+			 })
 		});
+		
 	
 		/*  $(document).on('click', '#submit', function() {
 		

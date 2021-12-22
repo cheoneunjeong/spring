@@ -22,13 +22,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.spring.domain.Answer;
 import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
+import com.example.spring.domain.Question;
 import com.example.spring.domain.Reply;
 import com.example.spring.domain.Survey;
 import com.example.spring.domain.User;
@@ -642,7 +645,9 @@ public class Controller {
 //	}
 	
 	@RequestMapping("/regSurvey2")
-	public String regSurvey2() {
+	public String regSurvey2(@RequestBody Survey survey) {
+		
+		System.out.println(survey.getTitle());
 		return "/regSurvey";
 	}
 
