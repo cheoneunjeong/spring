@@ -173,13 +173,13 @@ div {
 	<div id="menu">
 		<div onclick="history.back();" class="close"></div>
 	</div>
-	<div class="quick">
+<!-- 	<div class="quick">
 		<ul class="quickmenu">
 			<li>
 				<button type="button" class="addquestion">+</button>
 			</li>
 		</ul>
-	</div>
+	</div> -->
 	<div class="out">
 		<h1 align="center">설문 등록</h1>
 		<br>
@@ -210,6 +210,7 @@ div {
 				<input type="file" name="file" />
 			</p>
 			<p align="right">
+				<button type="button" class="addquestion">+</button>
 				<button class="deleteQ">삭제</button>
 			</p>
 		</div>
@@ -235,6 +236,7 @@ div {
 				<input type="file" name="file" />
 			</p>
 			<p align="right">
+				<button type="button" class="addquestion">+</button>
 				<button class="deleteQ">삭제</button>
 			</p>
 		</div>
@@ -249,6 +251,92 @@ div {
 	</div>
 
 	<script>
+	
+/* 	$('.q').each(function(index) {
+		console.log('a');
+		
+	}); */
+	
+ 	let questions=[];
+	$(document).on('click','.addquestion', function() {
+		if(!!$(this).parent().parent().children('.q').val()) {
+ 			console.log($(this).parent().parent().children('.q').val()); 
+			let q = $(this).parent().parent().children('.q').val();
+			let t = $(this).parent().parent().children('.q').attr('type');
+			
+			$('.a').each(function(index) {
+				if($(this).parent().children('.q').val()==q){
+					let a= $(this).val();
+					console.log(a);
+					questions.answers.push(a);
+				}
+			})
+			
+			questions = [
+				
+					{q, t, answers : []}
+				];
+			
+			
+		}
+		console.log(questions);
+	}); 
+
+/* 	$(document).on('click', '#submit', function() {
+		let = survey = {
+				title: $('.t').val(),
+				disc : $('.d').val(),
+				questions : []
+		};
+		
+		$('.question').each(function(index) {
+			let question = {
+					q: {
+						qContent: $(this).children('.q').val(),
+						qType: $(this).children('.q').attr('type')
+					},
+					answers: []
+			}
+			
+			let tmp = $(this).children('.q').next().next();
+			if(tmp.hasClass("a")==true) {
+				$('.a').each(function(index) {
+					let answer={};
+					
+					answer.aContent = tmp.val();
+					question.answers.push(answer);
+					
+					tmp = tmp.next().next().next();
+					if(tmp.hasClass('a' == ))
+				}
+				)
+			}
+		})
+	}) */
+	
+/* 	$(document).on('click', '.addquestion', function(){
+		$.each(questions, function() {
+		
+		
+		
+		console.log($('.q').val());
+		if(!!$('.q').val() && questions.indexOf($('.q').val())==-1){
+			questions.push($('.q').val());
+			$.each(questions, function() {
+				let question = [];
+				if(!!$('.q').children('.a').val()) {
+					let answers=[];
+					answers.push($('.q').children('.a').val());
+				}
+				question.push(answers);
+			})
+		}
+		
+		console.log(questions);
+	})
+}); */
+	
+/* 	
 	
 		let question = [];
 		let answers = [];
@@ -299,6 +387,7 @@ div {
 		});
 		
 		$(document).on('click', '#submit', function () {
+			
 			let survey = {
 					title: $('.t').val(),
 					disc: $('.d').val(),
@@ -308,7 +397,7 @@ div {
 			
 			
 			console.log(survey);
-		
+			return false;
 			 $.ajax({
 				 type:'post'
 					　　, contentType:'application/json'
@@ -319,7 +408,7 @@ div {
 				 console.log('success');
 			 })
 		});
-		
+		 */
 	
 		/*  $(document).on('click', '#submit', function() {
 		
