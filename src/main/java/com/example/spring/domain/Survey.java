@@ -2,20 +2,21 @@ package com.example.spring.domain;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
+import lombok.Getter;
 
+@Getter
 public class Survey {
 
 	private String title;
 	private String disc;
 	private	List<Question> questions;
+	private	List<Answer> answers;
 	private int s_num;
 	private String writer;
 	private String datetime;
 	private int hit;
 	private int rownum;
 
-	
 	public String getTitle() {
 		return title;
 	}
@@ -65,4 +66,5 @@ public class Survey {
 		this.questions = questions;
 	}
 
+	
 }

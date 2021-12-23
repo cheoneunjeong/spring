@@ -50,21 +50,46 @@
 		SELECT count(*) count FROM survey where writer = #{s}
 	</select>	
 	
-	<insert id="reg" parameterType="Survey">  
+	<insert id="regSurvey" parameterType="Survey">  
         INSERT INTO	survey (
         	title,
         	disc,
-        	question,
-        	answer,
-        	writer,
-        	filename
+        	writer
       ) VALUES (
       		#{title},
       		#{disc},
-      		#{question},
-      		#{answer},
-      		#{writer},
-      		#{filename}
+      		#{writer}
          )
 	</insert>
+	
+	<insert id="regQuestion" parameterType="Survey">  
+       <foreach collection="questions" item="question" separator=" , ">
+	        INSERT INTO	question (
+	        	q,
+	        	t,
+	        	s_num
+	      ) VALUES 
+	      
+	      		(#{question.q}, #{question.t},
+	      		(select s_num FROM survey ORDER BY 	  s_num DESC
+							  LIMIT 1)
+	      		)
+      </foreach>
+	</insert>
+	
+	<insert id="regAnswer" parameterType="Survey">  
+       <foreach collection="answers" item="answer" separator=" , ">
+	        INSERT INTO	answer (
+	        	answer,
+	        	q
+	      ) VALUES 
+	      	(
+	      		#{answer.answer},
+	    </foreach>
+	    <foreach collection="questions" item="question" separator=" , ">
+	      		#{question.q}
+	      	)
+    	 </foreach>
+	</insert>
+	
 </mapper>

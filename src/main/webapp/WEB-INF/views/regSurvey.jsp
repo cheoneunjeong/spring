@@ -263,56 +263,48 @@ div {
  			console.log($(this).parent().parent().children('.q').val()); 
 			let q = $(this).parent().parent().children('.q').val();
 			let t = $(this).parent().parent().children('.q').attr('type');
-			
+	
 			$('.a').each(function(index) {
 				if($(this).parent().children('.q').val()==q){
 					let a= $(this).val();
 					console.log(a);
-					questions.answers.push(a);
+					let answers=[];
+					answers.push(a);
+
+					question= {q, t, answers};
+					questions.push(question);
 				}
 			})
-			
-			questions = [
-				
-					{q, t, answers : []}
-				];
-			
-			
 		}
 		console.log(questions);
 	}); 
-
-/* 	$(document).on('click', '#submit', function() {
-		let = survey = {
+	
+	
+	$(document).on('click', '#submit', function () {
+		
+		let survey = {
 				title: $('.t').val(),
-				disc : $('.d').val(),
-				questions : []
+				disc: $('.d').val(),
+				questions: questions,
+				answers: question.answers
 		};
 		
-		$('.question').each(function(index) {
-			let question = {
-					q: {
-						qContent: $(this).children('.q').val(),
-						qType: $(this).children('.q').attr('type')
-					},
-					answers: []
+		console.log(survey);
+		
+		let surveyresult = JSON.stringify(survey);
+		$.ajax({
+			method: "POST",
+			url: "/regSurvey2",
+			data: surveyresult,
+			contentType : "application/json",
+			success: function(data) {
+				let url = "/regSurvey";
+				location.replace(url);
 			}
-			
-			let tmp = $(this).children('.q').next().next();
-			if(tmp.hasClass("a")==true) {
-				$('.a').each(function(index) {
-					let answer={};
-					
-					answer.aContent = tmp.val();
-					question.answers.push(answer);
-					
-					tmp = tmp.next().next().next();
-					if(tmp.hasClass('a' == ))
-				}
-				)
-			}
-		})
-	}) */
+		})	
+	});
+		
+		
 	
 /* 	$(document).on('click', '.addquestion', function(){
 		$.each(questions, function() {

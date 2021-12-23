@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.example.spring.domain.Answer;
+import com.example.spring.domain.Question;
 import com.example.spring.domain.Survey;
 
 @Mapper
@@ -22,5 +24,9 @@ public interface SurveyMapper {
 
 	public int SearchPostCount_w(String s);
 
-	public void reg(Survey survey);
+	public void regSurvey(Survey survey);
+
+	public void regQuestion(Survey survey);
+
+	public void regAnswer(Survey survey);
 }

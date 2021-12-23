@@ -2,6 +2,8 @@ package com.example.spring.service;
 
 import java.util.List;
 
+import com.example.spring.domain.Answer;
+import com.example.spring.domain.Question;
 import com.example.spring.domain.Survey;
 
 public interface SurveyService {
@@ -18,5 +20,9 @@ public interface SurveyService {
 
 	public int SearchPostCount_w(String s);
 
-	public void reg(Survey survey);
+	public void regSurvey(Survey survey);
+
+	public void regQuestion(Survey survey);
+
+	public void regAnswer(Survey survey);
 }

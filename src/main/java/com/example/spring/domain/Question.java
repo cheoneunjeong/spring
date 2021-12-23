@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+
 public class Question {
 
 	private int s_num;
+	private int q_num;
 	private String q;
 	private List<Answer> answers;
-	private String type;
+	private String t;
 	private List<MultipartFile> file;
 	private String filename;
 
@@ -37,13 +39,12 @@ public class Question {
 	public void setAnswers(List<Answer> answers) {
 		this.answers = answers;
 	}
-
-	public String getType() {
-		return type;
+	public String getT() {
+		return t;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setT(String t) {
+		this.t = t;
 	}
 
 	public List<MultipartFile> getFile() {
@@ -61,6 +62,14 @@ public class Question {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	
+
+	public int getQ_num() {
+		return q_num;
+	}
+
+	public void setQ_num(int q_num) {
+		this.q_num = q_num;
+	}
+
 	
 }

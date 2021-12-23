@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.spring.domain.Answer;
+import com.example.spring.domain.Question;
 import com.example.spring.domain.Survey;
 import com.example.spring.mapper.SurveyMapper;
 
@@ -44,10 +46,23 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 
 	@Override
-	public void reg(Survey survey) {
-		surveymaper.reg(survey);
+	public void regSurvey(Survey survey) {
+		surveymaper.regSurvey(survey);
 		
 	}
+
+	@Override
+	public void regQuestion(Survey survey) {
+		surveymaper.regQuestion(survey);
+		
+	}
+
+	@Override
+	public void regAnswer(Survey survey) {
+		surveymaper.regAnswer(survey);
+		
+	}
+
 
 
 }
