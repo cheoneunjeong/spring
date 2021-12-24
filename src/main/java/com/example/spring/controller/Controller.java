@@ -581,9 +581,9 @@ public class Controller {
 
 		survey.setWriter(user.getUsername());
 		
-		surveyservice.regSurvey(survey);
-		surveyservice.regQuestion(survey);
-		surveyservice.regAnswer(survey);
+//		surveyservice.regSurvey(survey);
+//		surveyservice.regQuestion(survey);
+//		surveyservice.regAnswer(survey);
 		
 		System.out.println("success");
 	return "/regSurvey";	

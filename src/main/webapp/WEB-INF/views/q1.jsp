@@ -12,9 +12,8 @@
 </div>
 <br>
 <br>
-<textarea class="text q" type="1" placeholder="질문"></textarea>
+<textarea class="text q" type="1" placeholder="단답형 질문"></textarea>
 <br>
-<textarea class="text a" placeholder="단답형 텍스트"></textarea>
 <p align="right">
 	<input type="file" name="file" />
 </p>
@@ -22,5 +21,6 @@
 	<input type="file" name="file" />
 </p>
 <p align="right">
+	<button type="button" class="addquestion">+</button>
 	<button class="deleteQ">삭제</button>
 </p>

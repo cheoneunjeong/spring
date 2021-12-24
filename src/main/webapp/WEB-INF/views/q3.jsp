@@ -14,18 +14,12 @@
 <br>
 <br>
 <textarea class="text q" type="3" placeholder="제목 없는 질문"></textarea>
-<p id="q" style="display: none;">
+<p class='a' id="q">
 	<input type="radio" value="q1" />
-	<textarea class="text a" placeholder=" 옵션1"></textarea>
+	<textarea class="text" placeholder=" 옵션1"></textarea>
 	<button type="button" class="del">삭제</button>
 </p>
-<p id="q">
-	<input type="radio" value="q1" />
-	<textarea class="text a" placeholder=" 옵션1"></textarea>
-	<button type="button" class="del">삭제</button>
-</p>
-<p id="next_q"></p>
-<button type="button" class="add">옵션추가</button>
+<button type="button" class="add3">옵션추가</button>
 <p align="right">
 	<input type="file" name="file" />
 </p>
@@ -33,6 +27,7 @@
 	<input type="file" name="file" />
 </p>
 <p align="right">
+	<button type="button" class="addquestion">+</button>
 	<button class="deleteQ">삭제</button>
 </p>
 

@@ -156,15 +156,6 @@ div {
 	cursor: pointer;
 }
 
-.quick {
-	position: fixed;
-	top: 250px;
-	left: 250px;
-}
-
-.quickmenu {
-	list-style: none;
-}
 </style>
 
 <body>
@@ -173,13 +164,6 @@ div {
 	<div id="menu">
 		<div onclick="history.back();" class="close"></div>
 	</div>
-<!-- 	<div class="quick">
-		<ul class="quickmenu">
-			<li>
-				<button type="button" class="addquestion">+</button>
-			</li>
-		</ul>
-	</div> -->
 	<div class="out">
 		<h1 align="center">설문 등록</h1>
 		<br>
@@ -200,9 +184,8 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text q" s_num="1" type="1" placeholder="질문"></textarea>
+			<textarea class="text q" s_num="1" type="1" placeholder="단답형 질문"></textarea>
 			<br>
-			<textarea class="text a" placeholder="단답형 텍스트"></textarea>
 			<p align="right">
 				<input type="file" name="file" />
 			</p>
@@ -226,9 +209,8 @@ div {
 				</div>
 			</div>
 			<br> <br>
-			<textarea class="text q" s_num="1" type="1" placeholder="질문"></textarea>
+			<textarea class="text q" s_num="1" type="1" placeholder="단답형 질문"></textarea>
 			<br>
-			<textarea class="text a" placeholder="단답형 텍스트"></textarea>
 			<p align="right">
 				<input type="file" name="file" />
 			</p>
@@ -252,41 +234,53 @@ div {
 
 	<script>
 	
-/* 	$('.q').each(function(index) {
-		console.log('a');
-		
-	}); */
-	
  	let questions=[];
 	$(document).on('click','.addquestion', function() {
 		if(!!$(this).parent().parent().children('.q').val()) {
- 			console.log($(this).parent().parent().children('.q').val()); 
 			let q = $(this).parent().parent().children('.q').val();
 			let t = $(this).parent().parent().children('.q').attr('type');
 	
+			let answers=[];
 			$('.a').each(function(index) {
 				if($(this).parent().children('.q').val()==q){
-					let a= $(this).val();
-					console.log(a);
-					let answers=[];
-					answers.push(a);
-
-					question= {q, t, answers};
-					questions.push(question);
+					let a= $(this).children('.text').val();
+					if(!!a){
+						let answer = {a};
+						answers.push(answer);
+					}
 				}
 			})
+			question= {q, t, answers};
+			questions.push(question);
 		}
 		console.log(questions);
-	}); 
+	}); //질문추가시 이전질문 저장
 	
 	
 	$(document).on('click', '#submit', function () {
 		
+		if(!!$('.q').last().val()){
+			let q = $('.q').last().val();
+			let t = $('.q').last().attr('type');
+			
+			let answers=[];
+			$('.a').each(function(index) {
+				if($(this).parent().children('.q').val()==q){
+					let a= $(this).children('.text').val();
+					if(!!a){
+						let answer = {a};
+						answers.push(answer);
+					}
+				}
+			})
+			question= {q, t, answers};
+			questions.push(question);
+		}
+		
 		let survey = {
 				title: $('.t').val(),
 				disc: $('.d').val(),
-				questions: questions,
-				answers: question.answers
+				questions: questions
 		};
 		
 		console.log(survey);
@@ -296,133 +290,14 @@ div {
 			method: "POST",
 			url: "/regSurvey2",
 			data: surveyresult,
-			contentType : "application/json",
-			success: function(data) {
-				let url = "/regSurvey";
-				location.replace(url);
-			}
-		})	
-	});
-		
-		
-	
-/* 	$(document).on('click', '.addquestion', function(){
-		$.each(questions, function() {
-		
-		
-		
-		console.log($('.q').val());
-		if(!!$('.q').val() && questions.indexOf($('.q').val())==-1){
-			questions.push($('.q').val());
-			$.each(questions, function() {
-				let question = [];
-				if(!!$('.q').children('.a').val()) {
-					let answers=[];
-					answers.push($('.q').children('.a').val());
-				}
-				question.push(answers);
-			})
-		}
-		
-		console.log(questions);
-	})
-}); */
-	
-/* 	
-	
-		let question = [];
-		let answers = [];
-		let q;
-		
-		$(document).on('blur', '.a', function(){
-			let a = $(this).val();
-			if(!!a) {
-				answers.push([a,q]);
-				console.log(answers);
-			}
-		});
-		
-		$(document).on('blur', '.q', function(){
-			q = $(this).val();
-			let type = $(this).attr("type");
-			let s_num = $(this).attr("s_num");
-			if(!!q) {
-				question.push([q, type, s_num, answers]);
-				console.log(question);
-			}
-		});
-		
-		$('.a').on('focus', function() {
-			let prev = $(this).val();
-			if(!!prev) {
-				$('.a').on('change', function() {
-					const index = answers.indexOf(prev);
-					if (index > -1) {
-						answers.splice(index, 1);
-						}
-				})
-			}
-		});
-		
-		$('.q').on('focus', function() {
-			let prev = $(this).val();
-			if(!!prev) {
-				$('.q').on('change', function() {
-					for (let i = 0; i < question.length; i++) {
-						if(question[i][0] === prev) {
-							
-							question.splice(i, 1);
-						}
-					}
-				})
-			}
-		});
-		
-		$(document).on('click', '#submit', function () {
-			
-			let survey = {
-					title: $('.t').val(),
-					disc: $('.d').val(),
-					questions: question
-					
-			}
-			
-			
-			console.log(survey);
-			return false;
-			 $.ajax({
-				 type:'post'
-					　　, contentType:'application/json'
-					　　, data: JSON.stringify(survey)
-					　　, url: '/regSurvey2'
-			 })
-			 .done(function() {
+			contentType : "application/json"
+		})
+		.done(function() {
 				 console.log('success');
-			 })
-		});
-		 */
-	
-		/*  $(document).on('click', '#submit', function() {
+		})
+	}); //제출시 마지막질문 저장 후 , survey ->json 전송
 		
-			 let survey = {
-				 title: $('.t').val(),
-				 disc: $('.d').val(),
-				 question: questions 
-			 };
-			 
-			 $.ajax({
-				 url: "/regSurvey2",
-				 data: survey,
-				 method: "POST",
-				 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-				 dataType: "json" 
-			 })
-			 .done(function(data) {
-				 console.log(data);
-			 })
-		 }); */
-		 
-
+	
 		$(".btn").click(function() {
 			$("#menu,.page_cover,html").addClass("open");
 			window.location.hash = "#open";
@@ -450,12 +325,19 @@ div {
 				alert("fail");
 			})
 		}); //질문타입설정
-
-		$(document).on('click', '.add', function() {
-			$("#q").clone().prependTo('#next_q');
-			$('#q').show();
-		}); //옵션추가
-
+		
+		$(document).on('click', '.add3', function() {
+			$(this).before('<p class="a" id="q"><input type="radio" value="q1" /><textarea class="text" placeholder=" 옵션1"></textarea><button type="button" class="del">삭제</button></p>');
+		}); // 3옵션추가
+ 
+		$(document).on('click', '.add4', function() {
+			$(this).before('<p class="a" id="q"><input type="checkbox" value="q1" /><textarea class="text" placeholder=" 옵션1"></textarea><button type="button" class="del">삭제</button></p>');
+		}); // 4옵션추가
+		
+		$(document).on('click', '.add5', function() {
+			$(this).before('<p class="a" id="q"><textarea class="text" placeholder="옵션1"></textarea><button type="button" class="del">삭제</button></p');
+		}); // 5옵션추가
+		
 		$(document).on('click', '.del', function() {
 			$(this).parent().remove('#q');
 		}); //옵션삭제
@@ -465,9 +347,10 @@ div {
 		}); //질문삭제
 
 		$(document).on('click', '.addquestion', function() {
-			$("#question").clone().prependTo('#next');
-			$('#question').show();
+			$('#next').before('<div class="addnext"></div>');
+			$("#question").first().clone().prependTo($('.addnext').last()).show();
 		}); //질문추가
+		
 	</script>
 
 </body>
