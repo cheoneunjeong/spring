@@ -24,5 +24,11 @@ public interface SurveyService {
 
 	public void regQuestion(Survey survey);
 
+	public void regAnswer(Question q);
+
 	public void regAnswer(Survey survey);
+
+	public void regQuestion(Question q);
+
+	public void regAnswer(Answer a);
 }

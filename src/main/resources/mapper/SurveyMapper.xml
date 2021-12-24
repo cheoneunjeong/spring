@@ -62,34 +62,25 @@
          )
 	</insert>
 	
-	<insert id="regQuestion" parameterType="Survey">  
-       <foreach collection="questions" item="question" separator=" , ">
+	<insert id="regQuestion" parameterType="Question">  
 	        INSERT INTO	question (
 	        	q,
 	        	t,
 	        	s_num
 	      ) VALUES 
-	      
-	      		(#{question.q}, #{question.t},
-	      		(select s_num FROM survey ORDER BY 	  s_num DESC
-							  LIMIT 1)
+	      		(#{q}, #{t},
+	      		(select s_num FROM survey ORDER BY 	 s_num DESC  LIMIT 1)
 	      		)
-      </foreach>
 	</insert>
-	
-	<insert id="regAnswer" parameterType="Survey">  
-       <foreach collection="answers" item="answer" separator=" , ">
+
+ 	<insert id="regAnswer" parameterType="Answer">  
 	        INSERT INTO	answer (
-	        	answer,
-	        	q
+	        	a,
+	        	q_num
 	      ) VALUES 
-	      	(
-	      		#{answer.answer},
-	    </foreach>
-	    <foreach collection="questions" item="question" separator=" , ">
-	      		#{question.q}
-	      	)
-    	 </foreach>
+	      		(#{a},
+	      		(select q_num FROM question ORDER BY  q_num DESC  LIMIT 1)
+	      		)
 	</insert>
 	
 </mapper>

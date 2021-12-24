@@ -575,18 +575,26 @@ public class Controller {
 	@RequestMapping("/regSurvey2")
 	public String regSurvey2(Model model, @RequestBody Survey survey,
 							@AuthenticationPrincipal User user) {
-		
-		System.out.println(survey.getTitle());
-		System.out.println(survey.getAnswers());
 
 		survey.setWriter(user.getUsername());
 		
-//		surveyservice.regSurvey(survey);
-//		surveyservice.regQuestion(survey);
-//		surveyservice.regAnswer(survey);
+		surveyservice.regSurvey(survey);
 		
-		System.out.println("success");
-	return "/regSurvey";	
+		List<Question> list = survey.getQuestions();
+		for(Question q : list) {
+
+			surveyservice.regQuestion(q);
+			
+			List<Answer> a = q.getAnswers();
+			for(Answer A: a) {
+				if(A.getA()!=null && A.getA()!="") {
+
+					surveyservice.regAnswer(A);	
+				}
+			}	
+		}
+
+	return "/surveylist";	
 	}
 } 
 

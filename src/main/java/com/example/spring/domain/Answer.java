@@ -1,21 +1,16 @@
 package com.example.spring.domain;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 public class Answer {
 	
-	private String answer;
+	private String a;
 	private int q_num;
 
-	public String getAnswer() {
-		return answer;
+	public String getA() {
+		return a;
 	}
 
-	public void setAnswer(String answer) {
-		this.answer = answer;
+	public void setA(String a) {
+		this.a = a;
 	}
 
 	public int getQ_num() {

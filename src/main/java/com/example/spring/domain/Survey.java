@@ -10,7 +10,6 @@ public class Survey {
 	private String title;
 	private String disc;
 	private	List<Question> questions;
-	private	List<Answer> answers;
 	private int s_num;
 	private String writer;
 	private String datetime;
@@ -66,11 +65,4 @@ public class Survey {
 		this.questions = questions;
 	}
 
-	public List<Answer> getAnswers() {
-		return answers;
-	}
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
-	}
-	
 }

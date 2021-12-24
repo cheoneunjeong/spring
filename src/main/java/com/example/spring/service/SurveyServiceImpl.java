@@ -58,8 +58,25 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 
 	@Override
+	public void regAnswer(Question q) {
+		surveymaper.regAnswer(q);
+		
+	}
+
+	@Override
 	public void regAnswer(Survey survey) {
 		surveymaper.regAnswer(survey);
+	}
+
+	@Override
+	public void regQuestion(Question q) {
+		surveymaper.regQuestion(q);
+		
+	}
+
+	@Override
+	public void regAnswer(Answer a) {
+		surveymaper.regAnswer(a);
 		
 	}
 
