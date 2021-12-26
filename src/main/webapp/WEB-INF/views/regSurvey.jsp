@@ -231,59 +231,38 @@ div {
 		<button type="button" onclick="location.href='/surveylist'">돌아가기</button>
 		<button type="button" id="submit">등록</button>
 	</div>
-
-	<script>
-	
- 	let questions=[];
-	$(document).on('click','.addquestion', function() {
-		if(!!$(this).parent().parent().children('.q').val()) {
-			let q = $(this).parent().parent().children('.q').val();
-			let t = $(this).parent().parent().children('.q').attr('type');
-	
-			let answers=[];
-			$('.a').each(function(index) {
-				if($(this).parent().children('.q').val()==q){
-					let a= $(this).children('.text').val();
-					if(!!a){
-						let answer = {a};
-						answers.push(answer);
-					}
-				}
-			})
-			question= {q, t, answers};
-			questions.push(question);
-		}
-		console.log(questions);
-	}); //질문추가시 이전질문 저장
-	
-	
+<script>
+		
+	let questions=[];
 	$(document).on('click', '#submit', function () {
-		
-		if(!!$('.q').last().val()){
-			let q = $('.q').last().val();
-			let t = $('.q').last().attr('type');
-			
-			let answers=[];
-			$('.a').each(function(index) {
-				if($(this).parent().children('.q').val()==q){
-					let a= $(this).children('.text').val();
-					if(!!a){
-						let answer = {a};
-						answers.push(answer);
+
+		$('.q').each(function(index) {
+			if(!!$(this).val()){
+				let q=$(this).val();
+				let t = $(this).attr('type');
+				
+				let answers=[];
+				$('.a').each(function(index) {
+					if($(this).parent().children('.q').val()==q){
+						let a= $(this).children('.text').val();
+						if(!!a){
+							let answer = {a};
+							answers.push(answer);
+						}
 					}
-				}
-			})
-			question= {q, t, answers};
-			questions.push(question);
-		}
-		
-		let survey = {
-				title: $('.t').val(),
-				disc: $('.d').val(),
-				questions: questions
-		};
-		
-		console.log(survey);
+				})
+				question= {q, t, answers};
+				questions.push(question);
+			}
+		})
+			
+			let survey = {
+					title: $('.t').val(),
+					disc: $('.d').val(),
+					questions: questions
+			};
+			
+			console.log(survey);
 		
 		let surveyresult = JSON.stringify(survey);
 		$.ajax({
@@ -295,7 +274,7 @@ div {
 		.done(function() {
 				 console.log('success');
 		})
-	}); //제출시 마지막질문 저장 후 , survey ->json 전송
+	}); //제출시 데이터 저장 후 , survey ->json 전송
 		
 	
 		$(".btn").click(function() {
