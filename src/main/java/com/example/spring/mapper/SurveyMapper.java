@@ -38,7 +38,7 @@ public interface SurveyMapper {
 
 	public Survey getsurveyDetail(int s_num);
 
-	public List<Question> getquestionDetail(int s_num);
+	public List<Question> getquestionDetailR(@Param("s_num") int s_num, @Param("count") int count);
 
 	public List<Answer> getanswerDetail(int q_num);
 
@@ -47,4 +47,8 @@ public interface SurveyMapper {
 	public void deleteQuestion(int delid);
 
 	public void deleteAnswser(int q);
+
+	public int getquestionCount(int s_num);
+
+	public List<Question> getquestionDetail(int s_num);
 }

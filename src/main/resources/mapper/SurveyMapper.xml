@@ -9,7 +9,7 @@
 		FROM 				
 						survey ta, 
 					 (select @rownum := (select COUNT(*)-#{page}+1 from survey ta)) tb 
-		ORDER BY 	datetime asc
+		ORDER BY 	datetime desc
 
 		LIMIT  		#{page},3)a
 	</select>
@@ -26,7 +26,7 @@
 						(SELECT * FROM survey WHERE title LIKE #{s} ) ta, 
         				(SELECT @ROWNUM := (SELECT COUNT(*)-#{page}+1 
         				FROM (SELECT * FROM survey WHERE title LIKE #{s} ) ta)) tb
-		order BY 	DATETIME asc
+		order BY 	DATETIME desc
 		LIMIT #{page},3)a
 	</select>
 
@@ -38,16 +38,16 @@
 						(SELECT * FROM survey WHERE writer LIKE #{s} ) ta, 
         				(SELECT @ROWNUM := (SELECT COUNT(*)-#{page}+1 
         				FROM (SELECT * FROM survey WHERE writer LIKE #{s} ) ta)) tb
-		order BY 	DATETIME asc
+		order BY 	DATETIME desc
 		LIMIT #{page},3)a
 	</select>
 	
-	<select id="SearchPostCount_t" resultType="String">
-		SELECT count(*) count FROM survey where title = #{s}
+	<select id="SearchPostCount_t" parameterType="String" resultType="Integer">
+		SELECT count(*) count FROM survey where title like #{s}
 	</select>
 
-	<select id="SearchPostCount_w" resultType="String">
-		SELECT count(*) count FROM survey where writer = #{s}
+	<select id="SearchPostCount_w" parameterType="String" resultType="Integer">
+		SELECT count(*) count FROM survey where writer like #{s}
 	</select>	
 	
 	<insert id="regSurvey" parameterType="Survey">  
@@ -87,8 +87,12 @@
 		SELECT * FROM survey WHERE s_num = #{s_num}
 	</select>
 	
-	<select id="getquestionDetail" parameterType="Integer" resultType="Question">
-		SELECT * FROM question WHERE s_num = #{s_num}
+	<select id="getquestionDetailR" parameterType="map" resultType="Question">
+		SELECT (select @rownum := @rownum+1 )as rownum,tb.s_num, tb.q_num, tb.t, tb.q, tb.filename 
+		from
+				(SELECT @ROWNUM := (select COUNT(*)-#{count}+1 from question WHERE s_num = #{s_num}), ta.*
+				FROM (SELECT * FROM question WHERE s_num = #{s_num})ta)tb
+		ORDER BY q_num asc
 	</select>
 	
 	<select id="getanswerDetail" parameterType="Integer" resultType="Answer">
@@ -112,4 +116,12 @@
   		FROM			survey
    		WHERE			s_num = #{delid}
 	</delete>
+	
+	<select id="getquestionCount" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(*)+1 FROM question WHERE s_num = #{s_num}
+	</select>
+	
+	<select id="getquestionDetail" parameterType="Integer" resultType="Question">
+		SELECT * FROM question WHERE s_num = #{s_num}
+	</select>
 </mapper>

@@ -86,8 +86,8 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 
 	@Override
-	public List<Question> getquestionDetail(int s_num) {
-		return surveymaper.getquestionDetail(s_num);
+	public List<Question> getquestionDetailR(int s_num, int count) {
+		return surveymaper.getquestionDetailR(s_num,count);
 	}
 
 	@Override
@@ -106,6 +106,16 @@ public class SurveyServiceImpl implements SurveyService {
 	public void deleteAnswer(int q) {
 		surveymaper.deleteAnswser(q);
 		
+	}
+
+	@Override
+	public int getquestionCount(int s_num) {
+		return surveymaper.getquestionCount(s_num);
+	}
+
+	@Override
+	public List<Question> getquestionDetail(int s_num) {
+		return surveymaper.getquestionDetail(s_num);
 	}
 
 

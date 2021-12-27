@@ -53,7 +53,7 @@ table, td, th {
 	<c:forEach items="${qlist}" var="item" varStatus="status">
 
 		<tr>
-			<td>${item.q_num}. ${item.q}</td>
+			<td>${item.rownum}. ${item.q}</td>
 		</tr>
 		<tr>
 			<td colspan="2">

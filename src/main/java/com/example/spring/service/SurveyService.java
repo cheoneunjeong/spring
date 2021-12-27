@@ -34,11 +34,15 @@ public interface SurveyService {
 
 	public Survey getsurveyDetail(int s_num);
 
-	public List<Question> getquestionDetail(int s_num);
+	public List<Question> getquestionDetailR(int s_num, int count);
 
 	public List<Answer> getanswerDetail(int q_num);
 
 	public void deleteSurvey(int delid);
 
 	public void deleteAnswer(int q);
+
+	public int getquestionCount(int s_num);
+
+	public List<Question> getquestionDetail(int delid);
 }

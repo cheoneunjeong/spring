@@ -500,6 +500,7 @@ public class Controller {
 
 		int reqPage = 1; 
 		int page = 0;
+		Pagination pagination = new Pagination();
 		
 		if (f == null && search == null) {
 			if (reqPage_ != null) {
@@ -510,7 +511,6 @@ public class Controller {
 			List<Survey> list = surveyservice.getsurveylist(page);
 
 			int Count = surveyservice.getPostCount();
-			Pagination pagination = new Pagination();
 			pagination.init(Count, reqPage);
 
 			model.addAttribute("list", list);
@@ -519,8 +519,7 @@ public class Controller {
 		} else {
 
 			List<Survey> list = null;
-			int Count = 0;
-			
+			int Count;
 			if (reqPage_ != null) {
 				reqPage = Integer.parseInt(reqPage_);
 				page = (reqPage - 1) * 3;
@@ -536,9 +535,8 @@ public class Controller {
 				Count = surveyservice.SearchPostCount_w(s);
 			}
 
-			Pagination pagination = new Pagination();
 			pagination.init(Count, reqPage);
-
+			
 			model.addAttribute("list", list);
 			model.addAttribute("pagination", pagination);
 			model.addAttribute("f", f);
@@ -559,7 +557,8 @@ public class Controller {
 		List<Answer> answers = null;
 		
 		Survey survey = surveyservice.getsurveyDetail(s_num);
-		List<Question> qlist = surveyservice.getquestionDetail(s_num);
+		int count = surveyservice.getquestionCount(s_num);
+		List<Question> qlist = surveyservice.getquestionDetailR(s_num, count);
 		for(Question q : qlist) {
 			int q_num = q.getQ_num();
 			List<Answer> alist = surveyservice.getanswerDetail(q_num);
@@ -598,11 +597,6 @@ public class Controller {
 		return "/survey";
 	}
 
-	@RequestMapping("/addquestion")
-	public String addquestion() {
-		return "/add";
-	}
-	
 	@RequestMapping("/regSurvey2")
 	public String regSurvey2(Model model, @RequestBody Survey survey,
 							@AuthenticationPrincipal User user) {
@@ -629,24 +623,69 @@ public class Controller {
 	}
 	
 	@RequestMapping("/deleteSurvey")
-	public String deleteSurvey(Model model, int[] s_num,  SecurityContextHolderAwareRequestWrapper request) {
+	public String deleteSurvey(Model model, int[] delnum,  SecurityContextHolderAwareRequestWrapper request,
+								String f, String search, String reqPage_) {
 		
 		if (request.isUserInRole("ROLE_ADMIN")) {
-			for (int delid : s_num) {
-				List<Integer> qns = null;
-				List<Question> qs = surveyservice.getquestionDetail(delid);
-				for(Question q : qs) {
-					int q_num = q.getQ_num();
-					qns.add(q_num);
+			if(delnum != null) {
+				for (int delid : delnum) {
+					List<Question> qs = surveyservice.getquestionDetail(delid);
+					for(Question q : qs) {
+						int q_num = q.getQ_num();
+						surveyservice.deleteAnswer(q_num);
+					}
+					surveyservice.deleteSurvey(delid);
 				}
-				for(int q : qns) {
-					surveyservice.deleteAnswer(q);
+			}
+			
+			int reqPage = 1; 
+			int page = 0;
+			
+			if (f == null && search == null) {
+				if (reqPage_ != null) {
+					reqPage = Integer.parseInt(reqPage_);
+					page = (reqPage - 1) * 3;
 				}
-				surveyservice.deleteSurvey(delid);
+
+				List<Survey> list = surveyservice.getsurveylist(page);
+
+				int Count = surveyservice.getPostCount();
+				Pagination pagination = new Pagination();
+				pagination.init(Count, reqPage);
+
+				model.addAttribute("list", list);
+				model.addAttribute("pagination", pagination);
+			
+			} else {
+
+				List<Survey> list = null;
+				int Count = 0;
+				
+				if (reqPage_ != null) {
+					reqPage = Integer.parseInt(reqPage_);
+					page = (reqPage - 1) * 3;
+				}
+				
+				String s = "%" + search + "%";
+
+				if (f.equals("title")) {
+					list = surveyservice.search_t(s, page);
+					Count = surveyservice.SearchPostCount_t(s);
+				} else {
+					list = surveyservice.search_w(s, page);
+					Count = surveyservice.SearchPostCount_w(s);
+				}
+
+				Pagination pagination = new Pagination();
+				pagination.init(Count, reqPage);
+
+				model.addAttribute("list", list);
+				model.addAttribute("pagination", pagination);
+				model.addAttribute("f", f);
+				model.addAttribute("search", search);
 			}
 
-
-			return "redirect:/surveylist";
+			return "/surveylist";
 		}
 		else
 			return "/denied";

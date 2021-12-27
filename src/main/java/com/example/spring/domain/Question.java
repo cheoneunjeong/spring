@@ -14,6 +14,7 @@ public class Question {
 	private String t;
 	private List<MultipartFile> file;
 	private String filename;
+	private int rownum;
 
 
 	public int getS_num() {
@@ -69,6 +70,14 @@ public class Question {
 
 	public void setQ_num(int q_num) {
 		this.q_num = q_num;
+	}
+
+	public int getRownum() {
+		return rownum;
+	}
+
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
 	}
 
 	
