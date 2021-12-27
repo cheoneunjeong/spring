@@ -43,9 +43,9 @@ table, td, th {
 <br>
 <div>
 	<table>
-		<th>${survey.title}</th>
+		<th><input type="hidden" value="${survey.title}">${survey.title}</th>
 		<tr>
-			<td>${survey.disc}</td>
+			<td><input type="hidden" value="${survey.disc}">${survey.disc}</td>
 		</tr>
 	</table>
 <br><br>
@@ -53,21 +53,23 @@ table, td, th {
 	<c:forEach items="${qlist}" var="item" varStatus="status">
 
 		<tr>
-			<td>${item.rownum}. ${item.q}</td>
+			<td><input type="hidden" value="${item.rownum}">
+				<input type="hidden" value="${item.q}">
+				${item.rownum}. ${item.q}</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<c:choose>
 				<c:when test="${item.t == 1}">
-					 <textarea class="short" placeholder="내용을 입력해 주세요." ></textarea>
+					 <input type="text" type="1" class="short" placeholder="내용을 입력해 주세요." >
 				</c:when>
 				<c:when test="${item.t == 2}">
-					<textarea class="long" placeholder="내용을 입력해 주세요." ></textarea>
+					 <input type="text" type="2" class="long" placeholder="내용을 입력해 주세요." >
 				</c:when>
 				<c:when test="${item.t == 3}">
 				<c:forEach items="${item.answers}" var="answer" varStatus="status">
 					<p>
-						<input type="radio"/>
+						<input type="radio" type="3" value="${answer.a}"/>
 						<span>${answer.a}</span>
 					</p>
 				</c:forEach>
@@ -75,7 +77,7 @@ table, td, th {
 				<c:when test="${item.t == 4}">
 				<c:forEach items="${item.answers}" var="answer" varStatus="status">
 					<p>
-						<input type="checkbox"/>
+						<input type="checkbox" type="4" value="${answer.a}"/>
 						<span>${answer.a}</span>
 					</p>
 				</c:forEach>
@@ -84,7 +86,7 @@ table, td, th {
 				<p>
 						<select>
 				<c:forEach items="${item.answers}" var="answer" varStatus="status">
-							<option value="${answer.a_num}">${answer.a}</option>
+							<option type="4" value="${answer.a}">${answer.a}</option>
 					
 				</c:forEach>
 					</select>
