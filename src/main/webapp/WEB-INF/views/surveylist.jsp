@@ -64,7 +64,7 @@ li {
 	</div>
 	<br>
 	<div>
-		<form action="/" method="post">
+		<form action="/deleteSurvey" method="post">
 			<table>
 				<tr>
 					<th align="center" width="5%">No.</th>
@@ -79,7 +79,7 @@ li {
 
 					<tr>
 						<td>${item.rownum}</td>
-						<td><a href="/survey/?s_num=${item.s_num}">
+						<td><a href="/survey?s_num=${item.s_num}">
 							
 								${item.title}</a></td>
 						<td>${item.writer}</td>

@@ -80,6 +80,34 @@ public class SurveyServiceImpl implements SurveyService {
 		
 	}
 
+	@Override
+	public Survey getsurveyDetail(int s_num) {
+		return surveymaper.getsurveyDetail(s_num);
+	}
+
+	@Override
+	public List<Question> getquestionDetail(int s_num) {
+		return surveymaper.getquestionDetail(s_num);
+	}
+
+	@Override
+	public List<Answer> getanswerDetail(int q_num) {
+		return surveymaper.getanswerDetail(q_num);
+	}
+
+	@Override
+	public void deleteSurvey(int delid) {
+		surveymaper.deleteQuestion(delid);
+		surveymaper.deleteSurvey(delid);
+		
+	}
+
+	@Override
+	public void deleteAnswer(int q) {
+		surveymaper.deleteAnswser(q);
+		
+	}
+
 
 
 }

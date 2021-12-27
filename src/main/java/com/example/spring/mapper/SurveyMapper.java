@@ -35,4 +35,16 @@ public interface SurveyMapper {
 	public void regQuestion(Question q);
 
 	public void regAnswer(Answer a);
+
+	public Survey getsurveyDetail(int s_num);
+
+	public List<Question> getquestionDetail(int s_num);
+
+	public List<Answer> getanswerDetail(int q_num);
+
+	public void deleteSurvey(int delid);
+
+	public void deleteQuestion(int delid);
+
+	public void deleteAnswser(int q);
 }

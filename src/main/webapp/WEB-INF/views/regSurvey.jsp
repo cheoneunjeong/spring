@@ -273,6 +273,7 @@ div {
 		})
 		.done(function() {
 				 console.log('success');
+				 location.href="/surveylist";
 		})
 	}); //제출시 데이터 저장 후 , survey ->json 전송
 		

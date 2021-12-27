@@ -3,9 +3,11 @@ package com.example.spring.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -17,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -82,6 +85,72 @@ public class Controller {
 		userservice.createAuthorities(user);
 
 		return "/login";
+	}
+	
+	@RequestMapping("/userlist")
+	public String userlist(Model model, String page_, String[] mids , String ids,
+			@AuthenticationPrincipal User user) {	
+		
+		if(mids != null) {
+		
+			String[] allId = ids.trim().split(" ");
+			
+			List<String> Mids= Arrays.asList(mids);
+			List<String> cids_ = new ArrayList<>(Arrays.asList(allId));
+			cids_.removeAll(Mids);
+			String[] cids = cids_.toArray(new String[0]);
+			
+			for(String id : mids) {
+				User u = userservice.getUser(id);
+				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN"));
+				userservice.createAuthorities(u);
+			}
+			for(String id : cids) {
+				User u = userservice.getUser(id);
+				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
+				userservice.deleteAuth(id);
+			}
+		} else if(ids != null){
+		
+			String[] allId = ids.trim().split(" ");
+			for(String id : allId) {
+				User u = userservice.getUser(id);
+				u.setAuthorities(AuthorityUtils.NO_AUTHORITIES);
+				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
+				userservice.deleteAuth(id);
+			}
+		}
+		
+		int p = 0;
+		if(page_ == null) {
+			page_ = "1";
+			page = Integer.parseInt(page_);
+			}
+		else {
+			page = Integer.parseInt(page_);
+			p = (page-1)*3;
+		}
+		List<User> list = userservice.getuserlist(p);
+		
+		int userCount = userservice.getuserCount();
+		Pagination pagination = new Pagination();
+		pagination.init(userCount, page);
+
+		for(User u : list) {
+			String id = u.getUsername();
+			UserDetails details = userservice.loadUserByUsername(id);
+			if (details != null && details.getAuthorities().stream()
+			      .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+				u.setU_auth(true);
+			}
+		}
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("userCount", userCount);
+
+		return "/userlist";
+
 	}
 
 	@RequestMapping(value = "/login")
@@ -161,6 +230,18 @@ public class Controller {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		
+		SecurityContext context = SecurityContextHolder.getContext();
+
+		Authentication authentication = context.getAuthentication();
+
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+		Iterator<? extends GrantedAuthority> iter = authorities.iterator(); 
+		while (iter.hasNext()) { 
+			GrantedAuthority auth = iter.next();
+			System.out.println(auth.getAuthority()); 
+			}
 
 		return "/regdo";
 	}
@@ -412,71 +493,6 @@ public class Controller {
 			return "/denied";
 	}
 
-	@RequestMapping("/userlist")
-	public String userlist(Model model, String page_, String[] mids , String ids,
-			@AuthenticationPrincipal User user) {	
-		
-		if(mids != null) {
-		
-			String[] allId = ids.trim().split(" ");
-			
-			List<String> Mids= Arrays.asList(mids);
-			List<String> cids_ = new ArrayList<>(Arrays.asList(allId));
-			cids_.removeAll(Mids);
-			String[] cids = cids_.toArray(new String[0]);
-			
-			for(String id : mids) {
-				User u = userservice.getUser(id);
-				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN"));
-				userservice.createAuthorities(u);
-			}
-			for(String id : cids) {
-				User u = userservice.getUser(id);
-				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
-				userservice.deleteAuth(id);
-			}
-		} else if(ids != null){
-		
-			String[] allId = ids.trim().split(" ");
-			for(String id : allId) {
-				User u = userservice.getUser(id);
-				u.setAuthorities(AuthorityUtils.NO_AUTHORITIES);
-				u.setAuthorities(AuthorityUtils.createAuthorityList("ROLE_USER"));
-				userservice.deleteAuth(id);
-			}
-		}
-		
-		int p = 0;
-		if(page_ == null) {
-			page_ = "1";
-			page = Integer.parseInt(page_);
-			}
-		else {
-			page = Integer.parseInt(page_);
-			p = (page-1)*3;
-		}
-		List<User> list = userservice.getuserlist(p);
-		
-		int userCount = userservice.getuserCount();
-		Pagination pagination = new Pagination();
-		pagination.init(userCount, page);
-
-		for(User u : list) {
-			String id = u.getUsername();
-			UserDetails details = userservice.loadUserByUsername(id);
-			if (details != null && details.getAuthorities().stream()
-			      .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-				u.setU_auth(true);
-			}
-		}
-		
-		model.addAttribute("list", list);
-		model.addAttribute("pagination", pagination);
-		model.addAttribute("userCount", userCount);
-
-		return "/userlist";
-
-	}
 	
 	@Autowired SurveyService surveyservice;
 	@RequestMapping("/surveylist")
@@ -539,7 +555,22 @@ public class Controller {
 	}
 	
 	@RequestMapping("/survey")
-	public String survey(Model model, String s_num) {
+	public String survey(Model model, int s_num) {
+		List<Answer> answers = null;
+		
+		Survey survey = surveyservice.getsurveyDetail(s_num);
+		List<Question> qlist = surveyservice.getquestionDetail(s_num);
+		for(Question q : qlist) {
+			int q_num = q.getQ_num();
+			List<Answer> alist = surveyservice.getanswerDetail(q_num);
+			q.setAnswers(alist);
+		}
+
+		
+		model.addAttribute("survey",survey);
+		model.addAttribute("qlist", qlist);
+		model.addAttribute("answers", answers);
+		
 		return "/survey";
 	}
 	
@@ -596,5 +627,30 @@ public class Controller {
 
 	return "/surveylist";	
 	}
+	
+	@RequestMapping("/deleteSurvey")
+	public String deleteSurvey(Model model, int[] s_num,  SecurityContextHolderAwareRequestWrapper request) {
+		
+		if (request.isUserInRole("ROLE_ADMIN")) {
+			for (int delid : s_num) {
+				List<Integer> qns = null;
+				List<Question> qs = surveyservice.getquestionDetail(delid);
+				for(Question q : qs) {
+					int q_num = q.getQ_num();
+					qns.add(q_num);
+				}
+				for(int q : qns) {
+					surveyservice.deleteAnswer(q);
+				}
+				surveyservice.deleteSurvey(delid);
+			}
+
+
+			return "redirect:/surveylist";
+		}
+		else
+			return "/denied";
+	}
+
 } 
 

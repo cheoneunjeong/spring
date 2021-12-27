@@ -1,4 +1,3 @@
 뷰 -응답하기, 결과보기 버튼
-
-jsp
-삭제시 배열에도 삭제
+list rownum
+view p_num
