@@ -5,7 +5,6 @@ import java.util.List;
 import com.example.spring.domain.Answer;
 import com.example.spring.domain.Question;
 import com.example.spring.domain.SAnswer;
-import com.example.spring.domain.SQuestion;
 import com.example.spring.domain.Submission;
 import com.example.spring.domain.Survey;
 
@@ -50,8 +49,6 @@ public interface SurveyService {
 	public List<Question> getquestionDetail(int delid);
 
 	public void regSubmission(Submission submission);
-
-	public void regSQuestion(SQuestion q);
 
 	public void regSAnswer(SAnswer a);
 }

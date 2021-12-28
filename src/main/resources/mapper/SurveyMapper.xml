@@ -138,26 +138,20 @@
       		#{writer}
          )
 	</insert>
-	
-	<insert id="regSQuestion" parameterType="SQuestion">  
-        INSERT INTO	squestion (
+
+	<insert id="regSAnswer" parameterType="SAnswer">  
+        INSERT INTO	sanswer (
+        	a,
+        	s_num,
         	q,
         	t,
         	sub_num
       ) VALUES (
-      		#{q},
-      		#{t},
- 			(select sub_num FROM submission ORDER BY sub_num  DESC LIMIT 1)
-         )
-	</insert>
-	
-	<insert id="regSAnswer" parameterType="SAnswer">  
-        INSERT INTO	sanswer (
-        	a,
-        	que_num
-      ) VALUES (
       		#{a},
- 			(select que_num FROM squestion ORDER BY que_num  DESC LIMIT 1)
+      		#{s_num},
+ 			#{q},
+ 			#{t},
+ 			(select sub_num FROM submission ORDER BY  sub_num DESC  LIMIT 1)
          )
 	</insert>
 </mapper>

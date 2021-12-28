@@ -9,6 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 	crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
 <style>
 div {
 	width: 60%;
@@ -20,11 +21,18 @@ table {
 	margin-right: auto;
 }
 
-table, td, th {
+table {
 	border-collapse: collapse;
 	border: 1px solid black;
-	width: 100%;
+	width : 100%;
 	height: 50px;
+}
+
+
+td, th {
+	border-collapse: collapse;
+	border: 1px solid black;
+	height: 50px; 
 }
 
 .short {
@@ -46,24 +54,20 @@ table, td, th {
 	<br>
 	<div>
 		<table>
-			<th><input type="hidden">제목</th>
+			<th ><input type="hidden">제목</th>
 			<tr>
 				<td><input type="hidden">설명</td>
 			</tr>
 		</table>
 		<br>
 		<br>
-		<table>
-				<tr>
-					<td>
-						<input type="hidden">
-						번호. 질문</td>
-						<td>응답 -개</td>
-				</tr>
-				<tr>
-					<td> 비율표</td>
-				</tr>
-		</table>
+	</div>
+	<div>
+		<c:forEach items="${list}" var="item" varStatus="status"></c:forEach>
+		<p>번호. 질문</p>
+		<p>응답 -개</p>
+		
+		
 	</div>
 		<br>
 </body>

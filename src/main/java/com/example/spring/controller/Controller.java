@@ -37,7 +37,6 @@ import com.example.spring.domain.Pagination;
 import com.example.spring.domain.Question;
 import com.example.spring.domain.Reply;
 import com.example.spring.domain.SAnswer;
-import com.example.spring.domain.SQuestion;
 import com.example.spring.domain.Submission;
 import com.example.spring.domain.Survey;
 import com.example.spring.domain.User;
@@ -697,23 +696,27 @@ public class Controller {
 		
 		surveyservice.regSubmission(submission);
 		
-		List<SQuestion> list = submission.getQuestions();
-		for(SQuestion q : list) {
-			surveyservice.regSQuestion(q);
-			
-			List<SAnswer> A = q.getAnswers();
-			for(SAnswer a : A) {
-				if(a.getA()!=null && a.getA()!="") {
-					surveyservice.regSAnswer(a);
-				}
-			}
+		List<SAnswer> list = submission.getAnswers();
+		for(SAnswer a : list) {
+			if(a.getA()!=null && a.getA()!="")
+				surveyservice.regSAnswer(a);
 		}
-		
+
 		return "/surveylist";
 	}
 	
 	@RequestMapping("/result")
-	public String result() {
+	public String result(Model model, int s_num) {
+		
+		/*
+		 * int subCount = surveyservice.getSubmissionCount(s_num); //응답갯수
+		 * 
+		 * Survey survey = surveyservice.getsurveyDetail(s_num); ArrayList<Question>
+		 * list = survey.getQuestions(); ArrayList<String> questions; //질문리스트
+		 * for(Question q: list ) { String que = q.getQ(); questions.add(que); }
+		 * List<SAnswer> answers = surveyservice.getSAnswers(s_num); //응답리스트
+		 * 
+		 */
 		return "/result";
 	}
 

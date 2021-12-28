@@ -109,17 +109,18 @@ table, td, th {
 		<br>
 		<p align="right">
 			<button type="button" id="submit">제출하기</button>
-			<button type="button" onclick="location.href='/result'">결과보기</button>
+			<button type="button" onclick="location.href='/result?s_num=${survey.s_num}'">결과보기</button>
 		</p>
 	</div>
 
 	<script>
-		let questions = [];
+	
 		$(document).on(
 				'click',
 				'#submit',
 				function() {
-
+						let s_num = $('.s_num').attr('s_num');
+						let answers = [];
 					$('.q').each(
 							function(index) {
 								let q = $(this).attr('q');
@@ -128,44 +129,41 @@ table, td, th {
 								console.log(q);
 								console.log(q_num);
 
-								let answers = [];
 								 $('.a').each(function(index) {
 									if($(this).attr('q_num')==q_num) {
 										 let a;
 										 let answer;
 										 if(t=='1' || t=='2') {
 										 a= $(this).val();
-										 answer={a};
+										 answer={a , s_num, q, t};
 										 answers.push(answer);
 										 }
 										 else if(t=='3') {
 										 a=$("input[name='score']:checked").val();
-										 answer={a};
+										 answer={a , s_num, q, t};
 										 answers.push(answer);
 										 }
 										 else if(t=='4') {
 											$("input:checkbox[name=number]:checked").each(function() {
 												 a=$(this).val();
-										 answer={a};
+										 answer={a , s_num, q, t};
 										 answers.push(answer);
 											})
 										 }
 										 else if(t=='5') {
 										 a= $("#dropdown option:selected").val();
-										 answer={a};
+										 answer={a , s_num, q, t};
 										 answers.push(answer);
 										 }
 									}
 								 })
-								 question={q, t, answers};
-								 questions.push(question);
 							})
 
 					 let submission= {
-					 s_num : $('.s_num').attr('s_num'),
+					 s_num : s_num,
 					 title : $('.title').attr('title'),
 					 disc : $('.disc').attr('disc'),
-					 questions : questions
+					 answers : answers
 					 };
 					 console.log(submission); 
 					 
