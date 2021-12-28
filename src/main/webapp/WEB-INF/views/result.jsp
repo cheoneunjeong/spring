@@ -62,7 +62,7 @@ table, td, th {
 			<c:forEach items="${a}" var="a" varStatus="status">
 				 <c:if test="${a.q_num eq q.q_num }"> 
             		 <c:if test="${a.t eq '1' || a.t eq '2' }">
-            			<p>${a.a}</p> 
+            			<p>- ${a.a}</p> 
             		</c:if>
 					<c:if test="${a.t eq '3'}">
             			<div style="width: 55%; height: 55%">
