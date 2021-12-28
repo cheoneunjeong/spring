@@ -1,14 +1,12 @@
 package com.example.spring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.spring.domain.Answer;
 import com.example.spring.domain.Question;
-<<<<<<< HEAD
 import com.example.spring.domain.SAnswer;
 import com.example.spring.domain.Submission;
-=======
->>>>>>> parent of ca29ac2 (finish regSubmission)
 import com.example.spring.domain.Survey;
 
 public interface SurveyService {
@@ -50,11 +48,13 @@ public interface SurveyService {
 	public int getquestionCount(int s_num);
 
 	public List<Question> getquestionDetail(int delid);
-<<<<<<< HEAD
 
 	public void regSubmission(Submission submission);
 
 	public void regSAnswer(SAnswer a);
-=======
->>>>>>> parent of ca29ac2 (finish regSubmission)
+
+	public int getsubmissionCount(int s_num);
+
+	public List<SAnswer> getSAnswers(int s_num);
+
 }

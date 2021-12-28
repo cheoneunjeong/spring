@@ -124,7 +124,6 @@
 	<select id="getquestionDetail" parameterType="Integer" resultType="Question">
 		SELECT * FROM question WHERE s_num = #{s_num}
 	</select>
-<<<<<<< HEAD
 	
 	<insert id="regSubmission" parameterType="Submission">  
         INSERT INTO	submission (
@@ -143,18 +142,25 @@
 	<insert id="regSAnswer" parameterType="SAnswer">  
         INSERT INTO	sanswer (
         	a,
-        	s_num,
-        	q,
         	t,
+        	q_num,
+        	s_num,
         	sub_num
       ) VALUES (
       		#{a},
+      		#{t},
+      		#{q_num},
       		#{s_num},
- 			#{q},
- 			#{t},
- 			(select sub_num FROM submission ORDER BY  sub_num DESC  LIMIT 1)
+      		(select sub_num FROM submission ORDER BY sub_num  DESC LIMIT 1)
          )
 	</insert>
-=======
->>>>>>> parent of ca29ac2 (finish regSubmission)
+	
+	<select id="getsubmissionCount" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(*) FROM submission WHERE s_num = #{s_num}
+	</select>
+	
+	<select id="getSAnswers" parameterType="Integer" resultType="SAnswer">
+		SELECT *, COUNT(a) AS cnt FROM sanswer where s_num = #{s_num} GROUP BY a
+	</select>
+	
 </mapper>

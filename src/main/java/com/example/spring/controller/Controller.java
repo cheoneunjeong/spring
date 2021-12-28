@@ -3,7 +3,6 @@ package com.example.spring.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.spring.domain.Answer;
@@ -36,11 +33,8 @@ import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
 import com.example.spring.domain.Question;
 import com.example.spring.domain.Reply;
-<<<<<<< HEAD
 import com.example.spring.domain.SAnswer;
 import com.example.spring.domain.Submission;
-=======
->>>>>>> parent of ca29ac2 (finish regSubmission)
 import com.example.spring.domain.Survey;
 import com.example.spring.domain.User;
 import com.example.spring.service.BoardService;
@@ -596,11 +590,6 @@ public class Controller {
 		}
 		return q;
 	}
-	
-	@RequestMapping("/submit")
-	public String submit(String s_num) {
-		return "/survey";
-	}
 
 	@RequestMapping("/regSurvey2")
 	public String regSurvey2(Model model, @RequestBody Survey survey,
@@ -695,7 +684,6 @@ public class Controller {
 		else
 			return "/denied";
 	}
-<<<<<<< HEAD
 	
 	@RequestMapping("/submit")
 	public String submit(Model model, @RequestBody Submission submission,
@@ -704,32 +692,35 @@ public class Controller {
 		submission.setWriter(user.getUsername());
 		
 		surveyservice.regSubmission(submission);
-		
 		List<SAnswer> list = submission.getAnswers();
-		for(SAnswer a : list) {
-			if(a.getA()!=null && a.getA()!="")
-				surveyservice.regSAnswer(a);
+		for(SAnswer a:list) {
+			surveyservice.regSAnswer(a);
 		}
-
+		
+		
 		return "/surveylist";
 	}
 	
 	@RequestMapping("/result")
 	public String result(Model model, int s_num) {
 		
-		/*
-		 * int subCount = surveyservice.getSubmissionCount(s_num); //응답갯수
-		 * 
-		 * Survey survey = surveyservice.getsurveyDetail(s_num); ArrayList<Question>
-		 * list = survey.getQuestions(); ArrayList<String> questions; //질문리스트
-		 * for(Question q: list ) { String que = q.getQ(); questions.add(que); }
-		 * List<SAnswer> answers = surveyservice.getSAnswers(s_num); //응답리스트
-		 * 
-		 */
+		int count = surveyservice.getsubmissionCount(s_num); //응답갯수
+		
+		Survey survey = surveyservice.getsurveyDetail(s_num); //survey정보
+		
+		List<Question> q = surveyservice.getquestionDetail(s_num);
+		List<SAnswer> a = surveyservice.getSAnswers(s_num);  //sanswer정보
+//		List<SAnswer> aCount = surveyservice.getAcount(s_num);
+
+		
+		model.addAttribute("count", count);
+		model.addAttribute("survey", survey);
+		model.addAttribute("q", q);
+		model.addAttribute("a", a);
+
+		
+	
 		return "/result";
 	}
-=======
->>>>>>> parent of ca29ac2 (finish regSubmission)
 
 } 
-

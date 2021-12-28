@@ -12,37 +12,31 @@ div {
 	width: 60%;
 	margin: 0 auto;
 }
-
 table tr, th, td {
 	border: 1px solid #444444;
 }
-
 table {
 	border-collapse: collapse;
 	border-top: 3px solid #168;
 	margin: auto;
 	width: 100%;
 }
-
 th {
 	color: #168;
 	background: f0f6f9;
 	text-align: center;
 	padding: 10px;
 }
-
 td {
 	color: #444444;
 	padding: 8px;
 	text-align: left;
 }
-
 ul {
 	width: 600px;
 	height: 50px;
 	margin: 50px auto;
 }
-
 li {
 	list-style: none;
 	text-align: center;

@@ -1,5 +1,6 @@
 package com.example.spring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.spring.domain.Answer;
 import com.example.spring.domain.Question;
-<<<<<<< HEAD
 import com.example.spring.domain.SAnswer;
 import com.example.spring.domain.Submission;
-=======
->>>>>>> parent of ca29ac2 (finish regSubmission)
 import com.example.spring.domain.Survey;
 import com.example.spring.mapper.SurveyMapper;
 
@@ -123,7 +121,6 @@ public class SurveyServiceImpl implements SurveyService {
 		return surveymaper.getquestionDetail(s_num);
 	}
 
-<<<<<<< HEAD
 	@Override
 	public void regSubmission(Submission submission) {
 		surveymaper.regSubmission(submission);
@@ -135,8 +132,16 @@ public class SurveyServiceImpl implements SurveyService {
 		surveymaper.regSAnswer(a);
 		
 	}
-=======
 
->>>>>>> parent of ca29ac2 (finish regSubmission)
+	@Override
+	public int getsubmissionCount(int s_num) {
+		return surveymaper.getsubmissionCount(s_num);
+	}
+
+	@Override
+	public List<SAnswer> getSAnswers(int s_num) {
+		return surveymaper.getSAnswers(s_num);
+	}
+
 
 }

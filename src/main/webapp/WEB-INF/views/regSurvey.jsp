@@ -13,12 +13,10 @@
 html.open {
 	overflow: hidden;
 }
-
 div {
 	width: 100%;
 	margin: 0 auto;
 }
-
 .btn {
 	width: 50px;
 	height: 50px;
@@ -33,7 +31,6 @@ div {
 	background-position: center;
 	cursor: pointer;
 }
-
 .close {
 	width: 50px;
 	height: 50px;
@@ -47,7 +44,6 @@ div {
 	background-position: center;
 	cursor: pointer;
 }
-
 #menu {
 	width: 150px;
 	height: 100%;
@@ -63,15 +59,12 @@ div {
 	-moz-transition: All 0.2s ease;
 	-o-transition: All 0.2s ease;
 }
-
 #menu.open {
 	right: 0px;
 }
-
 .page_cover.open {
 	display: block;
 }
-
 .page_cover {
 	width: 100%;
 	height: 100%;
@@ -82,19 +75,16 @@ div {
 	z-index: 4;
 	display: none;
 }
-
 .out {
 	width: 100%;
 	text-align: center;
 	border: none;
 	margin: 15px;
 }
-
 .in {
 	width: 50%;
 	border: none;
 }
-
 .title {
 	width: 50%;
 	height: 2em;
@@ -102,19 +92,16 @@ div {
 	resize: none;
 	font-size: 30px;
 }
-
 .text {
 	width: 50%;
 	height: 2em;
 	border: none;
 	resize: none;
 }
-
 .dropdown {
 	position: relative;
 	left: 1px;
 }
-
 .dropbtn {
 	border: 1px solid rgb(37, 37, 37);
 	border-radius: 4px;
@@ -125,7 +112,6 @@ div {
 	position: absolute;
 	right: 0px;
 }
-
 .dropdown-content {
 	display: none;
 	position: absolute;
@@ -135,7 +121,6 @@ div {
 	background-color: #f9f9f9;
 	min-width: 200px;
 }
-
 .dropdown-content a {
 	display: block;
 	text-decoration: none;
@@ -143,19 +128,15 @@ div {
 	font-size: 12px;
 	padding: 12px 20px;
 }
-
 .dropdown-content a:hover {
 	background-color: #ececec
 }
-
 .dropdown:hover .dropdown-content {
 	display: block;
 }
-
 .select {
 	cursor: pointer;
 }
-
 </style>
 
 <body>
@@ -235,7 +216,6 @@ div {
 		
 	let questions=[];
 	$(document).on('click', '#submit', function () {
-
 		$('.q').each(function(index) {
 			if(!!$(this).val()){
 				let q=$(this).val();
@@ -282,17 +262,14 @@ div {
 			$("#menu,.page_cover,html").addClass("open");
 			window.location.hash = "#open";
 		});
-
 		window.onhashchange = function() {
 			if (location.hash != "#open") {
 				$("#menu,.page_cover,html").removeClass("open");
 			}
 		}; //상단메뉴
-
 		$(document).on('click', '.select', function() {
 			let number = $(this).attr("num");
 			let p = $(this).parent().parent().parent();
-
 			$.ajax({
 				method : "POST",
 				url : "/selectQuestion",
@@ -321,11 +298,9 @@ div {
 		$(document).on('click', '.del', function() {
 			$(this).parent().remove('#q');
 		}); //옵션삭제
-
 		$(document).on('click', '.deleteQ', function() {
 			$(this).parent().parent().remove();
 		}); //질문삭제
-
 		$(document).on('click', '.addquestion', function() {
 			$('#next').before('<div class="addnext"></div>');
 			$("#question").first().clone().prependTo($('.addnext').last()).show();
