@@ -124,4 +124,40 @@
 	<select id="getquestionDetail" parameterType="Integer" resultType="Question">
 		SELECT * FROM question WHERE s_num = #{s_num}
 	</select>
+	
+	<insert id="regSubmission" parameterType="Submission">  
+        INSERT INTO	submission (
+        	s_num,
+        	title,
+        	disc,
+        	writer
+      ) VALUES (
+      		#{s_num},
+      		#{title},
+      		#{disc},
+      		#{writer}
+         )
+	</insert>
+	
+	<insert id="regSQuestion" parameterType="SQuestion">  
+        INSERT INTO	squestion (
+        	q,
+        	t,
+        	sub_num
+      ) VALUES (
+      		#{q},
+      		#{t},
+ 			(select sub_num FROM submission ORDER BY sub_num  DESC LIMIT 1)
+         )
+	</insert>
+	
+	<insert id="regSAnswer" parameterType="SAnswer">  
+        INSERT INTO	sanswer (
+        	a,
+        	que_num
+      ) VALUES (
+      		#{a},
+ 			(select que_num FROM squestion ORDER BY que_num  DESC LIMIT 1)
+         )
+	</insert>
 </mapper>

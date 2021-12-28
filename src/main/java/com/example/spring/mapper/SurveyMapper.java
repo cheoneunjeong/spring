@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Param;
 
 import com.example.spring.domain.Answer;
 import com.example.spring.domain.Question;
+import com.example.spring.domain.SAnswer;
+import com.example.spring.domain.SQuestion;
+import com.example.spring.domain.Submission;
 import com.example.spring.domain.Survey;
 
 @Mapper
@@ -51,4 +54,10 @@ public interface SurveyMapper {
 	public int getquestionCount(int s_num);
 
 	public List<Question> getquestionDetail(int s_num);
+
+	public void regSubmission(Submission submission);
+
+	public void regSQuestion(SQuestion q);
+
+	public void regSAnswer(SAnswer a);
 }

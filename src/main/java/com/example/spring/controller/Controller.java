@@ -36,6 +36,9 @@ import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
 import com.example.spring.domain.Question;
 import com.example.spring.domain.Reply;
+import com.example.spring.domain.SAnswer;
+import com.example.spring.domain.SQuestion;
+import com.example.spring.domain.Submission;
 import com.example.spring.domain.Survey;
 import com.example.spring.domain.User;
 import com.example.spring.service.BoardService;
@@ -591,11 +594,6 @@ public class Controller {
 		}
 		return q;
 	}
-	
-	@RequestMapping("/submit")
-	public String submit(String s_num) {
-		return "/survey";
-	}
 
 	@RequestMapping("/regSurvey2")
 	public String regSurvey2(Model model, @RequestBody Survey survey,
@@ -689,6 +687,34 @@ public class Controller {
 		}
 		else
 			return "/denied";
+	}
+	
+	@RequestMapping("/submit")
+	public String submit(Model model, @RequestBody Submission submission,
+			@AuthenticationPrincipal User user) {
+		
+		submission.setWriter(user.getUsername());
+		
+		surveyservice.regSubmission(submission);
+		
+		List<SQuestion> list = submission.getQuestions();
+		for(SQuestion q : list) {
+			surveyservice.regSQuestion(q);
+			
+			List<SAnswer> A = q.getAnswers();
+			for(SAnswer a : A) {
+				if(a.getA()!=null && a.getA()!="") {
+					surveyservice.regSAnswer(a);
+				}
+			}
+		}
+		
+		return "/surveylist";
+	}
+	
+	@RequestMapping("/result")
+	public String result() {
+		return "/result";
 	}
 
 } 

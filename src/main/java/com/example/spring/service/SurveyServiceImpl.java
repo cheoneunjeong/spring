@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.spring.domain.Answer;
 import com.example.spring.domain.Question;
+import com.example.spring.domain.SAnswer;
+import com.example.spring.domain.SQuestion;
+import com.example.spring.domain.Submission;
 import com.example.spring.domain.Survey;
 import com.example.spring.mapper.SurveyMapper;
 
@@ -116,6 +119,24 @@ public class SurveyServiceImpl implements SurveyService {
 	@Override
 	public List<Question> getquestionDetail(int s_num) {
 		return surveymaper.getquestionDetail(s_num);
+	}
+
+	@Override
+	public void regSubmission(Submission submission) {
+		surveymaper.regSubmission(submission);
+		
+	}
+
+	@Override
+	public void regSQuestion(SQuestion q) {
+		surveymaper.regSQuestion(q);
+		
+	}
+
+	@Override
+	public void regSAnswer(SAnswer a) {
+		surveymaper.regSAnswer(a);
+		
 	}
 
 

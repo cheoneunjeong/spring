@@ -3,25 +3,29 @@ package com.example.spring.domain;
 public class SAnswer {
 
 	private String a;
-	private int q_num;
-	private int a_num;
+	private int que_num;
+	private int ans_num;
+	
+	
 	public String getA() {
 		return a;
 	}
 	public void setA(String a) {
 		this.a = a;
 	}
-	public int getQ_num() {
-		return q_num;
+
+	public int getQue_num() {
+		return que_num;
 	}
-	public void setQ_num(int q_num) {
-		this.q_num = q_num;
+	public void setQue_num(int que_num) {
+		this.que_num = que_num;
 	}
-	public int getA_num() {
-		return a_num;
+	public int getAns_num() {
+		return ans_num;
 	}
-	public void setA_num(int a_num) {
-		this.a_num = a_num;
+	public void setAns_num(int ans_num) {
+		this.ans_num = ans_num;
 	}
+
 
 }

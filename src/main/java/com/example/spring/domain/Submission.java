@@ -10,6 +10,7 @@ public class Submission {
 	private String writer;	
 	private String datetime;	
 	private List<SQuestion> questions;
+	private int sub_num;
 	
 	public int getS_num() {
 		return s_num;
@@ -47,5 +48,12 @@ public class Submission {
 	public void setQuestions(List<SQuestion> questions) {
 		this.questions = questions;
 	}
+	public int getSub_num() {
+		return sub_num;
+	}
+	public void setSub_num(int sub_num) {
+		this.sub_num = sub_num;
+	}
+	
 	
 }
