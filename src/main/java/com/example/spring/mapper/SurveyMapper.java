@@ -7,8 +7,11 @@ import org.apache.ibatis.annotations.Param;
 
 import com.example.spring.domain.Answer;
 import com.example.spring.domain.Question;
+<<<<<<< HEAD
 import com.example.spring.domain.SAnswer;
 import com.example.spring.domain.Submission;
+=======
+>>>>>>> parent of ca29ac2 (finish regSubmission)
 import com.example.spring.domain.Survey;
 
 @Mapper
@@ -53,8 +56,11 @@ public interface SurveyMapper {
 	public int getquestionCount(int s_num);
 
 	public List<Question> getquestionDetail(int s_num);
+<<<<<<< HEAD
 
 	public void regSubmission(Submission submission);
 
 	public void regSAnswer(SAnswer a);
+=======
+>>>>>>> parent of ca29ac2 (finish regSubmission)
 }

@@ -36,8 +36,11 @@ import com.example.spring.domain.Board;
 import com.example.spring.domain.Pagination;
 import com.example.spring.domain.Question;
 import com.example.spring.domain.Reply;
+<<<<<<< HEAD
 import com.example.spring.domain.SAnswer;
 import com.example.spring.domain.Submission;
+=======
+>>>>>>> parent of ca29ac2 (finish regSubmission)
 import com.example.spring.domain.Survey;
 import com.example.spring.domain.User;
 import com.example.spring.service.BoardService;
@@ -593,6 +596,11 @@ public class Controller {
 		}
 		return q;
 	}
+	
+	@RequestMapping("/submit")
+	public String submit(String s_num) {
+		return "/survey";
+	}
 
 	@RequestMapping("/regSurvey2")
 	public String regSurvey2(Model model, @RequestBody Survey survey,
@@ -687,6 +695,7 @@ public class Controller {
 		else
 			return "/denied";
 	}
+<<<<<<< HEAD
 	
 	@RequestMapping("/submit")
 	public String submit(Model model, @RequestBody Submission submission,
@@ -719,6 +728,8 @@ public class Controller {
 		 */
 		return "/result";
 	}
+=======
+>>>>>>> parent of ca29ac2 (finish regSubmission)
 
 } 
 

@@ -124,6 +124,7 @@
 	<select id="getquestionDetail" parameterType="Integer" resultType="Question">
 		SELECT * FROM question WHERE s_num = #{s_num}
 	</select>
+<<<<<<< HEAD
 	
 	<insert id="regSubmission" parameterType="Submission">  
         INSERT INTO	submission (
@@ -154,4 +155,6 @@
  			(select sub_num FROM submission ORDER BY  sub_num DESC  LIMIT 1)
          )
 	</insert>
+=======
+>>>>>>> parent of ca29ac2 (finish regSubmission)
 </mapper>

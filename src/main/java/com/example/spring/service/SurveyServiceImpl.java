@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.spring.domain.Answer;
 import com.example.spring.domain.Question;
+<<<<<<< HEAD
 import com.example.spring.domain.SAnswer;
 import com.example.spring.domain.Submission;
+=======
+>>>>>>> parent of ca29ac2 (finish regSubmission)
 import com.example.spring.domain.Survey;
 import com.example.spring.mapper.SurveyMapper;
 
@@ -120,6 +123,7 @@ public class SurveyServiceImpl implements SurveyService {
 		return surveymaper.getquestionDetail(s_num);
 	}
 
+<<<<<<< HEAD
 	@Override
 	public void regSubmission(Submission submission) {
 		surveymaper.regSubmission(submission);
@@ -131,5 +135,8 @@ public class SurveyServiceImpl implements SurveyService {
 		surveymaper.regSAnswer(a);
 		
 	}
+=======
+
+>>>>>>> parent of ca29ac2 (finish regSubmission)
 
 }
