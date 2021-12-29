@@ -1,6 +1,11 @@
+securty, logger에대해
+
+
 restful?
+ㄴhttps://dev-coco.tistory.com/97
 rest) api server?
 jwt?
+ㄴhttps://tech.toktokhan.dev/2021/04/30/JWT/
 
 유튜브 맨땅에개발하기 vue시작하기03부터 새로고침시까지?
 
